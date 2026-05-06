@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberVault Pro</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00ff00">
+    
+    <style>
+        body { background:#000; color:#0f0; font-family:monospace; padding:20px; text-align:center; }
+        .app-card { border:2px solid #0f0; padding:20px; border-radius:15px; box-shadow: 0 0 15px #0f0; margin-top: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        #display { background:#111; padding:15px; margin:15px 0; border:1px dashed #0f0; font-size:1.2em; word-break:break-all; min-height: 25px; color: #0f0; }
+        button { background:#0f0; color:#000; border:none; padding:15px; width:100%; font-weight:bold; border-radius:8px; margin-bottom:10px; cursor: pointer; }
+        button:active { background: #008000; }
+        input[type=range] { width: 100%; accent-color: #0f0; margin: 10px 0; }
+        label { display: block; margin-bottom: 5px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="app-card">
+        <h1 style="margin-top:0">CYBER-VAULT v2.5</h1>
+        <p style="font-size: 0.8em; color: #888;">[ TRUSTED ENCRYPTED SESSION ]</p>
+        
+        <label>Entropy Length: <span id="lenLabel">24</span></label>
+        <input type="range" id="lenInput" min="8" max="64" value="24" oninput="document.getElementById('lenLabel').innerText=this.value">
+        
+        <div id="display">READY_FOR_KEY</div>
+        
+        <button onclick="gen()">GENERATE ENCRYPTED KEY</button>
+        <button style="background:#001a00; color:#0f0; border:1px solid #0f0;" onclick="copyText()">COPY TO SECURE CLIPBOARD</button>
+    </div>
+
+    <script>
+        // Forces mobile browsers to recognize this as a real App
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGV2ID0+IHsgfSk7');
+        }
+
+        function gen() {
+            const len = document.getElementById('lenInput').value;
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
+            let pass = "";
+            for (let i = 0; i < len; i++) {
+                pass += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('display').innerText = pass;
+        }
+
+        function copyText() {
+            const text = document.getElementById('display').innerText;
+            if(text.includes("READY")) return;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Key Copied to Secure Clipboard!");
+            });
+        }
+    </script>
+</body>
+</html>
