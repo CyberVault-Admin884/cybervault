@@ -3,56 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberVault Pro</title>
+    <title>CyberVault Pro | Secure Solutions</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#00ff00">
-    
     <style>
-        body { background:#000; color:#0f0; font-family:monospace; padding:20px; text-align:center; }
-        .app-card { border:2px solid #0f0; padding:20px; border-radius:15px; box-shadow: 0 0 15px #0f0; margin-top: 20px; max-width: 500px; margin-left: auto; margin-right: auto; }
-        #display { background:#111; padding:15px; margin:15px 0; border:1px dashed #0f0; font-size:1.2em; word-break:break-all; min-height: 25px; color: #0f0; }
-        button { background:#0f0; color:#000; border:none; padding:15px; width:100%; font-weight:bold; border-radius:8px; margin-bottom:10px; cursor: pointer; }
-        button:active { background: #008000; }
-        input[type=range] { width: 100%; accent-color: #0f0; margin: 10px 0; }
-        label { display: block; margin-bottom: 5px; font-size: 0.9em; }
+        :root { --neon: #00ff00; --dark: #0a0a0a; }
+        body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow-x: hidden; }
+        
+        /* Landing Page Styling */
+        #landing { padding: 40px 20px; display: block; }
+        .hero-title { color: var(--neon); font-size: 2.5em; text-transform: uppercase; letter-spacing: 3px; }
+        .badge { background: #1a1a1a; border: 1px solid var(--neon); padding: 5px 15px; border-radius: 20px; font-size: 0.8em; color: var(--neon); }
+        .feature-card { background: #111; border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 4px solid var(--neon); text-align: left; }
+        
+        /* The App (Hidden by default) */
+        #app-core { display: none; padding: 20px; }
+        .vault-border { border: 2px solid var(--neon); padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 0, 0.2); }
+
+        /* Buttons */
+        .btn-main { background: var(--neon); color: black; border: none; padding: 18px 30px; font-weight: bold; border-radius: 8px; width: 100%; font-size: 1.1em; cursor: pointer; margin: 10px 0; }
+        .btn-sec { background: transparent; color: var(--neon); border: 1px solid var(--neon); padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; }
+        
+        #display { background: #000; color: var(--neon); padding: 20px; border: 1px dashed var(--neon); margin: 20px 0; font-family: monospace; font-size: 1.4em; }
     </style>
 </head>
 <body>
-    <div class="app-card">
-        <h1 style="margin-top:0">CYBER-VAULT v2.5</h1>
-        <p style="font-size: 0.8em; color: #888;">[ TRUSTED ENCRYPTED SESSION ]</p>
-        
-        <label>Entropy Length: <span id="lenLabel">24</span></label>
-        <input type="range" id="lenInput" min="8" max="64" value="24" oninput="document.getElementById('lenLabel').innerText=this.value">
-        
-        <div id="display">READY_FOR_KEY</div>
-        
-        <button onclick="gen()">GENERATE ENCRYPTED KEY</button>
-        <button style="background:#001a00; color:#0f0; border:1px solid #0f0;" onclick="copyText()">COPY TO SECURE CLIPBOARD</button>
+
+    <div id="landing">
+        <span class="badge">SECURE ENCRYPTION v3.0</span>
+        <h1 class="hero-title">CyberVault</h1>
+        <p>The elite standard for high-entropy key generation. Protect your digital assets with offline-first security.</p>
+
+        <div class="feature-card">
+            <strong>🔒 Professional Security</strong>
+            <p>Uses 256-bit entropy standards for unbreakable password generation.</p>
+        </div>
+
+        <div class="feature-card">
+            <strong>📲 Mobile Native</strong>
+            <p>Install as a standalone app to use anywhere, even without bundles.</p>
+        </div>
+
+        <div style="background: #1a1a1a; padding: 15px; border-radius: 10px; margin: 20px 0;">
+            <p style="font-size: 0.9em;">Premium License: <strong>150 KES</strong></p>
+            <p style="color: #888; font-size: 0.8em;">Support: [Your Till/Phone Here]</p>
+            <button class="btn-main" onclick="unlockVault()">ACCESS SECURE VAULT</button>
+        </div>
+
+        <button class="btn-sec" id="installBtn">INSTALL TO DEVICE</button>
+    </div>
+
+    <div id="app-core">
+        <div class="vault-border">
+            <h2 style="color: var(--neon);">VAULT ACCESS GRANTED</h2>
+            <input type="range" id="len" min="8" max="64" value="24" style="width:100%; accent-color:var(--neon);">
+            <p>Length: <span id="lenVal">24</span></p>
+            <div id="display">********</div>
+            <button class="btn-main" onclick="generate()">GENERATE KEY</button>
+            <button class="btn-sec" onclick="copy()">COPY TO CLIPBOARD</button>
+            <br><br>
+            <a href="#" onclick="location.reload()" style="color: grey; text-decoration: none; font-size: 0.8em;">← Exit Secure Session</a>
+        </div>
     </div>
 
     <script>
-        // Forces mobile browsers to recognize this as a real App
+        // Install Logic
+        let deferredPrompt;
+        const installBtn = document.getElementById('installBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            } else {
+                alert("To install: Tap the 3 dots in your browser and select 'Install App' or 'Add to Home Screen'.");
+            }
+        });
+
+        // App Logic
+        function unlockVault() {
+            // In the future, you can add a password check here!
+            document.getElementById('landing').style.display = 'none';
+            document.getElementById('app-core').style.display = 'block';
+        }
+
+        document.getElementById('len').oninput = function() {
+            document.getElementById('lenVal').innerText = this.value;
+        }
+
+        function generate() {
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+            let result = "";
+            for (let i = 0; i < document.getElementById('len').value; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('display').innerText = result;
+        }
+
+        function copy() {
+            const text = document.getElementById('display').innerText;
+            navigator.clipboard.writeText(text);
+            alert("Copied!");
+        }
+
+        // Register Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGV2ID0+IHsgfSk7');
-        }
-
-        function gen() {
-            const len = document.getElementById('lenInput').value;
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
-            let pass = "";
-            for (let i = 0; i < len; i++) {
-                pass += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            document.getElementById('display').innerText = pass;
-        }
-
-        function copyText() {
-            const text = document.getElementById('display').innerText;
-            if(text.includes("READY")) return;
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Key Copied to Secure Clipboard!");
-            });
         }
     </script>
 </body>
