@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CyberVault Pro | PREVELLAH</title>
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#0a0a0a">
     <style>
         :root { --neon: #00ff00; --dark: #0a0a0a; --gray: #1a1a1a; }
@@ -42,10 +42,8 @@
                 <ol>
                     <li><strong>Set Strength:</strong> Use the slider. Longer = Harder to crack.</li>
                     <li><strong>Generate:</strong> Create a unique secret key locally on your device.</li>
-                    <li><strong>Copy:</strong> Save your key safely. We never see your data.</li>
+                    <li><strong>Copy:</strong> Save your key safely.</li>
                 </ol>
-                <hr style="border: 0.5px solid #333;">
-                <p style="font-size: 0.85em;"><strong>Security Note:</strong> CyberVault uses high-entropy randomization. Your keys are mathematically impossible to guess.</p>
             </div>
 
             <button class="btn-sec" id="installBtn" style="margin-top: 20px;">INSTALL TO DEVICE</button>
@@ -54,20 +52,16 @@
         <div id="app-core">
             <div style="border: 2px solid var(--neon); padding: 20px; border-radius: 15px;">
                 <h2 style="color: var(--neon); margin-top: 0;">VAULT ACTIVE</h2>
-                <p style="font-size: 0.9em;">Key Length:</p>
                 <input type="range" id="len" min="8" max="64" value="24" style="width:100%; accent-color:var(--neon);">
                 <p><span id="lenVal" style="color:var(--neon); font-weight:bold;">24</span> Characters</p>
                 <div id="display">READY TO GENERATE</div>
                 <button class="btn-main" onclick="generate()">GENERATE NEW KEY</button>
                 <button class="btn-sec" onclick="copy()">COPY TO CLIPBOARD</button>
-                <p style="font-size: 0.7em; color: #666; margin-top: 20px;">Encrypted Session | Dev: PREVELLAH</p>
-                <a href="#" onclick="location.reload()" style="color: #444; text-decoration: none; font-size: 0.8em;">← Lock & Logout</a>
             </div>
         </div>
 
         <footer>
-            &copy; 2026 CyberVault Security | PREVELLAH Labs<br>
-            Offline-First Technology. No data collection.
+            &copy; 2026 CyberVault Security | PREVELLAH Labs
         </footer>
     </div>
 
@@ -75,26 +69,29 @@
         let deferredPrompt;
         const installBtn = document.getElementById('installBtn');
 
+        // Listen for the system install event
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            installBtn.style.borderColor = "#00ff00";
+            console.log("Install prompt is ready!");
+            installBtn.style.background = "#00ff00";
+            installBtn.style.color = "#000";
         });
 
         installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                await deferredPrompt.userChoice;
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response: ${outcome}`);
                 deferredPrompt = null;
             } else {
-                alert("Installation Guide:\n\n1. Tap the 3 dots (Chrome menu).\n2. Tap 'Install App' or 'Add to Home Screen'.");
+                alert("Mobile Install:\n1. Tap the 3 dots (top right).\n2. Select 'Install App'.");
             }
         });
 
         function unlockVault() {
             document.getElementById('landing').style.display = 'none';
             document.getElementById('app-core').style.display = 'block';
-            window.scrollTo(0,0);
         }
 
         document.getElementById('len').oninput = function() {
@@ -102,7 +99,7 @@
         }
 
         function generate() {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
             let result = "";
             for (let i = 0; i < document.getElementById('len').value; i++) {
                 result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -114,14 +111,14 @@
             const text = document.getElementById('display').innerText;
             if(text === "READY TO GENERATE") return;
             navigator.clipboard.writeText(text).then(() => {
-                alert("Key Copied Securely!");
+                alert("Key Copied!");
             });
         }
 
-        // CONNECTING TO sw.js
+        // Final registration link to sw.js
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
+                navigator.serviceWorker.register('./sw.js')
                 .then(reg => console.log("SW Active"))
                 .catch(err => console.log("SW Error", err));
             });
