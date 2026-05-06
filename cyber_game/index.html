@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PREVELLAH: TEMPLE ESCAPE</title>
+    <style>
+        body { margin: 0; background: #87CEEB; overflow: hidden; font-family: 'Courier New', monospace; }
+        #ui { position: absolute; top: 20px; width: 100%; text-align: center; color: #fff; text-shadow: 2px 2px #000; pointer-events: none; z-index: 10; }
+        .controls { position: absolute; bottom: 30px; width: 100%; display: flex; justify-content: center; gap: 40px; z-index: 10; }
+        .btn { width: 80px; height: 80px; background: rgba(0,0,0,0.6); border: 3px solid #00ff00; border-radius: 50%; color: #00ff00; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.2em; }
+    </style>
+</head>
+<body>
+
+    <div id="ui">
+        <h1 id="score">GOLD: 0</h1>
+        <small id="status">STATUS: INFILTRATING AREA...</small>
+    </div>
+
+    <div class="controls">
+        <div class="btn" id="lBtn">L</div>
+        <div class="btn" id="rBtn">R</div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <script>
+        let scene, camera, renderer, player, clock, score = 0;
+        let objects = [];
+        let move = { l: false, r: false };
+        let leftLeg, rightLeg;
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x87CEEB); // Bright Sky Blue
+            scene.fog = new THREE.Fog(0x87CEEB, 10, 80);
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 5, 10);
+            clock = new THREE.Clock();
+            
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            // Light up the scene so it's not black
+            const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+            sun.position.set(5, 20, 10);
+            scene.add(sun, new THREE.AmbientLight(0xffffff, 0.5));
+
+            // THE GROUND (Green Path)
+            const ground = new THREE.Mesh(
+                new THREE.PlaneGeometry(15, 2000), 
+                new THREE.MeshPhongMaterial({color: 0x1a4a1a})
+            );
+            ground.rotation.x = -Math.PI / 2;
+            scene.add(ground);
+
+            // THE CHARACTER (3D Humanoid)
+            player = new THREE.Group();
+            const body = new THREE.Mesh(new THREE.BoxGeometry(0.8, 1, 0.5), new THREE.MeshPhongMaterial({color: 0x00ff00}));
+            const head = new THREE.Mesh(new THREE.SphereGeometry(0.3), new THREE.MeshPhongMaterial({color: 0xffdbac}));
+            head.position.y = 0.8;
+            leftLeg = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.7, 0.25), new THREE.MeshPhongMaterial({color: 0x000088}));
+            rightLeg = leftLeg.clone();
+            leftLeg.position.set(-0.2, -0.6, 0);
+            rightLeg.position.set(0.2, -0.6, 0);
+            player.add(body, head, leftLeg, rightLeg);
+            player.position.y = 1.3;
+            scene.add(player);
+
+            setupControls();
+            spawnLoop();
+            animate();
+        }
+
+        function setupControls() {
+            document.getElementById('lBtn').ontouchstart = () => move.l = true;
+            document.getElementById('lBtn').ontouchend = () => move.l = false;
+            document.getElementById('rBtn').ontouchstart = () => move.r = true;
+            document.getElementById('rBtn').ontouchend = () => move.r = false;
+        }
+
+        function spawnLoop() {
+            const isCoin = Math.random() > 0.6;
+            const geo = isCoin ? new THREE.CylinderGeometry(0.4, 0.4, 0.1, 16) : new THREE.BoxGeometry(2, 2, 1);
+            const mat = new THREE.MeshPhongMaterial({ color: isCoin ? 0xffd700 : 0xcc0000 });
+            const obj = new THREE.Mesh(geo, mat);
+            obj.userData = { type: isCoin ? 'coin' : 'trap' };
+            obj.position.set(Math.random() > 0.5 ? 3 : -3, 1, -70);
+            if(isCoin) obj.rotation.x = Math.PI/2;
+            scene.add(obj);
+            objects.push(obj);
+            setTimeout(spawnLoop, 800);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            let t = clock.getElapsedTime();
+
+            // Run Animation
+            leftLeg.rotation.x = Math.sin(t * 12) * 0.6;
+            rightLeg.rotation.x = Math.cos(t * 12) * 0.6;
+
+            if(move.l && player.position.x > -5) player.position.x -= 0.2;
+            if(move.r && player.position.x < 5) player.position.x += 0.2;
+
+            objects.forEach((obj, i) => {
+                obj.position.z += 0.7; // Scrolling speed
+                if(obj.userData.type === 'coin') obj.rotation.y += 0.1;
+
+                // Hit Detection
+                if (Math.abs(obj.position.z - player.position.z) < 1.2 && Math.abs(obj.position.x - player.position.x) < 1.8) {
+                    if(obj.userData.type === 'coin') {
+                        score += 50;
+                        document.getElementById('score').innerText = `GOLD: ${score}`;
+                        scene.remove(obj); objects.splice(i, 1);
+                    } else {
+                        alert("MISSION FAILED. RESTARTING LINK...");
+                        location.reload();
+                    }
+                }
+            });
+            renderer.render(scene, camera);
+        }
+        init();
+    </script>
+</body>
+</html>
+
