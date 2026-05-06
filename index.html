@@ -9,20 +9,15 @@
     <style>
         :root { --neon: #00ff00; --dark: #0a0a0a; --gray: #1a1a1a; }
         body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; line-height: 1.6; }
-        
         .container { padding: 40px 20px; max-width: 500px; margin: auto; }
         .hero-title { color: var(--neon); font-size: 2.5em; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; }
         .badge { border: 1px solid var(--neon); padding: 5px 15px; border-radius: 20px; font-size: 0.8em; color: var(--neon); text-transform: uppercase; }
-        
         #landing, #app-core { display: block; }
         #app-core { display: none; }
-        
         .card { background: var(--gray); border-radius: 12px; padding: 20px; margin: 20px 0; border-left: 4px solid var(--neon); text-align: left; }
         .doc-section { background: #000; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-top: 30px; text-align: left; font-size: 0.9em; }
-
         .btn-main { background: var(--neon); color: black; border: none; padding: 18px; font-weight: bold; border-radius: 8px; width: 100%; font-size: 1.1em; cursor: pointer; margin: 15px 0; box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3); }
         .btn-sec { background: transparent; color: var(--neon); border: 1px solid var(--neon); padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; }
-        
         #display { background: #000; color: var(--neon); padding: 20px; border: 1px dashed var(--neon); margin: 20px 0; font-family: monospace; font-size: 1.2em; word-break: break-all; min-height: 1.5em; }
         footer { margin-top: 50px; color: #555; font-size: 0.8em; padding-bottom: 30px; }
     </style>
@@ -45,12 +40,12 @@
             <div class="doc-section">
                 <h4 style="color: var(--neon); margin-top: 0;">📘 How to use this App:</h4>
                 <ol>
-                    <li><strong>Set Strength:</strong> Move the slider. More length = Harder to crack.</li>
+                    <li><strong>Set Strength:</strong> Use the slider. Longer = Harder to crack.</li>
                     <li><strong>Generate:</strong> Create a unique secret key locally on your device.</li>
                     <li><strong>Copy:</strong> Save your key safely. We never see your data.</li>
                 </ol>
                 <hr style="border: 0.5px solid #333;">
-                <p style="font-size: 0.85em;"><strong>Security Note:</strong> CyberVault uses high-entropy randomization. Your keys are mathematically impossible to guess by human or machine.</p>
+                <p style="font-size: 0.85em;"><strong>Security Note:</strong> CyberVault uses high-entropy randomization. Your keys are mathematically impossible to guess.</p>
             </div>
 
             <button class="btn-sec" id="installBtn" style="margin-top: 20px;">INSTALL TO DEVICE</button>
@@ -62,12 +57,9 @@
                 <p style="font-size: 0.9em;">Key Length:</p>
                 <input type="range" id="len" min="8" max="64" value="24" style="width:100%; accent-color:var(--neon);">
                 <p><span id="lenVal" style="color:var(--neon); font-weight:bold;">24</span> Characters</p>
-                
                 <div id="display">READY TO GENERATE</div>
-                
                 <button class="btn-main" onclick="generate()">GENERATE NEW KEY</button>
                 <button class="btn-sec" onclick="copy()">COPY TO CLIPBOARD</button>
-                
                 <p style="font-size: 0.7em; color: #666; margin-top: 20px;">Encrypted Session | Dev: PREVELLAH</p>
                 <a href="#" onclick="location.reload()" style="color: #444; text-decoration: none; font-size: 0.8em;">← Lock & Logout</a>
             </div>
@@ -80,35 +72,25 @@
     </div>
 
     <script>
-        // PWA Aggressive Install Logic
         let deferredPrompt;
         const installBtn = document.getElementById('installBtn');
 
         window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent Chrome 67 and earlier from automatically showing the prompt
             e.preventDefault();
-            // Stash the event so it can be triggered later.
             deferredPrompt = e;
-            // Highlight the install button to show it's active
             installBtn.style.borderColor = "#00ff00";
-            installBtn.style.boxShadow = "0 0 10px rgba(0,255,0,0.2)";
         });
 
         installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    console.log('User accepted the install prompt');
-                }
+                await deferredPrompt.userChoice;
                 deferredPrompt = null;
             } else {
-                // Manual Fallback
-                alert("Installation Guide:\n\n1. Tap the 3 dots (Chrome/Opera menu).\n2. Tap 'Install App' or 'Add to Home Screen'.");
+                alert("Installation Guide:\n\n1. Tap the 3 dots (Chrome menu).\n2. Tap 'Install App' or 'Add to Home Screen'.");
             }
         });
 
-        // App Functions
         function unlockVault() {
             document.getElementById('landing').style.display = 'none';
             document.getElementById('app-core').style.display = 'block';
@@ -136,11 +118,12 @@
             });
         }
 
-        // Service Worker for PWA
+        // CONNECTING TO sw.js
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('index.html') // Registering self as worker for basic offline support
-                .catch(err => console.log("SW registration failed", err));
+                navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log("SW Active"))
+                .catch(err => console.log("SW Error", err));
             });
         }
     </script>
