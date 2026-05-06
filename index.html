@@ -1,128 +1,92 @@
-<!DOCTYPE html>
+A<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberVault Pro | PREVELLAH</title>
-    <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#0a0a0a">
+    <title>Checkout | PREVELLAH Labs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --neon: #00ff00; --dark: #0a0a0a; --gray: #1a1a1a; }
-        body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; line-height: 1.6; }
-        .container { padding: 40px 20px; max-width: 500px; margin: auto; }
-        .hero-title { color: var(--neon); font-size: 2.5em; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; }
-        .badge { border: 1px solid var(--neon); padding: 5px 15px; border-radius: 20px; font-size: 0.8em; color: var(--neon); text-transform: uppercase; }
-        #landing, #app-core { display: block; }
-        #app-core { display: none; }
-        .card { background: var(--gray); border-radius: 12px; padding: 20px; margin: 20px 0; border-left: 4px solid var(--neon); text-align: left; }
-        .doc-section { background: #000; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-top: 30px; text-align: left; font-size: 0.9em; }
-        .btn-main { background: var(--neon); color: black; border: none; padding: 18px; font-weight: bold; border-radius: 8px; width: 100%; font-size: 1.1em; cursor: pointer; margin: 15px 0; box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3); }
-        .btn-sec { background: transparent; color: var(--neon); border: 1px solid var(--neon); padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; }
-        #display { background: #000; color: var(--neon); padding: 20px; border: 1px dashed var(--neon); margin: 20px 0; font-family: monospace; font-size: 1.2em; word-break: break-all; min-height: 1.5em; }
-        footer { margin-top: 50px; color: #555; font-size: 0.8em; padding-bottom: 30px; }
+        body { background-color: #0f172a; color: white; font-family: sans-serif; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
     </style>
 </head>
-<body>
+<body class="flex items-center justify-center min-h-screen">
 
-    <div class="container">
-        <div id="landing">
-            <span class="badge">Verified Encryption v3.0</span>
-            <h1 class="hero-title">CyberVault</h1>
-            <p style="color: #bbb;">Professional-grade security. Created by <strong>PREVELLAH</strong>.</p>
+    <div class="glass-card p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center">
+        <h2 class="text-2xl font-bold text-green-400 mb-2">Checkout</h2>
+        <p class="text-slate-400 text-sm mb-6">Support PREVELLAH Labs</p>
 
-            <div class="card">
-                <p style="margin:0; font-size: 0.8em; color: var(--neon);">PREMIUM LICENSE REQUIRED</p>
-                <h3 style="margin: 5px 0;">Access Cost: 150 KES</h3>
-                <p style="font-size: 0.9em; color: #ccc;">Send to M-Pesa: <strong>0142122710</strong></p>
-                <button class="btn-main" onclick="unlockVault()">ACTIVATE & ENTER VAULT</button>
-            </div>
-
-            <div class="doc-section">
-                <h4 style="color: var(--neon); margin-top: 0;">📘 How to use this App:</h4>
-                <ol>
-                    <li><strong>Set Strength:</strong> Use the slider. Longer = Harder to crack.</li>
-                    <li><strong>Generate:</strong> Create a unique secret key locally on your device.</li>
-                    <li><strong>Copy:</strong> Save your key safely.</li>
-                </ol>
-            </div>
-
-            <button class="btn-sec" id="installBtn" style="margin-top: 20px;">INSTALL TO DEVICE</button>
+        <div class="mb-8">
+            <span class="text-5xl font-extrabold">1</span>
+            <span class="text-slate-400 ml-2 text-xl font-semibold">KES</span>
         </div>
 
-        <div id="app-core">
-            <div style="border: 2px solid var(--neon); padding: 20px; border-radius: 15px;">
-                <h2 style="color: var(--neon); margin-top: 0;">VAULT ACTIVE</h2>
-                <input type="range" id="len" min="8" max="64" value="24" style="width:100%; accent-color:var(--neon);">
-                <p><span id="lenVal" style="color:var(--neon); font-weight:bold;">24</span> Characters</p>
-                <div id="display">READY TO GENERATE</div>
-                <button class="btn-main" onclick="generate()">GENERATE NEW KEY</button>
-                <button class="btn-sec" onclick="copy()">COPY TO CLIPBOARD</button>
-            </div>
+        <div class="space-y-4">
+            <input type="number" id="phone" placeholder="Enter M-Pesa Number (07...)" 
+                class="w-full bg-slate-900 border border-slate-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition-all">
+            
+            <button onclick="processPayment()" id="payBtn"
+                class="w-full bg-green-500 hover:bg-green-400 text-slate-900 font-bold py-4 rounded-lg transition-all transform active:scale-95 shadow-lg">
+                PAY NOW
+            </button>
         </div>
 
-        <footer>
-            &copy; 2026 CyberVault Security | PREVELLAH Labs
-        </footer>
+        <p class="mt-6 text-xs text-slate-500 flex items-center justify-center gap-1">
+            Secure Encryption Active 🔐
+        </p>
     </div>
 
     <script>
-        let deferredPrompt;
-        const installBtn = document.getElementById('installBtn');
+        async function processPayment() {
+            const phoneInput = document.getElementById('phone').value;
+            const payBtn = document.getElementById('payBtn');
+            
+            // YOUR TINYPESA API KEY
+            const apiKey = "SGiJfke_I77BIsFE0iJKgKhiVK7zquxzadMI7WIA";
 
-        // Listen for the system install event
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            console.log("Install prompt is ready!");
-            installBtn.style.background = "#00ff00";
-            installBtn.style.color = "#000";
-        });
-
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`User response: ${outcome}`);
-                deferredPrompt = null;
-            } else {
-                alert("Mobile Install:\n1. Tap the 3 dots (top right).\n2. Select 'Install App'.");
+            if (!phoneInput) {
+                alert("Please enter a phone number");
+                return;
             }
-        });
 
-        function unlockVault() {
-            document.getElementById('landing').style.display = 'none';
-            document.getElementById('app-core').style.display = 'block';
-        }
-
-        document.getElementById('len').oninput = function() {
-            document.getElementById('lenVal').innerText = this.value;
-        }
-
-        function generate() {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
-            let result = "";
-            for (let i = 0; i < document.getElementById('len').value; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            // Format phone number to 254...
+            let formattedPhone = phoneInput;
+            if (phoneInput.startsWith('0')) {
+                formattedPhone = '254' + phoneInput.substring(1);
             }
-            document.getElementById('display').innerText = result;
-        }
 
-        function copy() {
-            const text = document.getElementById('display').innerText;
-            if(text === "READY TO GENERATE") return;
-            navigator.clipboard.writeText(text).then(() => {
-                alert("Key Copied!");
-            });
-        }
+            // Update UI to show processing
+            payBtn.innerText = "PROCESSING...";
+            payBtn.disabled = true;
 
-        // Final registration link to sw.js
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log("SW Active"))
-                .catch(err => console.log("SW Error", err));
-            });
+            try {
+                const response = await fetch("https://tinypesa.com/api/v1/express/initialize", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "ApiKey": apiKey
+                    },
+                    body: new URLSearchParams({
+                        "amount": "1",
+                        "msisdn": formattedPhone,
+                        "account_no": "CyberVault_Lab"
+                    })
+                });
+
+                if (response.ok) {
+                    alert("STK Push Sent! Enter your M-Pesa PIN on your phone.");
+                } else {
+                    const err = await response.json();
+                    alert("Error: " + (err.message || "Request failed"));
+                }
+            } catch (error) {
+                alert("Network error. Check your connection.");
+            } finally {
+                payBtn.innerText = "PAY NOW";
+                payBtn.disabled = false;
+            }
         }
     </script>
 </body>
 </html>
+
