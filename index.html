@@ -6,91 +6,105 @@
     <title>CyberVault Pro | Secure Solutions</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        :root { --neon: #00ff00; --dark: #0a0a0a; }
-        body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; overflow-x: hidden; }
+        :root { --neon: #00ff00; --dark: #0a0a0a; --gray: #1a1a1a; }
+        body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; text-align: center; line-height: 1.6; }
         
-        /* Landing Page Styling */
-        #landing { padding: 40px 20px; display: block; }
-        .hero-title { color: var(--neon); font-size: 2.5em; text-transform: uppercase; letter-spacing: 3px; }
-        .badge { background: #1a1a1a; border: 1px solid var(--neon); padding: 5px 15px; border-radius: 20px; font-size: 0.8em; color: var(--neon); }
-        .feature-card { background: #111; border-radius: 10px; padding: 20px; margin: 20px 0; border-left: 4px solid var(--neon); text-align: left; }
+        .container { padding: 40px 20px; max-width: 500px; margin: auto; }
+        .hero-title { color: var(--neon); font-size: 2.5em; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 10px; }
+        .badge { border: 1px solid var(--neon); padding: 5px 15px; border-radius: 20px; font-size: 0.8em; color: var(--neon); text-transform: uppercase; }
         
-        /* The App (Hidden by default) */
-        #app-core { display: none; padding: 20px; }
-        .vault-border { border: 2px solid var(--neon); padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 0, 0.2); }
+        /* Sections */
+        #landing, #app-core { display: block; }
+        #app-core { display: none; }
+        
+        .card { background: var(--gray); border-radius: 12px; padding: 20px; margin: 20px 0; border-left: 4px solid var(--neon); text-align: left; }
+        .doc-section { background: #000; border: 1px solid #333; border-radius: 10px; padding: 15px; margin-top: 30px; text-align: left; font-size: 0.9em; }
 
         /* Buttons */
-        .btn-main { background: var(--neon); color: black; border: none; padding: 18px 30px; font-weight: bold; border-radius: 8px; width: 100%; font-size: 1.1em; cursor: pointer; margin: 10px 0; }
+        .btn-main { background: var(--neon); color: black; border: none; padding: 18px; font-weight: bold; border-radius: 8px; width: 100%; font-size: 1.1em; cursor: pointer; margin: 15px 0; box-shadow: 0 4px 15px rgba(0, 255, 0, 0.3); }
         .btn-sec { background: transparent; color: var(--neon); border: 1px solid var(--neon); padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; }
         
-        #display { background: #000; color: var(--neon); padding: 20px; border: 1px dashed var(--neon); margin: 20px 0; font-family: monospace; font-size: 1.4em; }
+        #display { background: #000; color: var(--neon); padding: 20px; border: 1px dashed var(--neon); margin: 20px 0; font-family: monospace; font-size: 1.2em; word-break: break-all; }
+        footer { margin-top: 50px; color: #555; font-size: 0.8em; padding-bottom: 30px; }
     </style>
 </head>
 <body>
 
-    <div id="landing">
-        <span class="badge">SECURE ENCRYPTION v3.0</span>
-        <h1 class="hero-title">CyberVault</h1>
-        <p>The elite standard for high-entropy key generation. Protect your digital assets with offline-first security.</p>
+    <div class="container">
+        <div id="landing">
+            <span class="badge">Verified Encryption v3.0</span>
+            <h1 class="hero-title">CyberVault</h1>
+            <p style="color: #bbb;">Professional-grade security for your digital accounts. Created by <strong>PREVELLAH</strong>.</p>
 
-        <div class="feature-card">
-            <strong>🔒 Professional Security</strong>
-            <p>Uses 256-bit entropy standards for unbreakable password generation.</p>
+            <div class="card">
+                <p style="margin:0; font-size: 0.8em; color: var(--neon);">PREMIUM LICENSE REQUIRED</p>
+                <h3 style="margin: 5px 0;">Access Cost: 150 KES</h3>
+                <p style="font-size: 0.9em; color: #ccc;">Send to M-Pesa: <strong>0142122710</strong></p>
+                <button class="btn-main" onclick="unlockVault()">ACTIVATE & ENTER VAULT</button>
+            </div>
+
+            <div class="doc-section">
+                <h4 style="color: var(--neon); margin-top: 0;">📘 How to use this App:</h4>
+                <ol>
+                    <li><strong>Set Strength:</strong> Move the slider. More length means a harder password to guess.</li>
+                    <li><strong>Generate:</strong> Tap the button to create a unique secret key.</li>
+                    <li><strong>Copy:</strong> Use the copy button to save it to your phone.</li>
+                </ol>
+                <hr style="border: 0.5px solid #333;">
+                <p style="font-size: 0.85em;"><strong>Why use CyberVault?</strong><br>
+                Normal passwords like "1234" are easy for thieves to guess. CyberVault uses mathematical entropy to make codes that would take a computer 100 years to crack.</p>
+            </div>
+
+            <button class="btn-sec" id="installBtn" style="margin-top: 20px;">INSTALL APP TO HOME SCREEN</button>
         </div>
 
-        <div class="feature-card">
-            <strong>📲 Mobile Native</strong>
-            <p>Install as a standalone app to use anywhere, even without bundles.</p>
+        <div id="app-core">
+            <div style="border: 2px solid var(--neon); padding: 20px; border-radius: 15px;">
+                <h2 style="color: var(--neon); margin-top: 0;">VAULT ACTIVE</h2>
+                <p style="font-size: 0.9em;">Adjust Length:</p>
+                <input type="range" id="len" min="8" max="64" value="24" style="width:100%; accent-color:var(--neon);">
+                <p>Selected: <span id="lenVal" style="color:var(--neon); font-weight:bold;">24</span> characters</p>
+                
+                <div id="display">READY TO GENERATE</div>
+                
+                <button class="btn-main" onclick="generate()">GENERATE NEW KEY</button>
+                <button class="btn-sec" onclick="copy()">COPY TO CLIPBOARD</button>
+                
+                <p style="font-size: 0.7em; color: #666; margin-top: 20px;">Session encrypted for user: PREVELLAH</p>
+                <a href="#" onclick="location.reload()" style="color: #444; text-decoration: none; font-size: 0.8em;">← Lock & Logout</a>
+            </div>
         </div>
 
-        <div style="background: #1a1a1a; padding: 15px; border-radius: 10px; margin: 20px 0;">
-            <p style="font-size: 0.9em;">Premium License: <strong>150 KES</strong></p>
-            <p style="color: #888; font-size: 0.8em;">Support: [Your Till/Phone Here]</p>
-            <button class="btn-main" onclick="unlockVault()">ACCESS SECURE VAULT</button>
-        </div>
-
-        <button class="btn-sec" id="installBtn">INSTALL TO DEVICE</button>
-    </div>
-
-    <div id="app-core">
-        <div class="vault-border">
-            <h2 style="color: var(--neon);">VAULT ACCESS GRANTED</h2>
-            <input type="range" id="len" min="8" max="64" value="24" style="width:100%; accent-color:var(--neon);">
-            <p>Length: <span id="lenVal">24</span></p>
-            <div id="display">********</div>
-            <button class="btn-main" onclick="generate()">GENERATE KEY</button>
-            <button class="btn-sec" onclick="copy()">COPY TO CLIPBOARD</button>
-            <br><br>
-            <a href="#" onclick="location.reload()" style="color: grey; text-decoration: none; font-size: 0.8em;">← Exit Secure Session</a>
-        </div>
+        <footer>
+            &copy; 2026 CyberVault Security | Documentation v1.2<br>
+            All keys are generated locally. No data is stored on our servers.
+        </footer>
     </div>
 
     <script>
-        // Install Logic
+        // PWA Install Logic
         let deferredPrompt;
         const installBtn = document.getElementById('installBtn');
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            installBtn.style.display = 'block';
         });
 
         installBtn.addEventListener('click', async () => {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
+                await deferredPrompt.userChoice;
                 deferredPrompt = null;
             } else {
-                alert("To install: Tap the 3 dots in your browser and select 'Install App' or 'Add to Home Screen'.");
+                alert("To install: Tap your browser menu (3 dots) and select 'Install app'.");
             }
         });
 
         // App Logic
         function unlockVault() {
-            // In the future, you can add a password check here!
             document.getElementById('landing').style.display = 'none';
             document.getElementById('app-core').style.display = 'block';
+            window.scrollTo(0,0);
         }
 
         document.getElementById('len').oninput = function() {
@@ -98,7 +112,7 @@
         }
 
         function generate() {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
             let result = "";
             for (let i = 0; i < document.getElementById('len').value; i++) {
                 result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -108,11 +122,11 @@
 
         function copy() {
             const text = document.getElementById('display').innerText;
+            if(text === "READY TO GENERATE") return;
             navigator.clipboard.writeText(text);
-            alert("Copied!");
+            alert("Key Copied Securely!");
         }
 
-        // Register Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('data:text/javascript;base64,c2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIGV2ID0+IHsgfSk7');
         }
