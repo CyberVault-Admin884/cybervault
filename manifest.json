@@ -1,0 +1,15 @@
+{
+  "short_name": "CyberVault",
+  "name": "Cyber-Vault Security Tool",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/nolan/64/security-shield.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#000000",
+  "display": "standalone",
+  "theme_color": "#00ff00"
+}
