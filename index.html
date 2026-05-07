@@ -3,15 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CYBERVAULT BOOT SYSTEM</title>
+<title>CYBERVAULT // SECURE NODE</title>
 
 <style>
 body{
     margin:0;
     font-family:monospace;
     background:#000;
-    color:#00e5ff;
+    color:#00ffcc;
     overflow:hidden;
+}
+
+/* MATRIX BACKGROUND */
+canvas{
+    position:fixed;
+    inset:0;
+    opacity:0.15;
+    z-index:0;
 }
 
 /* BOOT SCREEN */
@@ -27,23 +35,24 @@ body{
     text-align:center;
 }
 
-.logo{
+.glow{
     font-size:28px;
-    text-shadow:0 0 15px #00e5ff;
-    animation:pulse 1.2s infinite;
+    color:#00ffcc;
+    text-shadow:0 0 15px #00ffcc;
+    animation:blink 1.2s infinite;
 }
 
-@keyframes pulse{
-    0%{opacity:0.4}
+@keyframes blink{
+    0%{opacity:0.3}
     50%{opacity:1}
-    100%{opacity:0.4}
+    100%{opacity:0.3}
 }
 
 .loader{
     width:35px;
     height:35px;
-    border:3px solid #00e5ff33;
-    border-top:3px solid #00e5ff;
+    border:3px solid #00ffcc33;
+    border-top:3px solid #00ffcc;
     border-radius:50%;
     animation:spin 1s linear infinite;
     margin-top:15px;
@@ -55,24 +64,13 @@ body{
 
 .small{
     font-size:12px;
-    color:#aaa;
+    color:#888;
     margin-top:10px;
 }
 
 /* APP */
 #app{
     display:none;
-}
-
-/* MATRIX */
-canvas{
-    position:fixed;
-    inset:0;
-    opacity:0.12;
-}
-
-/* LAYOUT */
-.container{
     position:relative;
     z-index:2;
     padding:15px;
@@ -81,10 +79,11 @@ canvas{
 /* CARD */
 .card{
     background:rgba(0,0,0,0.8);
-    border:1px solid #00e5ff33;
-    padding:15px;
+    border:1px solid #00ffcc33;
     border-radius:12px;
+    padding:15px;
     margin-top:15px;
+    box-shadow:0 0 10px #00ffcc11;
 }
 
 /* INPUT */
@@ -93,8 +92,8 @@ input{
     padding:12px;
     margin:8px 0;
     background:#000;
-    border:1px solid #00e5ff33;
-    color:white;
+    border:1px solid #00ffcc33;
+    color:#00ffcc;
     border-radius:8px;
 }
 
@@ -102,15 +101,20 @@ input{
 button{
     width:100%;
     padding:12px;
-    background:#00e5ff;
+    background:#00ffcc;
     border:none;
     font-weight:bold;
     margin-top:10px;
+    cursor:pointer;
+}
+
+button:active{
+    transform:scale(0.98);
 }
 
 /* EXIT */
 .exit{
-    background:#ff2d2d;
+    background:#ff0033;
     color:white;
 }
 
@@ -119,22 +123,41 @@ button{
     color:#00ff99;
     word-break:break-all;
 }
+
+/* TERMINAL TEXT */
+.terminal{
+    font-size:11px;
+    color:#00ffccaa;
+}
+
+/* FLICKER */
+.flicker{
+    animation:flick 2s infinite;
+}
+
+@keyframes flick{
+    0%{opacity:0.6}
+    50%{opacity:1}
+    100%{opacity:0.6}
+}
 </style>
 </head>
 
 <body>
 
-<!-- BOOT SCREEN -->
+<canvas id="matrix"></canvas>
+
+<!-- BOOT -->
 <div id="boot">
-    <div class="logo">CYBERVAULT</div>
-    <div class="small">Welcome to Secure Digital Protection</div>
+    <div class="glow">CYBERVAULT NODE</div>
+    <div class="small flicker">Initializing Secure Encryption Layer...</div>
     <div class="loader"></div>
 
-    <div class="small" style="margin-top:20px;">
-        Digital Protection Active
+    <div class="small" style="margin-top:15px;">
+        Digital Protection: ACTIVE
     </div>
 
-    <div class="small" style="margin-top:10px;">
+    <div class="small">
         Developed by Prevellah — Kenya
     </div>
 </div>
@@ -142,132 +165,15 @@ button{
 <!-- APP -->
 <div id="app">
 
-<div class="container">
-
 <div class="card">
-<h3>CYBERVAULT ACCESS</h3>
+<h3>ACCESS TERMINAL</h3>
+
+<div class="terminal">
+Payment Node: *334# → Pochi La Biashara → 0142122710
+</div>
 
 <p class="small">
-Pay 1 KES via Pochi La Biashara:<br>
-*334# → 0142122710
+Pay 1 KES to unlock secure password generator.
 </p>
 
-<input id="phone" placeholder="Phone Number">
-<input id="code" placeholder="M-PESA Code">
-
-<button onclick="submit()">Generate Secure Password</button>
-<button class="exit" onclick="exitApp()">Exit System</button>
-
-<p id="msg" class="small"></p>
-</div>
-
-<div class="card">
-<h3>ADMIN PANEL</h3>
-<div id="list"></div>
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-/* BOOT TIMER */
-setTimeout(()=>{
-    document.getElementById("boot").style.display="none";
-    document.getElementById("app").style.display="block";
-},2000);
-
-/* DB */
-let db=[];
-
-/* SUBMIT */
-function submit(){
-
-const phone=document.getElementById("phone").value;
-const code=document.getElementById("code").value;
-
-if(!phone||!code){
-alert("Fill all fields");
-return;
-}
-
-db.push({
-id:Date.now(),
-phone,
-code,
-status:"pending",
-password:null
-});
-
-document.getElementById("msg").innerText=
-"Request submitted. Await approval.";
-
-render();
-}
-
-/* EXIT */
-function exitApp(){
-window.location.href="about:blank";
-}
-
-/* PASSWORD GENERATOR */
-function generate(len=24){
-
-const chars=
-"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}<>?";
-
-let p="";
-const arr=new Uint32Array(len);
-crypto.getRandomValues(arr);
-
-for(let i=0;i<len;i++){
-p+=chars[arr[i]%chars.length];
-}
-
-return p;
-}
-
-/* APPROVE */
-function approve(id){
-
-const item=db.find(x=>x.id===id);
-
-item.status="approved";
-item.password=generate(24);
-
-alert("PASSWORD GENERATED:\n\n"+item.password);
-
-render();
-}
-
-/* RENDER */
-function render(){
-
-document.getElementById("list").innerHTML=
-
-db.map(i=>`
-
-<div style="border:1px solid #00e5ff22;padding:10px;margin-top:10px;border-radius:10px;">
-
-<p>Phone: ${i.phone}</p>
-<p>Code: ${i.code}</p>
-<p>Status: ${i.status}</p>
-
-${i.password?`<p class="password">${i.password}</p>`:""}
-
-${i.status==="pending"?
-`<button onclick="approve(${i.id})">Approve</button>`:""}
-
-</div>
-
-`).join("");
-
-}
-
-render();
-
-</script>
-
-</body>
-</html>
+<input id="phone" placeholder="USER ID / PHONE
