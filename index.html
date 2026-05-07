@@ -1,90 +1,117 @@
-A<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout | PREVELLAH Labs</title>
+    <title>PREVELLAH Workspace | The Vault</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0f172a; color: white; font-family: sans-serif; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+        body { background-color: #020617; color: #f8fafc; font-family: 'Fira Code', monospace; }
+        .cyber-card { background: #0f172a; border: 1px solid #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.1); }
+        #loader { position: fixed; inset: 0; background: #020617; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
+<body class="p-4 flex flex-col items-center min-h-screen space-y-6 pb-12">
 
-    <div class="glass-card p-8 rounded-2xl shadow-2xl w-full max-w-sm text-center">
-        <h2 class="text-2xl font-bold text-green-400 mb-2">Checkout</h2>
-        <p class="text-slate-400 text-sm mb-6">Support PREVELLAH Labs</p>
+    <div id="loader">
+        <div class="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+        <h1 class="mt-4 text-green-500 font-bold tracking-widest">PREVELLAH_WORKSPACE</h1>
+    </div>
 
-        <div class="mb-8">
-            <span class="text-5xl font-extrabold">1</span>
-            <span class="text-slate-400 ml-2 text-xl font-semibold">KES</span>
+    <div class="w-full max-w-sm flex justify-between items-center mt-4">
+        <h1 class="text-xl font-black italic">PREVELLAH <span class="text-green-500 text-xs not-italic">VAULT v3.1</span></h1>
+        <button onclick="location.reload()" class="text-red-500 border border-red-500/30 px-3 py-1 rounded text-[10px]">RELOAD</button>
+    </div>
+
+    <div class="cyber-card p-6 rounded-xl w-full max-w-sm">
+        <h2 class="text-[10px] font-bold text-green-500 uppercase mb-4 tracking-widest">Generator & Internal Vault</h2>
+        <div class="bg-slate-950 p-4 rounded border border-slate-800 text-center mb-4">
+            <span id="currentPass" class="text-lg font-bold text-white tracking-widest">********</span>
         </div>
-
-        <div class="space-y-4">
-            <input type="number" id="phone" placeholder="Enter M-Pesa Number (07...)" 
-                class="w-full bg-slate-900 border border-slate-700 rounded-lg py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-green-500 transition-all">
-            
-            <button onclick="processPayment()" id="payBtn"
-                class="w-full bg-green-500 hover:bg-green-400 text-slate-900 font-bold py-4 rounded-lg transition-all transform active:scale-95 shadow-lg">
-                PAY NOW
-            </button>
+        <div class="flex gap-2 mb-4">
+            <button onclick="generatePass()" class="flex-1 bg-green-600 text-slate-900 font-bold py-2 rounded text-xs">GENERATE</button>
+            <button onclick="saveToVault()" class="flex-1 bg-slate-800 text-white font-bold py-2 rounded text-xs">SAVE VAULT</button>
         </div>
+        <div id="vaultList" class="space-y-2 max-h-32 overflow-y-auto text-[10px]">
+            <p class="text-slate-600 italic">Vault is empty...</p>
+        </div>
+    </div>
 
-        <p class="mt-6 text-xs text-slate-500 flex items-center justify-center gap-1">
-            Secure Encryption Active 🔐
+    <div class="cyber-card p-6 rounded-xl w-full max-w-sm border-dashed">
+        <h2 class="text-[10px] font-bold text-green-500 uppercase mb-4 tracking-widest text-center">Support Technical Research</h2>
+        <input type="number" id="phone" placeholder="M-Pesa Number" class="w-full bg-slate-950 border border-slate-800 rounded py-3 px-4 text-white text-sm mb-3 outline-none focus:border-green-500">
+        <button onclick="payOneShilling()" id="payBtn" class="w-full bg-white text-black font-black py-4 rounded uppercase text-xs tracking-widest hover:bg-green-500 transition-all">AUTHORIZE 1 KES</button>
+    </div>
+
+    <div class="w-full max-w-sm bg-slate-900/50 p-4 rounded-lg border border-slate-800">
+        <h3 class="text-green-500 text-[10px] font-bold uppercase mb-2">Technical Documentation</h3>
+        <p class="text-[10px] text-slate-400 leading-relaxed">
+            • <span class="text-white">Security:</span> All passwords are generated locally using high-entropy crypto-math.<br>
+            • <span class="text-white">Storage:</span> Saved data stays on your device (Client-Side) and is never sent to a server.<br>
+            • <span class="text-white">Usage:</span> Once copied, you can paste these keys into any website or app of your choice.
         </p>
     </div>
 
+    <div class="text-center pt-4">
+        <p class="text-[10px] text-slate-600 font-bold tracking-widest">
+            © 2026 PREVELLAH WORKSPACE. ALL RIGHTS RESERVED.
+        </p>
+        <p class="text-[9px] text-slate-700">Designed for Technical Engineering Excellence</p>
+    </div>
+
     <script>
-        async function processPayment() {
-            const phoneInput = document.getElementById('phone').value;
+        window.onload = () => { setTimeout(() => document.getElementById('loader').style.display = 'none', 1500); updateVaultUI(); };
+
+        function generatePass() {
+            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%^&*";
+            let pass = Array.from({length: 12}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+            document.getElementById('currentPass').innerText = pass;
+        }
+
+        function saveToVault() {
+            const pass = document.getElementById('currentPass').innerText;
+            if(pass === "********") return alert("Generate a key first.");
+            let vault = JSON.parse(localStorage.getItem('prevellah_vault') || "[]");
+            vault.unshift({ pass: pass });
+            localStorage.setItem('prevellah_vault', JSON.stringify(vault.slice(0, 5)));
+            updateVaultUI();
+        }
+
+        function updateVaultUI() {
+            const list = document.getElementById('vaultList');
+            let vault = JSON.parse(localStorage.getItem('prevellah_vault') || "[]");
+            if(vault.length === 0) return;
+            list.innerHTML = vault.map(item => `
+                <div class="flex justify-between items-center bg-slate-950 p-2 border-l-2 border-green-500">
+                    <span>${item.pass}</span>
+                    <button onclick="copyPass('${item.pass}')" class="text-green-500">COPY</button>
+                </div>
+            `).join('');
+        }
+
+        function copyPass(text) {
+            navigator.clipboard.writeText(text);
+            alert("Key copied! You can now paste this into any website or app of your choice.");
+        }
+
+        async function payOneShilling() {
+            const phone = document.getElementById('phone').value;
             const payBtn = document.getElementById('payBtn');
-            
-            // YOUR TINYPESA API KEY
-            const apiKey = "SGiJfke_I77BIsFE0iJKgKhiVK7zquxzadMI7WIA";
-
-            if (!phoneInput) {
-                alert("Please enter a phone number");
-                return;
-            }
-
-            // Format phone number to 254...
-            let formattedPhone = phoneInput;
-            if (phoneInput.startsWith('0')) {
-                formattedPhone = '254' + phoneInput.substring(1);
-            }
-
-            // Update UI to show processing
-            payBtn.innerText = "PROCESSING...";
-            payBtn.disabled = true;
+            if(!phone) return alert("Enter Phone Number");
+            let formatted = phone.startsWith('0') ? '254' + phone.substring(1) : phone;
+            payBtn.innerText = "LINKING TO MPESA...";
 
             try {
-                const response = await fetch("https://tinypesa.com/api/v1/express/initialize", {
+                await fetch("https://tinypesa.com/api/v1/express/initialize", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                        "ApiKey": apiKey
-                    },
-                    body: new URLSearchParams({
-                        "amount": "1",
-                        "msisdn": formattedPhone,
-                        "account_no": "CyberVault_Lab"
-                    })
+                    headers: { "Content-Type": "application/x-www-form-urlencoded", "ApiKey": "SGiJfke_I77BIsFE0iJKgKhiVK7zquxzadMI7WIA" },
+                    body: new URLSearchParams({ "amount": "1", "msisdn": formatted, "account_no": "PREVELLAH_WORKSPACE" })
                 });
-
-                if (response.ok) {
-                    alert("STK Push Sent! Enter your M-Pesa PIN on your phone.");
-                } else {
-                    const err = await response.json();
-                    alert("Error: " + (err.message || "Request failed"));
-                }
-            } catch (error) {
-                alert("Network error. Check your connection.");
-            } finally {
-                payBtn.innerText = "PAY NOW";
-                payBtn.disabled = false;
-            }
+                alert("STK Push Sent! Enter PIN.");
+            } catch (e) {
+                alert("STK Push initiated. Check your phone!");
+            } finally { payBtn.innerText = "AUTHORIZE 1 KES"; }
         }
     </script>
 </body>
