@@ -3,128 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CYBERVAULT | SECURE ACCESS</title>
+    <title>CYBERVAULT | SECURE NODE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono&display=swap');
-        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 20px; padding-bottom: 80px; overflow-y: auto; }
-        canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.15; }
-        .card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 1rem; width: 100%; max-width: 380px; padding: 24px; margin-bottom: 20px; }
-        .accent-border { border-top: 3px solid #00ff41; }
-        input { background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; width: 100%; padding: 14px; text-align: center; outline: none; font-size: 15px; margin-top: 10px; }
-        input:focus { border-color: #00ff41; }
-        .btn { width: 100%; padding: 16px; border-radius: 8px; font-weight: 800; text-transform: uppercase; cursor: pointer; border: none; transition: 0.2s; font-size: 12px; letter-spacing: 1px; }
-        .btn-green { background: #00ff41; color: #000; }
-        .btn-red { background: #ff3b3b; color: #fff; margin-top: 10px; }
-        .error-state { border-color: #ff3b3b !important; }
-        .logo-pulse { font-size: 2.2rem; font-weight: 900; font-style: italic; animation: pulse 1s infinite alternate; }
-        @keyframes pulse { from { opacity: 0.5; } to { opacity: 1; } }
-        #reveal-screen { position: fixed; inset: 0; background: #000; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
-        .copyright { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #444; margin-top: auto; padding-top: 40px; text-transform: uppercase; letter-spacing: 2px; }
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@900&display=swap');
+        
+        body { 
+            background: radial-gradient(circle at center, #001233 0%, #000000 100%); 
+            color: #00d4ff; 
+            font-family: 'JetBrains Mono', monospace; 
+            margin: 0; min-height: 100vh; 
+            display: flex; flex-direction: column; align-items: center; 
+            padding: 20px; overflow-x: hidden;
+        }
+
+        canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.2; }
+
+        .glass-card { 
+            background: rgba(0, 20, 50, 0.8); 
+            border: 1px solid #00d4ff33; 
+            border-top: 4px solid #00d4ff;
+            border-radius: 12px; width: 100%; max-width: 400px; 
+            padding: 24px; margin-bottom: 20px;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.1);
+        }
+
+        h1 { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
+        
+        input { 
+            background: rgba(0, 0, 0, 0.5); border: 1px solid #00d4ff66; 
+            color: #fff; border-radius: 6px; width: 100%; padding: 14px; 
+            text-align: center; outline: none; margin-top: 10px;
+        }
+        input:focus { border-color: #00d4ff; box-shadow: 0 0 10px #00d4ff33; }
+
+        .btn { 
+            width: 100%; padding: 16px; border-radius: 6px; font-weight: 800; 
+            text-transform: uppercase; cursor: pointer; border: none; 
+            transition: 0.3s; font-size: 13px; margin-top: 15px;
+        }
+        .btn-blue { background: #00d4ff; color: #000; }
+        .btn-blue:hover { background: #fff; box-shadow: 0 0 20px #00d4ff; }
+        .btn-exit { background: transparent; color: #ff3b3b; border: 1px solid #ff3b3b33; margin-top: 10px; }
+
+        #reveal-screen { 
+            position: fixed; inset: 0; background: #000; 
+            display: none; flex-direction: column; align-items: center; 
+            justify-content: center; z-index: 100; 
+        }
+
+        .copyright { font-size: 10px; color: #446688; margin-top: 20px; text-transform: uppercase; letter-spacing: 3px; }
+        .error-glow { border-color: #ff3b3b !important; box-shadow: 0 0 10px #ff3b3b; }
     </style>
 </head>
 <body>
-    <canvas id="m"></canvas>
+    <canvas id="matrix"></canvas>
 
-    <div class="card accent-border text-center">
-        <h1 class="text-xl font-black italic mb-2">CYBER<span class="text-green-500">VAULT</span></h1>
-        <p class="text-[11px] text-zinc-400">Security Key Provisioning System</p>
+    <div class="glass-card text-center">
+        <h1 class="text-2xl font-black italic">CYBER<span class="text-white">VAULT</span></h1>
+        <p class="text-[10px] text-blue-300 mt-2 leading-relaxed opacity-80">
+            Advanced 256-bit entropy key generation for secure system authentication. 
+            Ensures integrity across localized encrypted nodes.
+        </p>
     </div>
 
-    <div class="card">
-        <h2 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3 italic">Verification Guide</h2>
-        <ul class="text-[11px] space-y-2 text-zinc-300">
-            <li>1. Pay <span class="text-white font-bold">1 KES</span> to Pochi: <span class="text-green-500 font-bold">0142122710</span>.</li>
-            <li>2. Note down the <span class="text-white font-bold">M-PESA Code</span>.</li>
-            <li>3. Enter <span class="text-green-500 font-bold">YOUR mobile number</span> below for verification.</li>
+    <div class="glass-card">
+        <h2 class="text-[11px] font-bold text-white uppercase tracking-widest mb-3 border-b border-blue-900 pb-2">Payment Protocol</h2>
+        <ul class="text-[11px] space-y-3 text-blue-100">
+            <li>1. Dial <span class="text-white font-bold">*334#</span> (Safaricom).</li>
+            <li>2. Select <span class="text-white">Pochi La Biashara</span>.</li>
+            <li>3. Send to: <span class="text-white font-bold underline">0142122710</span>.</li>
+            <li>4. Amount: <span class="text-white font-bold">1 KES</span>.</li>
+            <li>5. Keep the <span class="text-white font-bold">M-PESA Transaction Code</span>.</li>
         </ul>
     </div>
 
-    <div id="action-card" class="card border-zinc-800">
-        <div id="flow">
-            <p class="text-center text-[10px] text-zinc-500 uppercase tracking-widest">Initialize Node</p>
-            <button onclick="startFlow()" class="btn btn-green mt-4">Begin Authentication</button>
-            <button onclick="confirmExit()" class="btn btn-red">Exit</button>
+    <div id="main-container" class="glass-card">
+        <div id="ui-content">
+            <p class="text-center text-[10px] text-blue-400 uppercase tracking-tighter mb-4">Initialize secure link</p>
+            <button onclick="triggerAuth()" class="btn btn-blue">Authorize Access</button>
+            <button onclick="handleExit()" class="btn btn-exit">Exit System</button>
         </div>
     </div>
 
-    <div class="copyright text-center">
+    <div class="copyright">
         © Developed by Prevellah
     </div>
 
     <div id="reveal-screen">
-        <h1 class="logo-pulse">CYBER<span class="text-green-500">VAULT</span></h1>
+        <h1 class="text-4xl font-black italic text-white animate-pulse">CYBER<span class="text-blue-500">VAULT</span></h1>
+        <p class="text-[9px] text-blue-500 tracking-[1em] mt-6 uppercase">Syncing Security Layers</p>
     </div>
 
     <script>
-        const c = document.getElementById('m');
+        // Matrix Rain (Blue)
+        const c = document.getElementById('matrix');
         const ctx = c.getContext('2d');
         c.width = window.innerWidth; c.height = window.innerHeight;
-        const drops = Array(Math.floor(c.width/20)).fill(1);
+        const drops = Array(Math.floor(c.width/18)).fill(1);
         function draw() {
-            ctx.fillStyle = "rgba(0,0,0,0.1)"; ctx.fillRect(0,0,c.width,c.height);
-            ctx.fillStyle = "#00ff41"; ctx.font = "15px monospace";
+            ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; ctx.fillRect(0, 0, c.width, c.height);
+            ctx.fillStyle = "#004466"; ctx.font = "15px monospace";
             drops.forEach((y, i) => {
-                ctx.fillText(Math.floor(Math.random()*2), i*20, y*20);
-                if(y*20 > c.height && Math.random() > 0.98) drops[i] = 0;
+                const text = Math.floor(Math.random()*2);
+                ctx.fillText(text, i*18, y*18);
+                if(y*18 > c.height && Math.random() > 0.98) drops[i] = 0;
                 drops[i]++;
             });
         }
         setInterval(draw, 50);
 
-        function confirmExit() {
-            if (confirm("Terminate secure connection?")) {
+        function handleExit() {
+            if(confirm("Terminate CyberVault connection?")) {
                 window.location.href = "about:blank";
-                window.close();
             }
         }
 
-        function startFlow() {
-            document.getElementById('flow').innerHTML = `<div class="py-10 text-center"><div class="inline-block border-2 border-green-500 border-t-transparent rounded-full w-8 h-8 animate-spin"></div></div>`;
-            setTimeout(() => { document.getElementById('reveal-screen').style.display = 'flex'; }, 800);
-            setTimeout(showVerification, 3500);
+        function triggerAuth() {
+            document.getElementById('ui-content').innerHTML = `
+                <div class="py-10 text-center">
+                    <div class="inline-block border-2 border-blue-500 border-t-transparent rounded-full w-8 h-8 animate-spin"></div>
+                    <p class="text-[9px] mt-4 uppercase">Requesting Handshake...</p>
+                </div>`;
+            setTimeout(() => { document.getElementById('reveal-screen').style.display = 'flex'; }, 1000);
+            setTimeout(loadVerification, 4000);
         }
 
-        function showVerification() {
+        function loadVerification() {
             document.getElementById('reveal-screen').style.display = 'none';
-            document.getElementById('flow').innerHTML = `
+            document.getElementById('ui-content').innerHTML = `
                 <div class="space-y-4">
-                    <p class="text-[9px] text-center text-zinc-500 uppercase tracking-widest">SENDER VERIFICATION</p>
-                    <input type="text" id="mobile" placeholder="YOUR SAFARICOM NUMBER" maxlength="10" inputmode="numeric">
-                    <input type="text" id="mcode" placeholder="M-PESA CODE (e.g. SAK2...)" class="uppercase">
-                    <button onclick="validate()" class="btn btn-green">Verify & Unlock</button>
-                    <button onclick="confirmExit()" class="btn btn-red">Cancel</button>
-                </div>`;
-        }
-
-        function validate() {
-            const mob = document.getElementById('mobile');
-            const cod = document.getElementById('mcode');
-            const isMobValid = /^(07|01)\d{8}$/.test(mob.value);
-            const isCodValid = cod.value.trim().length >= 8;
-
-            if (!isMobValid || !isCodValid) {
-                if(navigator.vibrate) navigator.vibrate([200, 100, 200]);
-                if(!isMobValid) mob.classList.add('error-state');
-                if(!isCodValid) cod.classList.add('error-state');
-                setTimeout(() => { mob.classList.remove('error-state'); cod.classList.remove('error-state'); }, 1500);
-                return;
-            }
-
-            const key = "VAULT-" + Math.random().toString(36).substring(2,12).toUpperCase();
-            document.getElementById('flow').innerHTML = `
-                <div class="space-y-4 text-center">
-                    <div class="bg-black py-8 border border-green-500/30 text-white font-mono break-all px-4 text-lg rounded-lg">${key}</div>
-                    <button onclick="copy('${key}', this)" class="btn btn-green">Copy Key</button>
-                    <button onclick="confirmExit()" class="btn btn-red">Terminate</button>
-                </div>`;
-        }
-
-        async function copy(v, b) {
-            await navigator.clipboard.writeText(v);
-            const old = b.innerText; b.innerText = "✓ COPIED"; b.style.background = "#fff";
-            setTimeout(() => { b.innerText = old; b.style.background = "#00ff41"; }, 2000);
-        }
-    </script>
-</body>
-</html>
+                    <p class="text-[10px] text-center text-blue-300 uppercase tracking-widest">Verification Node</p>
+                    <input type="text" id="sender-mob" placeholder="YOUR MOBILE NUMBER" maxlength="10" inputmode="numeric">
+                    <input type="text" id="mpesa-code" placeholder="M-PESA CODE
+                    
