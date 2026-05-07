@@ -10,7 +10,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
         body { background-color: #050505; color: #eee; font-family: 'Space Mono', monospace; margin: 0; overflow-x: hidden; }
 
-        /* --- 1. THE BOOT LOADER (ULTRA BRIGHT SIGNATURE) --- */
+        /* --- IMMERSIVE BOOT LOADER --- */
         #boot-loader {
             position: fixed; inset: 0; background: #050505; z-index: 999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -32,7 +32,7 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
-        /* --- 2. THE TERMINAL UI --- */
+        /* --- TERMINAL STYLING --- */
         .vault-card { background: #0a0a0a; border: 1px solid #1a1a1a; box-shadow: 0 0 60px rgba(0,0,0,1); }
         .accent-green { color: #00ff41; }
         .bg-green { background-color: #00ff41; color: #000; }
@@ -48,9 +48,9 @@
             font-size: 18px; border-right: 1px solid #333; height: 100%; 
             display: flex; align-items: center; 
         }
-        input#phone { background: transparent; border: none; color: #00ff41; padding: 0 20px; width: 100%; height: 100%; outline: none; font-size: 22px; letter-spacing: 2px; }
+        input#phone { background: transparent; border: none; color: #00ff41; padding: 0 20px; width: 100%; height: 100%; outline: none; font-size: 22px; }
         
-        .disclaimer-box { background: rgba(255, 255, 255, 0.02); border-left: 3px solid #00ff41; padding: 20px; border-radius: 0 15px 15px 0; }
+        .disclaimer-box { background: rgba(255, 255, 255, 0.02); border-left: 3px solid #00ff41; padding: 20px; border-radius: 0 15px 15px 0; margin-bottom: 20px; }
         
         @keyframes spin { 100% { transform: rotate(360deg); } }
         
@@ -79,19 +79,15 @@
                     <p class="text-[11px] text-gray-500 uppercase tracking-[0.6em] mt-2 font-bold">Kenya Digital Defense Hub</p>
                 </header>
 
-                <div class="space-y-6">
+                <div class="space-y-2">
                     <div class="disclaimer-box">
-                        <h3 class="text-white text-[13px] font-bold uppercase mb-3"><i class="fas fa-microchip mr-2 text-green-500"></i> AI Password Cracking</h3>
-                        <p class="text-[12px] text-gray-400 leading-relaxed">As AI evolves, standard human-created passwords can be decrypted in milliseconds using <strong>Neural Pattern Recognition</strong>. Static security is dead.</p>
+                        <h3 class="text-white text-[13px] font-bold uppercase mb-3"><i class="fas fa-robot mr-2 text-green-500"></i> AI Cracking Intelligence</h3>
+                        <p class="text-[12px] text-gray-400 leading-relaxed">AI-powered brute force tools can crack simple numeric and dictionary passwords in seconds. High-entropy encryption is no longer optional—it is a survival requirement.</p>
                     </div>
 
                     <div class="disclaimer-box" style="border-left-color: #ff3e3e;">
-                        <h3 class="text-white text-[13px] font-bold uppercase mb-3"><i class="fas fa-user-ninja mr-2 text-red-500"></i> The Necessity of Entropy</h3>
-                        <p class="text-[12px] text-gray-400 leading-relaxed">CyberVault generates high-entropy cryptographic strings that bypass dictionary-based AI attacks. Secure your digital identity with non-repeating logic.</p>
-                    </div>
-
-                    <div class="p-6 border border-white/5 rounded-xl bg-white/5 text-[10px] text-gray-500 uppercase italic tracking-widest text-center">
-                        Authorized Regional Gateway: 254-EL-CONSOLE-2026
+                        <h3 class="text-white text-[13px] font-bold uppercase mb-3"><i class="fas fa-shield-virus mr-2 text-red-500"></i> Security Recommendations</h3>
+                        <p class="text-[12px] text-gray-400 leading-relaxed">Rise in cybercrimes target local mobile and web accounts. Secure your terminal access with cryptographic keys that are mathematically resistant to neural pattern recognition.</p>
                     </div>
                 </div>
             </div>
@@ -101,11 +97,12 @@
                     <h2 class="text-center font-bold mb-12 text-white text-[11px] uppercase tracking-[0.4em] opacity-50">Identity Verification</h2>
                     <div class="space-y-12">
                         <div>
-                            <label class="text-[10px] text-gray-500 uppercase block mb-4 font-bold ml-2">Regional Mobile Number (M-PESA)</label>
+                            <label class="text-[10px] text-gray-500 uppercase block mb-4 font-bold ml-2 italic">Regional Network (254)</label>
                             <div class="kenya-input-wrapper">
                                 <div class="country-code">+254</div>
-                                <input type="tel" id="phone" placeholder="07... or 01..." maxlength="10" autocomplete="off">
+                                <input type="tel" id="phone" placeholder="712345678" maxlength="10" autocomplete="off">
                             </div>
+                            <p class="text-[9px] text-gray-600 mt-2 ml-2 uppercase italic">Note: System automatically handles leading zeros.</p>
                         </div>
                         <button onclick="initiateVault()" id="payBtn" class="pulse-btn w-full bg-green font-black py-7 rounded-2xl uppercase text-[13px] flex justify-center items-center gap-3 active:scale-95 transition-all">
                             <span id="btnText">INITIATE SECURE UNLOCK</span>
@@ -128,7 +125,7 @@
     </main>
 
     <script>
-        // BOOT SEQUENCE MANAGER
+        // BOOT SCREEN FADE
         window.addEventListener('load', () => {
             const loader = document.getElementById('boot-loader');
             setTimeout(() => {
@@ -143,17 +140,23 @@
             const btnText = document.getElementById('btnText');
             const status = document.getElementById('status');
 
-            // KENYA SMART STRIPPING LOGIC
-            if (phone.startsWith('0')) { phone = phone.substring(1); }
+            // 🛠️ THE LOGIC: Auto-strip leading zero if user includes it
+            if (phone.startsWith('0')) {
+                phone = phone.substring(1);
+            }
             
             if(phone.length !== 9) {
-                status.innerText = "DIGIT COUNT ERROR: ENTER 07XX... OR 01XX...";
+                status.innerText = "ERROR: NUMBER MUST BE 9 DIGITS";
                 return;
             }
 
             const fullNumber = "254" + phone;
-            btnText.innerText = "VERIFYING...";
-            status.innerText = "ESTABLISHING SECURE HANDSHAKE...";
+
+            // 🕵️ DEBUG ALERT: This will tell us exactly what we are sending
+            alert("DEBUG: Sending to TinyPesa -> " + fullNumber);
+
+            btnText.innerText = "AUTHENTICATING...";
+            status.innerText = "CONNECTING TO M-PESA...";
 
             try {
                 const res = await fetch('https://tinypesa.com/api/v1/express/initialize', {
@@ -169,9 +172,11 @@
                         document.getElementById('generator-box').classList.remove('hidden');
                         document.getElementById('pass-out').innerText = "CV-" + Math.random().toString(36).substring(2, 11).toUpperCase();
                     }, 5000);
+                } else {
+                    status.innerText = "API REJECTED REQUEST";
                 }
             } catch (e) {
-                status.innerText = "GATEWAY TIMEOUT";
+                status.innerText = "NETWORK TIMEOUT";
                 btnText.innerText = "RETRY UNLOCK";
             }
         }
