@@ -10,89 +10,76 @@
         body { font-family: 'JetBrains Mono', monospace; background-color: #050505; color: #00ff41; margin: 0; overflow-x: hidden; }
         #main-content { clip-path: circle(0% at 50% 50%); transition: clip-path 1.8s cubic-bezier(0.77, 0, 0.175, 1); }
         #main-content.open { clip-path: circle(150% at 50% 50%); }
-        .scanline { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(0, 255, 65, 0.05); z-index: 50; animation: scan 8s linear infinite; pointer-events: none; }
-        @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
         .glow-border { box-shadow: 0 0 25px rgba(0, 255, 65, 0.15); border: 1px solid rgba(0, 255, 65, 0.3); }
     </style>
 </head>
 <body class="flex flex-col items-center justify-center min-h-screen relative">
-    <div class="scanline"></div>
 
     <div id="start-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505] transition-opacity duration-1000">
         <div class="text-center px-6">
-            <h1 class="text-4xl font-black tracking-[0.5em] text-white">PREVELLAH</h1>
-            <p class="text-[10px] text-green-500 tracking-[0.3em] uppercase mt-4">Kenya's Elite Security Infrastructure</p>
-            <button onclick="unlockVault()" class="mt-12 px-10 py-5 border-2 border-green-500 text-green-500 font-black text-xs uppercase tracking-[0.4em] hover:bg-green-500 hover:text-black transition-all rounded-full animate-pulse">Click Here to Start</button>
+            <h1 class="text-4xl font-black text-white">PREVELLAH</h1>
+            <button onclick="unlockVault()" class="mt-12 px-10 py-5 border-2 border-green-500 text-green-500 font-black text-xs uppercase rounded-full animate-pulse">Start Terminal</button>
         </div>
     </div>
 
-    <div id="main-content" class="w-full min-h-screen flex flex-col items-center p-4 pb-20 opacity-0 transition-opacity duration-500">
+    <div id="main-content" class="w-full min-h-screen flex flex-col items-center p-4 opacity-0 transition-opacity duration-500">
         <div class="text-center mt-10 mb-8">
-            <h1 class="text-3xl font-black tracking-[0.4em] text-white uppercase">Cyber<span class="text-green-500">Vault</span></h1>
-            <p class="text-[10px] text-green-500/60 tracking-[0.5em] uppercase font-bold">Terminal v1.20 ADMIN</p>
+            <h1 class="text-3xl font-black text-white">CYBER<span class="text-green-500">VAULT</span></h1>
+            <p class="text-[10px] text-green-500/60 font-bold uppercase">Terminal v1.25 ADMIN</p>
         </div>
 
         <div id="payment-box" class="w-full max-w-md bg-black border border-green-500/30 p-8 rounded-3xl glow-border relative z-10 text-center">
-            <div id="ui-container">
-                <p class="text-[9px] text-zinc-500 uppercase mb-4 tracking-widest">Identify User Access</p>
-                <input type="number" id="phone" placeholder="07XX XXX XXX" class="w-full bg-zinc-900/40 border border-zinc-800 py-4 px-6 text-center text-white font-bold rounded-2xl outline-none focus:border-green-500 mb-6">
-                <button onclick="initiateVault()" class="w-full bg-green-500 text-black font-black py-5 rounded-2xl text-[10px] uppercase tracking-widest hover:bg-white transition-all">Unlock Terminal</button>
+            <div id="ui-core">
+                <p class="text-[9px] text-zinc-500 uppercase mb-4">Verification Required</p>
+                <input type="number" id="phone" placeholder="07XX XXX XXX" class="w-full bg-zinc-900/40 border border-zinc-800 py-4 text-center text-white font-bold rounded-2xl outline-none focus:border-green-500 mb-6">
+                <button onclick="initiateVault()" class="w-full bg-green-500 text-black font-black py-5 rounded-2xl text-[10px] uppercase tracking-widest">Access Vault</button>
             </div>
             <div id="status" class="mt-4"></div>
         </div>
-
-        <footer class="mt-12 text-[9px] text-zinc-700 tracking-[0.3em] uppercase">© 2026 PREVELLAH SEC-OPS</footer>
     </div>
 
     <script>
         function unlockVault() {
-            document.getElementById('start-screen').style.opacity = '0';
-            setTimeout(() => { document.getElementById('start-screen').classList.add('hidden'); document.getElementById('main-content').style.opacity = '1'; document.getElementById('main-content').classList.add('open'); }, 500);
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('main-content').style.opacity = '1';
+            document.getElementById('main-content').classList.add('open');
         }
 
-        function generateKey() {
-            const c = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%";
-            let r = "PREV-";
-            for(let i=0; i<8; i++) r += c.charAt(Math.floor(Math.random()*c.length));
+        function getNewPass() {
+            var c = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789!@#$%";
+            var r = "PREV-";
+            for(var i=0; i<8; i++) r += c.charAt(Math.floor(Math.random()*c.length));
             return r;
         }
 
-        function updateKey() {
-            document.getElementById('pass-display').innerText = generateKey();
+        function refreshKey() {
+            document.getElementById('pass-out').innerText = getNewPass();
         }
 
-        function showGen(isDev) {
-            document.getElementById('status').innerHTML = '<p class="text-green-500 animate-pulse text-[10px] mt-4 uppercase">Decrypting Vault...</p>';
-            setTimeout(() => {
-                document.getElementById('payment-box').innerHTML = `
-                    <div class="py-4">
-                        <span class="text-green-500 text-[9px] font-black border border-green-500/40 px-4 py-1 rounded-full uppercase">Generator Online</span>
-                        <div id="pass-display" class="text-2xl font-black text-white py-10 my-8 bg-zinc-900/50 rounded-2xl border border-green-500/10 tracking-widest">${generateKey()}</div>
-                        <button onclick="updateKey()" class="w-full bg-green-500 text-black font-black py-4 rounded-xl text-[10px] uppercase mb-4">Regenerate Key</button>
-                        <button onclick="location.reload()" class="text-[9px] text-zinc-600 uppercase font-black">Secure Exit</button>
-                    </div>`;
-            }, isDev ? 400 : 2500);
+        function showGen() {
+            var box = document.getElementById('payment-box');
+            box.innerHTML = '<div class="py-4">' +
+                '<span class="text-green-500 text-[9px] font-black border border-green-500/40 px-4 py-1 rounded-full uppercase">Generator Online</span>' +
+                '<div id="pass-out" class="text-2xl font-black text-white py-10 my-8 bg-zinc-900/50 rounded-2xl border border-green-500/10 tracking-widest">' + getNewPass() + '</div>' +
+                '<button onclick="refreshKey()" class="w-full bg-green-500 text-black font-black py-4 rounded-xl text-[10px] uppercase mb-4">Regenerate Key</button>' +
+                '<button onclick="location.reload()" class="text-[9px] text-zinc-600 uppercase font-black">Exit</button>' +
+                '</div>';
         }
 
         function initiateVault() {
-            let p = document.getElementById('phone').value;
-            if(p === "0000") { showGen(true); return; }
+            var p = document.getElementById('phone').value;
+            if(p === "0000") { showGen(); return; }
             if(p.length < 9) return;
             
-            document.getElementById('ui-container').innerHTML = `
-                <div class="text-left space-y-4">
-                    <p class="text-green-500 text-[9px] font-black text-center uppercase tracking-widest">M-Pesa Support Required</p>
-                    <div class="text-[11px] text-zinc-400 bg-zinc-900/40 p-4 rounded-xl border border-zinc-800">
-                        1. Dial *334#<br>2. Pochi La Biashara<br>3. ID: <span class="text-white">0142122710</span><br>4. Amount: 1 KES
-                    </div>
-                    <input type="text" id="mCode" placeholder="PASTE TRANSACTION CODE" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-xs uppercase outline-none focus:border-green-500">
-                    <button onclick="verify()" class="w-full bg-white text-black font-black py-4 rounded-xl text-[10px] uppercase">Validate & Unlock</button>
-                </div>`;
-        }
-
-        function verify() {
-            if(document.getElementById('mCode').value.length < 8) return;
-            showGen(false);
+            document.getElementById('ui-core').innerHTML = 
+                '<div class="text-left space-y-4">' +
+                '<p class="text-green-500 text-[9px] font-black text-center uppercase">M-Pesa Support</p>' +
+                '<div class="text-[11px] text-zinc-400 bg-zinc-900/40 p-4 rounded-xl border border-zinc-800">' +
+                '1. Dial *334#<br>2. Pochi La Biashara<br>3. ID: <span class="text-white">0142122710</span><br>4. Amt: 1 KES' +
+                '</div>' +
+                '<input type="text" id="mCode" placeholder="M-PESA CODE" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white text-xs uppercase outline-none focus:border-green-500">' +
+                '<button onclick="showGen()" class="w-full bg-white text-black font-black py-4 rounded-xl text-[10px] uppercase">Unlock</button>' +
+                '</div>';
         }
     </script>
 </body>
