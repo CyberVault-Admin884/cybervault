@@ -14,7 +14,7 @@ body{
     overflow:hidden;
 }
 
-/* MATRIX BACKGROUND */
+/* MATRIX */
 canvas{
     position:fixed;
     inset:0;
@@ -22,7 +22,7 @@ canvas{
     z-index:0;
 }
 
-/* BOOT SCREEN */
+/* BOOT */
 #boot{
     position:fixed;
     inset:0;
@@ -33,16 +33,17 @@ canvas{
     align-items:center;
     z-index:9999;
     text-align:center;
+    transition:opacity 0.5s ease;
 }
 
-.glow{
+.title{
     font-size:28px;
     color:#00ffcc;
-    text-shadow:0 0 15px #00ffcc;
-    animation:blink 1.2s infinite;
+    text-shadow:0 0 12px #00ffcc;
+    animation:pulse 1.2s infinite;
 }
 
-@keyframes blink{
+@keyframes pulse{
     0%{opacity:0.3}
     50%{opacity:1}
     100%{opacity:0.3}
@@ -83,7 +84,6 @@ canvas{
     border-radius:12px;
     padding:15px;
     margin-top:15px;
-    box-shadow:0 0 10px #00ffcc11;
 }
 
 /* INPUT */
@@ -105,11 +105,6 @@ button{
     border:none;
     font-weight:bold;
     margin-top:10px;
-    cursor:pointer;
-}
-
-button:active{
-    transform:scale(0.98);
 }
 
 /* EXIT */
@@ -124,56 +119,7 @@ button:active{
     word-break:break-all;
 }
 
-/* TERMINAL TEXT */
-.terminal{
-    font-size:11px;
-    color:#00ffccaa;
-}
-
-/* FLICKER */
-.flicker{
-    animation:flick 2s infinite;
-}
-
-@keyframes flick{
-    0%{opacity:0.6}
-    50%{opacity:1}
-    100%{opacity:0.6}
-}
-</style>
-</head>
-
-<body>
-
-<canvas id="matrix"></canvas>
-
-<!-- BOOT -->
-<div id="boot">
-    <div class="glow">CYBERVAULT NODE</div>
-    <div class="small flicker">Initializing Secure Encryption Layer...</div>
-    <div class="loader"></div>
-
-    <div class="small" style="margin-top:15px;">
-        Digital Protection: ACTIVE
-    </div>
-
-    <div class="small">
-        Developed by Prevellah — Kenya
-    </div>
-</div>
-
-<!-- APP -->
-<div id="app">
-
-<div class="card">
-<h3>ACCESS TERMINAL</h3>
-
-<div class="terminal">
-Payment Node: *334# → Pochi La Biashara → 0142122710
-</div>
-
-<p class="small">
-Pay 1 KES to unlock secure password generator.
-</p>
-
-<input id="phone" placeholder="USER ID / PHONE
+/* ERROR */
+.error{
+    color:#ff5555;
+    font-size:11px
