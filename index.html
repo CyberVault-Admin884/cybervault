@@ -1,117 +1,64 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PREVELLAH Workspace | The Vault</title>
+    <title>CYBERVAULT | MASTER KEY SYSTEM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
-        body { background-color: #020617; color: #f8fafc; font-family: 'Fira Code', monospace; }
-        .cyber-card { background: #0f172a; border: 1px solid #22c55e; box-shadow: 0 0 15px rgba(34, 197, 94, 0.1); }
-        #loader { position: fixed; inset: 0; background: #020617; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;800&display=swap');
+        body { font-family: 'JetBrains Mono', monospace; background-color: #050505; color: #00ff41; overflow: hidden; margin: 0; }
+        .glow-border { box-shadow: 0 0 25px rgba(0, 255, 65, 0.15); border: 1px solid rgba(0, 255, 65, 0.3); }
+        .bg-cyber { background: linear-gradient(145deg, #080808, #111111); }
+        .scanline { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(0, 255, 65, 0.03); z-index: 50; animation: scan 8s linear infinite; pointer-events: none; }
+        @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
+        .fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="p-4 flex flex-col items-center min-h-screen space-y-6 pb-12">
-
-    <div id="loader">
-        <div class="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"></div>
-        <h1 class="mt-4 text-green-500 font-bold tracking-widest">PREVELLAH_WORKSPACE</h1>
-    </div>
-
-    <div class="w-full max-w-sm flex justify-between items-center mt-4">
-        <h1 class="text-xl font-black italic">PREVELLAH <span class="text-green-500 text-xs not-italic">VAULT v3.1</span></h1>
-        <button onclick="location.reload()" class="text-red-500 border border-red-500/30 px-3 py-1 rounded text-[10px]">RELOAD</button>
-    </div>
-
-    <div class="cyber-card p-6 rounded-xl w-full max-w-sm">
-        <h2 class="text-[10px] font-bold text-green-500 uppercase mb-4 tracking-widest">Generator & Internal Vault</h2>
-        <div class="bg-slate-950 p-4 rounded border border-slate-800 text-center mb-4">
-            <span id="currentPass" class="text-lg font-bold text-white tracking-widest">********</span>
+<body class="flex items-center justify-center min-h-screen p-4 relative">
+    <div class="scanline"></div>
+    <div id="payment-box" class="w-full max-w-md bg-cyber p-8 rounded-3xl glow-border text-center relative z-10 border-t border-green-500/30 fade-in-up">
+        <h1 class="text-2xl font-black tracking-[0.3em] text-white mb-6">CYBER<span class="text-green-500">VAULT</span></h1>
+        <div class="space-y-6">
+            <input type="number" id="phone" placeholder="ENTER M-PESA NO" class="w-full bg-black/40 border border-green-500/20 py-4 px-6 text-center text-green-400 font-bold rounded-2xl outline-none focus:border-green-500 transition-all">
+            <button onclick="initiateVault()" class="w-full bg-green-500 text-black font-black py-5 rounded-2xl text-[10px] uppercase tracking-[0.2em] hover:bg-white transition-all">INITIATE SECURITY SCAN</button>
         </div>
-        <div class="flex gap-2 mb-4">
-            <button onclick="generatePass()" class="flex-1 bg-green-600 text-slate-900 font-bold py-2 rounded text-xs">GENERATE</button>
-            <button onclick="saveToVault()" class="flex-1 bg-slate-800 text-white font-bold py-2 rounded text-xs">SAVE VAULT</button>
-        </div>
-        <div id="vaultList" class="space-y-2 max-h-32 overflow-y-auto text-[10px]">
-            <p class="text-slate-600 italic">Vault is empty...</p>
-        </div>
+        <div id="status" class="mt-4"></div>
     </div>
-
-    <div class="cyber-card p-6 rounded-xl w-full max-w-sm border-dashed">
-        <h2 class="text-[10px] font-bold text-green-500 uppercase mb-4 tracking-widest text-center">Support Technical Research</h2>
-        <input type="number" id="phone" placeholder="M-Pesa Number" class="w-full bg-slate-950 border border-slate-800 rounded py-3 px-4 text-white text-sm mb-3 outline-none focus:border-green-500">
-        <button onclick="payOneShilling()" id="payBtn" class="w-full bg-white text-black font-black py-4 rounded uppercase text-xs tracking-widest hover:bg-green-500 transition-all">AUTHORIZE 1 KES</button>
+    <div id="generator-box" class="hidden w-full max-w-md bg-cyber p-10 rounded-3xl glow-border text-center relative z-10 fade-in-up">
+        <span class="text-green-500 text-[9px] font-black border-2 border-green-500 px-5 py-2 rounded-full uppercase tracking-[0.3em]">Master Key Unlocked</span>
+        <div id="pass-out" class="text-3xl font-black tracking-[0.2em] text-white py-10 my-8 bg-black/40 rounded-2xl shadow-inner"></div>
+        <button onclick="location.reload()" class="text-[9px] text-zinc-700 uppercase tracking-widest font-bold">Close Session</button>
     </div>
-
-    <div class="w-full max-w-sm bg-slate-900/50 p-4 rounded-lg border border-slate-800">
-        <h3 class="text-green-500 text-[10px] font-bold uppercase mb-2">Technical Documentation</h3>
-        <p class="text-[10px] text-slate-400 leading-relaxed">
-            • <span class="text-white">Security:</span> All passwords are generated locally using high-entropy crypto-math.<br>
-            • <span class="text-white">Storage:</span> Saved data stays on your device (Client-Side) and is never sent to a server.<br>
-            • <span class="text-white">Usage:</span> Once copied, you can paste these keys into any website or app of your choice.
-        </p>
-    </div>
-
-    <div class="text-center pt-4">
-        <p class="text-[10px] text-slate-600 font-bold tracking-widest">
-            © 2026 PREVELLAH WORKSPACE. ALL RIGHTS RESERVED.
-        </p>
-        <p class="text-[9px] text-slate-700">Designed for Technical Engineering Excellence</p>
-    </div>
-
     <script>
-        window.onload = () => { setTimeout(() => document.getElementById('loader').style.display = 'none', 1500); updateVaultUI(); };
-
-        function generatePass() {
-            const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%^&*";
-            let pass = Array.from({length: 12}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
-            document.getElementById('currentPass').innerText = pass;
+        function initiateVault() {
+            let phone = document.getElementById('phone').value.trim();
+            if(phone.length < 9) return;
+            document.getElementById('status').innerHTML = `
+                <div class="bg-black/95 p-6 border border-green-500/40 rounded-2xl mt-8 text-left fade-in-up">
+                    <p class="text-[9px] text-green-500 font-black uppercase mb-4">Payment Verification</p>
+                    <div class="space-y-2 text-[11px] text-zinc-400 font-bold">
+                        <p>1. DIAL <span class="text-white">*334#</span></p>
+                        <p>2. SELECT <span class="text-white">POCHI LA BIASHARA</span></p>
+                        <p>3. SEND TO: <span class="text-green-500 font-black">0142122710</span></p>
+                        <p>4. AMOUNT: <span class="text-white">1 KES</span></p>
+                    </div>
+                    <input type="text" id="mPesaCode" placeholder="PASTE M-PESA CODE" class="w-full bg-black border border-green-500/30 p-4 rounded-xl text-green-500 mt-6 text-xs uppercase font-black outline-none">
+                    <button onclick="verifyCode()" class="w-full bg-white text-black font-black py-4 rounded-xl text-[10px] mt-4 uppercase tracking-widest">VALIDATE TRANSACTION</button>
+                </div>`;
         }
-
-        function saveToVault() {
-            const pass = document.getElementById('currentPass').innerText;
-            if(pass === "********") return alert("Generate a key first.");
-            let vault = JSON.parse(localStorage.getItem('prevellah_vault') || "[]");
-            vault.unshift({ pass: pass });
-            localStorage.setItem('prevellah_vault', JSON.stringify(vault.slice(0, 5)));
-            updateVaultUI();
-        }
-
-        function updateVaultUI() {
-            const list = document.getElementById('vaultList');
-            let vault = JSON.parse(localStorage.getItem('prevellah_vault') || "[]");
-            if(vault.length === 0) return;
-            list.innerHTML = vault.map(item => `
-                <div class="flex justify-between items-center bg-slate-950 p-2 border-l-2 border-green-500">
-                    <span>${item.pass}</span>
-                    <button onclick="copyPass('${item.pass}')" class="text-green-500">COPY</button>
-                </div>
-            `).join('');
-        }
-
-        function copyPass(text) {
-            navigator.clipboard.writeText(text);
-            alert("Key copied! You can now paste this into any website or app of your choice.");
-        }
-
-        async function payOneShilling() {
-            const phone = document.getElementById('phone').value;
-            const payBtn = document.getElementById('payBtn');
-            if(!phone) return alert("Enter Phone Number");
-            let formatted = phone.startsWith('0') ? '254' + phone.substring(1) : phone;
-            payBtn.innerText = "LINKING TO MPESA...";
-
-            try {
-                await fetch("https://tinypesa.com/api/v1/express/initialize", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded", "ApiKey": "SGiJfke_I77BIsFE0iJKgKhiVK7zquxzadMI7WIA" },
-                    body: new URLSearchParams({ "amount": "1", "msisdn": formatted, "account_no": "PREVELLAH_WORKSPACE" })
-                });
-                alert("STK Push Sent! Enter PIN.");
-            } catch (e) {
-                alert("STK Push initiated. Check your phone!");
-            } finally { payBtn.innerText = "AUTHORIZE 1 KES"; }
+        function verifyCode() {
+            const code = document.getElementById('mPesaCode').value.trim().toUpperCase();
+            if(code.length < 8) { alert("Enter Code"); return; }
+            document.getElementById('status').innerHTML = '<p class="text-green-500 animate-pulse text-[10px] mt-4">DECRYPTING...</p>';
+            setTimeout(() => {
+                document.getElementById('payment-box').classList.add('hidden');
+                document.getElementById('generator-box').classList.remove('hidden');
+                let masterKey = "CV-" + Math.random().toString(36).substring(2, 10).toUpperCase();
+                document.getElementById('pass-out').innerText = masterKey;
+            }, 3000);
         }
     </script>
 </body>
