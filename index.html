@@ -10,50 +10,40 @@
         
         body { 
             background: radial-gradient(circle at center, #001233 0%, #000000 100%); 
-            color: #00d4ff; 
-            font-family: 'JetBrains Mono', monospace; 
-            margin: 0; min-height: 100vh; 
-            display: flex; flex-direction: column; align-items: center; 
+            color: #00d4ff; font-family: 'JetBrains Mono', monospace; 
+            margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; 
             padding: 20px; overflow-x: hidden;
         }
-
-        canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.2; }
-
+        canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.25; }
         .glass-card { 
-            background: rgba(0, 20, 50, 0.8); 
-            border: 1px solid #00d4ff33; 
-            border-top: 4px solid #00d4ff;
-            border-radius: 12px; width: 100%; max-width: 400px; 
-            padding: 24px; margin-bottom: 20px;
-            box-shadow: 0 0 25px rgba(0, 212, 255, 0.1);
+            background: rgba(0, 20, 50, 0.9); border: 1px solid #00d4ff33; 
+            border-top: 4px solid #00d4ff; border-radius: 12px; 
+            width: 100%; max-width: 400px; padding: 24px; margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.15);
         }
-
         h1 { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
-        
         input { 
-            background: rgba(0, 0, 0, 0.5); border: 1px solid #00d4ff66; 
-            color: #fff; border-radius: 6px; width: 100%; padding: 14px; 
-            text-align: center; outline: none; margin-top: 10px;
+            background: rgba(0, 0, 0, 0.6); border: 1px solid #00d4ff44; 
+            color: #fff; border-radius: 8px; width: 100%; padding: 14px; 
+            text-align: center; outline: none; margin-top: 10px; font-size: 14px;
         }
-        input:focus { border-color: #00d4ff; box-shadow: 0 0 10px #00d4ff33; }
-
+        input:focus { border-color: #00d4ff; box-shadow: 0 0 15px #00d4ff44; }
         .btn { 
-            width: 100%; padding: 16px; border-radius: 6px; font-weight: 800; 
+            width: 100%; padding: 16px; border-radius: 8px; font-weight: 800; 
             text-transform: uppercase; cursor: pointer; border: none; 
-            transition: 0.3s; font-size: 13px; margin-top: 15px;
+            transition: all 0.3s ease; font-size: 13px; margin-top: 15px;
         }
-        .btn-blue { background: #00d4ff; color: #000; }
-        .btn-blue:hover { background: #fff; box-shadow: 0 0 20px #00d4ff; }
-        .btn-exit { background: transparent; color: #ff3b3b; border: 1px solid #ff3b3b33; margin-top: 10px; }
-
+        .btn-blue { background: #00d4ff; color: #000; box-shadow: 0 4px 0 #0088aa; }
+        .btn-blue:active { transform: translateY(4px); box-shadow: none; background: #fff; }
+        .btn-exit { background: transparent; color: #ff4444; border: 1px solid #ff444444; margin-top: 12px; }
         #reveal-screen { 
             position: fixed; inset: 0; background: #000; 
             display: none; flex-direction: column; align-items: center; 
-            justify-content: center; z-index: 100; 
+            justify-content: center; z-index: 1000; 
         }
-
-        .copyright { font-size: 10px; color: #446688; margin-top: 20px; text-transform: uppercase; letter-spacing: 3px; }
-        .error-glow { border-color: #ff3b3b !important; box-shadow: 0 0 10px #ff3b3b; }
+        .copyright { font-size: 10px; color: #446688; margin-top: auto; padding: 20px 0; text-transform: uppercase; letter-spacing: 3px; }
+        .error-glow { border-color: #ff4444 !important; animation: shake 0.3s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
     </style>
 </head>
 <body>
@@ -61,28 +51,26 @@
 
     <div class="glass-card text-center">
         <h1 class="text-2xl font-black italic">CYBER<span class="text-white">VAULT</span></h1>
-        <p class="text-[10px] text-blue-300 mt-2 leading-relaxed opacity-80">
-            Advanced 256-bit entropy key generation for secure system authentication. 
-            Ensures integrity across localized encrypted nodes.
+        <p class="text-[10px] text-blue-300 mt-2 leading-relaxed">
+            High-entropy 256-bit security provisioning. Developed by Prevellah.
         </p>
     </div>
 
     <div class="glass-card">
-        <h2 class="text-[11px] font-bold text-white uppercase tracking-widest mb-3 border-b border-blue-900 pb-2">Payment Protocol</h2>
+        <h2 class="text-[11px] font-bold text-white uppercase tracking-widest mb-3 border-b border-blue-900 pb-2 italic">Instructional Protocol</h2>
         <ul class="text-[11px] space-y-3 text-blue-100">
-            <li>1. Dial <span class="text-white font-bold">*334#</span> (Safaricom).</li>
-            <li>2. Select <span class="text-white">Pochi La Biashara</span>.</li>
-            <li>3. Send to: <span class="text-white font-bold underline">0142122710</span>.</li>
-            <li>4. Amount: <span class="text-white font-bold">1 KES</span>.</li>
-            <li>5. Keep the <span class="text-white font-bold">M-PESA Transaction Code</span>.</li>
+            <li>1. Dial <span class="text-white font-bold">*334#</span>.</li>
+            <li>2. Navigate to <span class="text-white">Pochi La Biashara</span>.</li>
+            <li>3. Send <span class="text-white font-bold">1 KES</span> to: <span class="text-cyan-400 font-bold underline">0142122710</span>.</li>
+            <li>4. Capture the <span class="text-white font-bold">M-PESA Transaction Code</span>.</li>
         </ul>
     </div>
 
     <div id="main-container" class="glass-card">
         <div id="ui-content">
-            <p class="text-center text-[10px] text-blue-400 uppercase tracking-tighter mb-4">Initialize secure link</p>
-            <button onclick="triggerAuth()" class="btn btn-blue">Authorize Access</button>
-            <button onclick="handleExit()" class="btn btn-exit">Exit System</button>
+            <p class="text-center text-[10px] text-blue-400 uppercase tracking-widest mb-4">Awaiting Handshake</p>
+            <button onclick="triggerAuth()" class="btn btn-blue">Authorize Connection</button>
+            <button onclick="handleExit()" class="btn btn-exit">Terminate System</button>
         </div>
     </div>
 
@@ -96,7 +84,6 @@
     </div>
 
     <script>
-        // Matrix Rain (Blue)
         const c = document.getElementById('matrix');
         const ctx = c.getContext('2d');
         c.width = window.innerWidth; c.height = window.innerHeight;
@@ -105,35 +92,6 @@
             ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; ctx.fillRect(0, 0, c.width, c.height);
             ctx.fillStyle = "#004466"; ctx.font = "15px monospace";
             drops.forEach((y, i) => {
-                const text = Math.floor(Math.random()*2);
-                ctx.fillText(text, i*18, y*18);
-                if(y*18 > c.height && Math.random() > 0.98) drops[i] = 0;
-                drops[i]++;
-            });
-        }
-        setInterval(draw, 50);
-
-        function handleExit() {
-            if(confirm("Terminate CyberVault connection?")) {
-                window.location.href = "about:blank";
-            }
-        }
-
-        function triggerAuth() {
-            document.getElementById('ui-content').innerHTML = `
-                <div class="py-10 text-center">
-                    <div class="inline-block border-2 border-blue-500 border-t-transparent rounded-full w-8 h-8 animate-spin"></div>
-                    <p class="text-[9px] mt-4 uppercase">Requesting Handshake...</p>
-                </div>`;
-            setTimeout(() => { document.getElementById('reveal-screen').style.display = 'flex'; }, 1000);
-            setTimeout(loadVerification, 4000);
-        }
-
-        function loadVerification() {
-            document.getElementById('reveal-screen').style.display = 'none';
-            document.getElementById('ui-content').innerHTML = `
-                <div class="space-y-4">
-                    <p class="text-[10px] text-center text-blue-300 uppercase tracking-widest">Verification Node</p>
-                    <input type="text" id="sender-mob" placeholder="YOUR MOBILE NUMBER" maxlength="10" inputmode="numeric">
-                    <input type="text" id="mpesa-code" placeholder="M-PESA CODE
+                ctx.fillText(Math.floor(Math.random()*2), i*18, y*18);
+                if(y*18 > c.height && Math.random() > 0.985) drops[i] =
                     
