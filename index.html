@@ -1,165 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CYBERVAULT | SECURE NODE</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@900&display=swap');
-        
-        body { 
-            background: radial-gradient(circle at center, #001233 0%, #000000 100%); 
-            color: #00d4ff; font-family: 'JetBrains Mono', monospace; 
-            margin: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; 
-            padding: 20px; overflow-x: hidden;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CYBERVAULT | Secure Password Generator</title>
 
-        /* FIX 1: background cannot block clicks */
-        canvas { position: fixed; inset: 0; z-index: 0; opacity: 0.2; pointer-events: none; }
+<style>
+body{
+    margin:0;
+    font-family:monospace;
+    background:#000;
+    color:#00d9ff;
+    display:flex;
+    justify-content:center;
+    padding:20px;
+}
 
-        .glass-card { 
-            position: relative; z-index: 10; /* FIX 2: Ensure card is on top */
-            background: rgba(0, 20, 50, 0.9); border: 1px solid #00d4ff33; 
-            border-top: 4px solid #00d4ff; border-radius: 12px; 
-            width: 100%; max-width: 400px; padding: 24px; margin-bottom: 20px;
-        }
+.container{
+    width:100%;
+    max-width:1000px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
 
-        h1 { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
-        
-        input { 
-            background: rgba(0, 0, 0, 0.6); border: 1px solid #00d4ff44; 
-            color: #fff; border-radius: 8px; width: 100%; padding: 14px; 
-            text-align: center; outline: none; margin-top: 10px;
-        }
+.card{
+    background:#0a0a0a;
+    border:1px solid #00d9ff55;
+    padding:20px;
+    border-radius:12px;
+}
 
-        .btn { 
-            display: block; width: 100%; padding: 16px; border-radius: 8px; 
-            font-weight: 800; text-transform: uppercase; cursor: pointer; 
-            border: none; transition: all 0.2s ease; font-size: 13px; margin-top: 15px;
-            position: relative; z-index: 20; /* FIX 3: Buttons explicitly top-tier */
-        }
-        
-        .btn-blue { background: #00d4ff; color: #000; box-shadow: 0 4px 0 #0088aa; }
-        .btn-blue:active { transform: translateY(2px); box-shadow: 0 2px 0 #0088aa; }
-        .btn-exit { background: transparent; color: #ff4444; border: 1px solid #ff444444; }
+h2{
+    margin-top:0;
+    color:#00d9ff;
+}
 
-        /* FIX 4: Hidden screen must stay hidden until needed */
-        #reveal-screen { 
-            position: fixed; inset: 0; background: #000; 
-            display: none; flex-direction: column; align-items: center; 
-            justify-content: center; z-index: 1000; 
-        }
+input{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    background:black;
+    border:1px solid #00d9ff55;
+    color:white;
+}
 
-        .copyright { font-size: 10px; color: #446688; margin-top: auto; padding: 20px 0; letter-spacing: 3px; z-index: 10; }
-    </style>
+button{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    background:#00d9ff;
+    border:none;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.small{
+    font-size:12px;
+    color:#aaa;
+}
+
+.item{
+    border:1px solid #222;
+    padding:10px;
+    margin:10px 0;
+}
+
+.password{
+    color:#00ff99;
+    font-weight:bold;
+    word-break:break-all;
+}
+</style>
 </head>
+
 <body>
-    <canvas id="matrix"></canvas>
 
-    <div class="glass-card text-center">
-        <h1 class="text-2xl font-black italic">CYBER<span class="text-white">VAULT</span></h1>
-        <p class="text-[10px] text-blue-300 mt-2">Developed by Prevellah</p>
-    </div>
+<div class="container">
 
-    <div class="glass-card">
-        <h2 class="text-[11px] font-bold text-white uppercase tracking-widest mb-3 border-b border-blue-900 pb-2">Instructional Protocol</h2>
-        <ul class="text-[11px] space-y-3 text-blue-100">
-            <li>1. Dial <span class="text-white font-bold">*334#</span>.</li>
-            <li>2. Navigate to <span class="text-white">Pochi La Biashara</span>.</li>
-            <li>3. Send <span class="text-white font-bold">1 KES</span> to: <span class="text-cyan-400 font-bold underline">0142122710</span>.</li>
-            <li>4. Enter <span class="text-white font-bold">YOUR NUMBER</span> and the <span class="text-white font-bold">CODE</span> below.</li>
-        </ul>
-    </div>
+<!-- USER SIDE -->
+<div class="card">
+<h2>USER PANEL</h2>
 
-    <div class="glass-card">
-        <div id="ui-content">
-            <p class="text-center text-[10px] text-blue-400 uppercase tracking-widest mb-4">Awaiting Handshake</p>
-            <button type="button" onclick="triggerAuth()" class="btn btn-blue">Authorize Connection</button>
-            <button type="button" onclick="handleExit()" class="btn btn-exit">Terminate System</button>
+<p class="small">
+Pay 1 KES via Pochi La Biashara:<br>
+*334# → 0142122710
+</p>
+
+<input id="phone" placeholder="Phone Number">
+<input id="code" placeholder="M-PESA Transaction Code">
+
+<button onclick="submitRequest()">Submit Request</button>
+
+<p id="msg"></p>
+</div>
+
+<!-- ADMIN SIDE -->
+<div class="card">
+<h2>ADMIN PANEL</h2>
+<div id="list"></div>
+</div>
+
+</div>
+
+<script>
+
+// DATABASE (LOCAL)
+let db = [];
+
+// SUBMIT USER REQUEST
+function submitRequest(){
+
+    const phone = document.getElementById("phone").value;
+    const code = document.getElementById("code").value;
+
+    if(!phone || !code){
+        alert("Fill all fields");
+        return;
+    }
+
+    db.push({
+        id: Date.now(),
+        phone,
+        code,
+        status:"pending",
+        password:null
+    });
+
+    document.getElementById("msg").innerText =
+    "Request submitted. Await approval.";
+
+    render();
+}
+
+// SECURE PASSWORD GENERATOR
+function generatePassword(length = 24){
+
+    const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+    "abcdefghijklmnopqrstuvwxyz" +
+    "0123456789" +
+    "!@#$%^&*()-_=+[]{}<>?/";
+
+    let result = "";
+
+    const array = new Uint32Array(length);
+    crypto.getRandomValues(array);
+
+    for(let i = 0; i < length; i++){
+        result += chars[array[i] % chars.length];
+    }
+
+    return result;
+}
+
+// ADMIN APPROVE
+function approve(id){
+
+    const item = db.find(x => x.id === id);
+
+    if(!item) return;
+
+    const password = generatePassword(24);
+
+    item.status = "approved";
+    item.password = password;
+
+    alert("PASSWORD GENERATED:\n\n" + password);
+
+    render();
+}
+
+// RENDER ADMIN LIST
+function render(){
+
+    const list = document.getElementById("list");
+
+    list.innerHTML = db.map(i => `
+
+        <div class="item">
+
+            <p><b>Phone:</b> ${i.phone}</p>
+            <p><b>Code:</b> ${i.code}</p>
+            <p><b>Status:</b> ${i.status}</p>
+
+            ${i.password ? `
+                <p class="password">PASSWORD: ${i.password}</p>
+            ` : ""}
+
+            ${i.status === "pending" ? `
+                <button onclick="approve(${i.id})">
+                    Approve & Generate Password
+                </button>
+            ` : ""}
+
         </div>
-    </div>
 
-    <div class="copyright">
-        © DEVELOPED BY PREVELLAH
-    </div>
+    `).join("");
+}
 
-    <div id="reveal-screen">
-        <h1 class="text-4xl font-black italic text-white animate-pulse">CYBER<span class="text-blue-500">VAULT</span></h1>
-        <p class="text-[9px] text-blue-500 tracking-[1em] mt-6 uppercase">Syncing Security Layers</p>
-    </div>
+render();
 
-    <script>
-        const c = document.getElementById('matrix');
-        const ctx = c.getContext('2d');
-        c.width = window.innerWidth; c.height = window.innerHeight;
-        const drops = Array(Math.floor(c.width/18)).fill(1);
-        function draw() {
-            ctx.fillStyle = "rgba(0, 0, 0, 0.1)"; ctx.fillRect(0, 0, c.width, c.height);
-            ctx.fillStyle = "#004466"; ctx.font = "15px monospace";
-            drops.forEach((y, i) => {
-                ctx.fillText(Math.floor(Math.random()*2), i*18, y*18);
-                if(y*18 > c.height && Math.random() > 0.98) drops[i] = 0;
-                drops[i]++;
-            });
-        }
-        setInterval(draw, 50);
+</script>
 
-        function handleExit() {
-            if(confirm("Terminate CyberVault connection?")) {
-                window.location.href = "about:blank";
-            }
-        }
-
-        function triggerAuth() {
-            console.log("Auth Triggered"); // Debug check
-            document.getElementById('ui-content').innerHTML = `
-                <div class="py-10 text-center">
-                    <div class="inline-block border-2 border-blue-500 border-t-transparent rounded-full w-8 h-8 animate-spin"></div>
-                    <p class="text-[9px] mt-4 uppercase text-blue-400">Verifying Node...</p>
-                </div>`;
-            
-            setTimeout(() => { 
-                document.getElementById('reveal-screen').style.display = 'flex'; 
-            }, 500);
-            
-            setTimeout(loadVerification, 3500);
-        }
-
-        function loadVerification() {
-            document.getElementById('reveal-screen').style.display = 'none';
-            document.getElementById('ui-content').innerHTML = `
-                <div class="space-y-4">
-                    <input type="text" id="sender-mob" placeholder="YOUR MOBILE NUMBER" maxlength="10">
-                    <input type="text" id="mpesa-code" placeholder="M-PESA TRANSACTION CODE" class="uppercase">
-                    <button type="button" onclick="verifyTransaction()" class="btn btn-blue">Validate & Unlock</button>
-                    <button type="button" onclick="location.reload()" class="btn btn-exit">Cancel Request</button>
-                </div>`;
-        }
-
-        function verifyTransaction() {
-            const m = document.getElementById('sender-mob');
-            const code = document.getElementById('mpesa-code');
-            if(m.value.length < 10 || code.value.length < 8) {
-                alert("Please enter correct credentials.");
-                return;
-            }
-
-            const key = "CV-" + Math.random().toString(36).substring(2,12).toUpperCase();
-            document.getElementById('ui-content').innerHTML = `
-                <div class="space-y-5 text-center">
-                    <p class="text-[9px] text-white uppercase tracking-widest">Master Key Generated</p>
-                    <div class="bg-black/90 py-8 border border-blue-500/50 text-white font-bold break-all px-4 text-lg rounded-lg">${key}</div>
-                    <button type="button" onclick="copyKey('${key}', this)" class="btn btn-blue">Copy Key</button>
-                    <button type="button" onclick="handleExit()" class="btn btn-exit">Terminate</button>
-                </div>`;
-        }
-
-        async function copyKey(val, btn) {
-            await navigator.clipboard.writeText(val);
-            btn.innerText = "✓ COPIED";
-            setTimeout(() => { btn.innerText = "Copy Key"; }, 2000);
-        }
-    </script>
 </body>
-</html>
+    </html>
