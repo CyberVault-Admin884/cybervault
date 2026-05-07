@@ -2,201 +2,317 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CYBERVAULT | Secure Password Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+<title>CYBERVAULT MOBILE</title>
 
 <style>
 body{
     margin:0;
     font-family:monospace;
-    background:#000;
-    color:#00d9ff;
-    display:flex;
-    justify-content:center;
-    padding:20px;
+    background: radial-gradient(circle at top, #001a33, #000);
+    color:#00e5ff;
+    overflow-x:hidden;
 }
 
-.container{
-    width:100%;
-    max-width:1000px;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:20px;
+/* MATRIX */
+canvas{
+    position:fixed;
+    inset:0;
+    opacity:0.12;
+    z-index:0;
 }
 
+/* APP WRAPPER */
+.app{
+    position:relative;
+    z-index:2;
+    padding:15px;
+}
+
+/* HEADER */
+.header{
+    text-align:center;
+    padding:10px;
+}
+
+.header h1{
+    margin:0;
+    font-size:22px;
+    text-shadow:0 0 10px #00e5ff;
+}
+
+/* CARD */
 .card{
-    background:#0a0a0a;
-    border:1px solid #00d9ff55;
-    padding:20px;
-    border-radius:12px;
+    background:rgba(0,0,0,0.75);
+    border:1px solid #00e5ff33;
+    border-radius:14px;
+    padding:15px;
+    margin-top:15px;
 }
 
-h2{
-    margin-top:0;
-    color:#00d9ff;
-}
-
+/* INPUT */
 input{
     width:100%;
-    padding:10px;
+    padding:14px;
     margin:8px 0;
-    background:black;
-    border:1px solid #00d9ff55;
+    border:1px solid #00e5ff33;
+    background:#000;
+    color:#fff;
+    border-radius:8px;
+    font-size:14px;
+}
+
+/* BUTTON */
+button{
+    width:100%;
+    padding:14px;
+    margin-top:10px;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    font-size:14px;
+    background:#00e5ff;
+}
+
+button:active{
+    transform:scale(0.98);
+}
+
+/* EXIT */
+.exit{
+    background:#ff2d2d;
     color:white;
 }
 
-button{
-    width:100%;
-    padding:10px;
-    margin-top:10px;
-    background:#00d9ff;
-    border:none;
-    cursor:pointer;
-    font-weight:bold;
-}
-
+/* SMALL TEXT */
 .small{
-    font-size:12px;
+    font-size:11px;
     color:#aaa;
 }
 
-.item{
-    border:1px solid #222;
-    padding:10px;
-    margin:10px 0;
+/* LOADER */
+.loader{
+    width:30px;
+    height:30px;
+    border:3px solid #00e5ff33;
+    border-top:3px solid #00e5ff;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:auto;
 }
 
+@keyframes spin{
+    100%{transform:rotate(360deg);}
+}
+
+/* REVEAL */
+#reveal{
+    position:fixed;
+    inset:0;
+    background:black;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:999;
+}
+
+/* PASSWORD */
 .password{
     color:#00ff99;
-    font-weight:bold;
     word-break:break-all;
+}
+
+/* ADMIN ITEMS */
+.item{
+    border:1px solid #00e5ff22;
+    padding:10px;
+    margin-top:10px;
+    border-radius:10px;
+}
+
+/* FOOTER */
+footer{
+    text-align:center;
+    font-size:10px;
+    padding:20px;
+    color:#446b7a;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<canvas id="matrix"></canvas>
 
-<!-- USER SIDE -->
+<!-- REVEAL SCREEN -->
+<div id="reveal">
+    <h2>Decrypting Secure Layer</h2>
+    <div class="loader"></div>
+</div>
+
+<div class="app">
+
+<!-- HEADER -->
+<div class="header">
+<h1>CYBERVAULT</h1>
+<div class="small">Mobile Secure Password Generator</div>
+</div>
+
+<!-- USER CARD -->
 <div class="card">
-<h2>USER PANEL</h2>
 
+<h3>💳 Payment Instruction</h3>
 <p class="small">
-Pay 1 KES via Pochi La Biashara:<br>
-*334# → 0142122710
+Pay <b>1 KES</b> via Pochi La Biashara:<br>
+Dial *334# → Pochi La Biashara → 0142122710
+</p>
+
+<h3>🔐 Why this app matters</h3>
+<p class="small">
+Weak passwords cause most account hacks. This tool generates
+high-strength cryptographic passwords to secure your accounts.
 </p>
 
 <input id="phone" placeholder="Phone Number">
 <input id="code" placeholder="M-PESA Transaction Code">
 
-<button onclick="submitRequest()">Submit Request</button>
+<button onclick="start()">Generate Password</button>
+<button class="exit" onclick="exitApp()">Exit App</button>
 
-<p id="msg"></p>
+<p id="msg" class="small"></p>
 </div>
 
-<!-- ADMIN SIDE -->
+<!-- ADMIN -->
 <div class="card">
-<h2>ADMIN PANEL</h2>
+<h3>Admin Panel</h3>
 <div id="list"></div>
 </div>
+
+<footer>
+© CYBERVAULT SYSTEM — Developed by Prevellah, Kenya
+</footer>
 
 </div>
 
 <script>
 
-// DATABASE (LOCAL)
-let db = [];
+/* MATRIX */
+const c=document.getElementById("matrix");
+const ctx=c.getContext("2d");
+c.width=window.innerWidth;
+c.height=window.innerHeight;
 
-// SUBMIT USER REQUEST
-function submitRequest(){
+let drops=Array(150).fill(1);
 
-    const phone = document.getElementById("phone").value;
-    const code = document.getElementById("code").value;
+function draw(){
+ctx.fillStyle="rgba(0,0,0,0.08)";
+ctx.fillRect(0,0,c.width,c.height);
+ctx.fillStyle="#00e5ff";
+ctx.font="12px monospace";
 
-    if(!phone || !code){
-        alert("Fill all fields");
-        return;
-    }
+drops.forEach((y,i)=>{
+ctx.fillText(Math.random()>0.5?"0":"1",i*12,y*12);
+if(y*12>c.height && Math.random()>0.98) drops[i]=0;
+drops[i]++;
+});
+}
+setInterval(draw,40);
 
-    db.push({
-        id: Date.now(),
-        phone,
-        code,
-        status:"pending",
-        password:null
-    });
+/* DB */
+let db=[];
 
-    document.getElementById("msg").innerText =
-    "Request submitted. Await approval.";
+/* LOADING */
+function start(){
 
-    render();
+const phone=document.getElementById("phone").value;
+const code=document.getElementById("code").value;
+
+if(!phone||!code){
+alert("Fill all fields");
+return;
 }
 
-// SECURE PASSWORD GENERATOR
-function generatePassword(length = 24){
+document.getElementById("reveal").style.display="flex";
 
-    const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-    "abcdefghijklmnopqrstuvwxyz" +
-    "0123456789" +
-    "!@#$%^&*()-_=+[]{}<>?/";
+setTimeout(()=>{
 
-    let result = "";
+document.getElementById("reveal").style.display="none";
 
-    const array = new Uint32Array(length);
-    crypto.getRandomValues(array);
+db.push({
+id:Date.now(),
+phone,
+code,
+status:"pending",
+password:null
+});
 
-    for(let i = 0; i < length; i++){
-        result += chars[array[i] % chars.length];
-    }
+document.getElementById("msg").innerText=
+"Request sent. Await admin approval.";
 
-    return result;
+render();
+
+},2000);
 }
 
-// ADMIN APPROVE
+/* EXIT */
+function exitApp(){
+window.location.href="about:blank";
+}
+
+/* PASSWORD */
+function generate(len=24){
+
+const chars=
+"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}<>?";
+
+let p="";
+const arr=new Uint32Array(len);
+crypto.getRandomValues(arr);
+
+for(let i=0;i<len;i++){
+p+=chars[arr[i]%chars.length];
+}
+
+return p;
+}
+
+/* APPROVE */
 function approve(id){
 
-    const item = db.find(x => x.id === id);
+const item=db.find(x=>x.id===id);
 
-    if(!item) return;
+item.status="approved";
+item.password=generate(24);
 
-    const password = generatePassword(24);
+alert("PASSWORD:\n\n"+item.password);
 
-    item.status = "approved";
-    item.password = password;
-
-    alert("PASSWORD GENERATED:\n\n" + password);
-
-    render();
+render();
 }
 
-// RENDER ADMIN LIST
+/* RENDER */
 function render(){
 
-    const list = document.getElementById("list");
+document.getElementById("list").innerHTML=
 
-    list.innerHTML = db.map(i => `
+db.map(i=>`
 
-        <div class="item">
+<div class="item">
 
-            <p><b>Phone:</b> ${i.phone}</p>
-            <p><b>Code:</b> ${i.code}</p>
-            <p><b>Status:</b> ${i.status}</p>
+<p>📱 ${i.phone}</p>
+<p>💳 ${i.code}</p>
+<p>Status: ${i.status}</p>
 
-            ${i.password ? `
-                <p class="password">PASSWORD: ${i.password}</p>
-            ` : ""}
+${i.password?`<p class="password">KEY: ${i.password}</p>`:""}
 
-            ${i.status === "pending" ? `
-                <button onclick="approve(${i.id})">
-                    Approve & Generate Password
-                </button>
-            ` : ""}
+${i.status==="pending"?
+`<button onclick="approve(${i.id})">Approve</button>`:""}
 
-        </div>
+</div>
 
-    `).join("");
+`).join("");
+
 }
 
 render();
@@ -204,4 +320,4 @@ render();
 </script>
 
 </body>
-    </html>
+</html>
