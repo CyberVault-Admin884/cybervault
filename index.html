@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,10 +9,8 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;800&display=swap');
         body { font-family: 'JetBrains Mono', monospace; background-color: #050505; color: #00ff41; margin: 0; overflow-x: hidden; }
-        
         #main-content { clip-path: circle(0% at 50% 50%); transition: clip-path 1.8s cubic-bezier(0.77, 0, 0.175, 1); }
         #main-content.open { clip-path: circle(150% at 50% 50%); }
-
         .scanline { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(0, 255, 65, 0.05); z-index: 50; animation: scan 8s linear infinite; pointer-events: none; }
         @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
         .glow-border { box-shadow: 0 0 25px rgba(0, 255, 65, 0.15); border: 1px solid rgba(0, 255, 65, 0.3); }
@@ -31,30 +30,17 @@
     </div>
 
     <div id="main-content" class="w-full min-h-screen flex flex-col items-center p-4 pb-20 opacity-0 transition-opacity duration-500">
-        
         <div class="text-center mt-10 mb-8">
             <h1 class="text-3xl font-black tracking-[0.4em] text-white">CYBER<span class="text-green-500">VAULT</span></h1>
-            <p class="text-[10px] text-green-500/60 tracking-[0.5em] uppercase font-bold">Terminal v1.08</p>
+            <p class="text-[10px] text-green-500/60 tracking-[0.5em] uppercase font-bold">Terminal v1.12 ADMIN</p>
         </div>
 
         <div class="w-full max-w-md mb-6 p-6 bg-green-500/5 rounded-2xl border border-green-500/20">
-            <h2 class="text-white text-xs font-black uppercase tracking-widest mb-3 flex items-center">
-                <span class="mr-2">💎</span> UNBREAKABLE PASSWORDS
-            </h2>
-            <p class="text-[11px] text-zinc-400 leading-relaxed mb-4">
-                Unlock military-grade, <span class="text-white font-bold">unbreakable Master Keys</span> for your digital accounts. For a small support fee of <span class="text-green-500 font-bold">1 Shilling</span>, you help us maintain these high-speed security servers right here in Kenya.
-            </p>
-            <div class="bg-zinc-900/50 p-3 rounded-lg border border-zinc-800">
-                <p class="text-[9px] text-zinc-500 italic">"This 1 KES is a direct contribution to Prevellah Sec-Ops support. It ensures our encryption remains free from ads and external tracking."</p>
-            </div>
+            <h2 class="text-white text-xs font-black uppercase tracking-widest mb-3 flex items-center">💎 UNBREAKABLE PASSWORDS</h2>
+            <p class="text-[11px] text-zinc-400 leading-relaxed mb-4">Unlock military-grade keys. For a support fee of <span class="text-green-500 font-bold">1 Shilling</span>, you help maintain these secure Kenyan servers.</p>
         </div>
 
         <div id="payment-box" class="w-full max-w-md bg-black border border-green-500/30 p-8 rounded-3xl glow-border relative z-10">
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-[8px] bg-green-500/10 text-green-500 px-3 py-1 rounded-full border border-green-500/20 uppercase font-black">Secure Verification</span>
-                <button onclick="window.location.reload()" class="text-[8px] text-zinc-600 uppercase font-black">Exit</button>
-            </div>
-            
             <div class="space-y-6">
                 <div class="relative">
                     <label class="text-[9px] text-zinc-500 uppercase block mb-2 text-center">Enter M-Pesa Number</label>
@@ -65,46 +51,20 @@
             <div id="status" class="mt-4"></div>
         </div>
 
-        <footer class="mt-12 text-[9px] text-zinc-700 tracking-[0.3em] uppercase">
-            © 2026 PREVELLAH SEC-OPS | SUPPORTED BY THE COMMUNITY
-        </footer>
+        <footer class="mt-12 text-[9px] text-zinc-700 tracking-[0.3em] uppercase">© 2026 PREVELLAH SEC-OPS</footer>
     </div>
 
     <script>
         function unlockVault() {
-            const startScreen = document.getElementById('start-screen');
-            const mainContent = document.getElementById('main-content');
-            startScreen.style.opacity = '0';
-            setTimeout(() => {
-                startScreen.classList.add('hidden');
-                mainContent.style.opacity = '1';
-                mainContent.classList.add('open');
-            }, 500);
+            const ss = document.getElementById('start-screen');
+            const mc = document.getElementById('main-content');
+            ss.style.opacity = '0';
+            setTimeout(() => { ss.classList.add('hidden'); mc.style.opacity = '1'; mc.classList.add('open'); }, 500);
         }
 
-        function initiateVault() {
-            let phone = document.getElementById('phone').value.trim();
-            if(phone.length < 9) return;
-            document.getElementById('status').innerHTML = `
-                <div class="bg-zinc-900/90 border border-green-500/40 p-6 rounded-2xl mt-8 text-left">
-                    <p class="text-[9px] text-green-500 font-black uppercase mb-4 tracking-widest text-center">Support Gateway</p>
-                    <div class="space-y-2 text-[11px] text-zinc-300 font-bold border-b border-zinc-800 pb-4">
-                        <p>1. Dial <span class="text-white">*334#</span></p>
-                        <p>2. Select <span class="text-white">Pochi La Biashara</span></p>
-                        <p>3. Send to: <span class="text-green-500">0142122710</span></p>
-                        <p>4. Amount: <span class="text-white">1 KES</span></p>
-                    </div>
-                    <div class="mt-4">
-                        <input type="text" id="mPesaCode" placeholder="PASTE TRANSACTION CODE" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white mt-2 text-xs uppercase font-black outline-none focus:border-green-500">
-                    </div>
-                    <button onclick="verifyCode()" class="w-full bg-white text-black font-black py-4 rounded-xl text-[10px] mt-4 uppercase tracking-widest">VALIDATE & UNLOCK</button>
-                </div>`;
-        }
-
-        function verifyCode() {
-            const code = document.getElementById('mPesaCode').value.trim().toUpperCase();
-            if(code.length < 8) { alert("Code Required"); return; }
-            document.getElementById('status').innerHTML = '<p class="text-green-500 animate-pulse text-[10px] mt-4 tracking-[0.2em] font-black text-center">SYNTHESIZING UNBREAKABLE KEY...</p>';
+        function showGenerator(isDev = false) {
+            let msg = isDev ? "DEV ACCESS GRANTED..." : "SYNTHESIZING UNBREAKABLE KEY...";
+            document.getElementById('status').innerHTML = `<p class="text-green-500 animate-pulse text-[10px] mt-4 tracking-[0.2em] font-black text-center">${msg}</p>`;
             setTimeout(() => {
                 document.getElementById('payment-box').innerHTML = `
                     <div class="text-center py-6">
@@ -112,7 +72,29 @@
                         <div class="text-3xl font-black tracking-[0.2em] text-white py-10 my-8 bg-zinc-900/40 rounded-2xl border border-green-500/10">PREV-${Math.random().toString(36).substring(2, 10).toUpperCase()}</div>
                         <button onclick="location.reload()" class="text-[9px] text-zinc-700 uppercase font-black">Secure Exit</button>
                     </div>`;
-            }, 3000);
+            }, isDev ? 1000 : 3000);
+        }
+
+        function initiateVault() {
+            let phone = document.getElementById('phone').value.trim();
+            if(phone === "0000") { showGenerator(true); return; } // ADMIN BYPASS
+            if(phone.length < 9) return;
+            document.getElementById('status').innerHTML = `
+                <div class="bg-zinc-900/90 border border-green-500/40 p-6 rounded-2xl mt-8 text-left">
+                    <p class="text-[9px] text-green-500 font-black uppercase mb-4 tracking-widest text-center">Support Gateway</p>
+                    <div class="space-y-2 text-[11px] text-zinc-300 font-bold border-b border-zinc-800 pb-4">
+                        <p>1. Dial <span class="text-white">*334#</span> | 2. Select <span class="text-white">Pochi</span></p>
+                        <p>3. ID: <span class="text-green-500">0142122710</span> | 4. Amt: <span class="text-white">1 KES</span></p>
+                    </div>
+                    <input type="text" id="mPesaCode" placeholder="PASTE TRANSACTION CODE" class="w-full bg-black border border-zinc-800 p-4 rounded-xl text-white mt-4 text-xs uppercase font-black outline-none focus:border-green-500">
+                    <button onclick="verifyCode()" class="w-full bg-white text-black font-black py-4 rounded-xl text-[10px] mt-4 uppercase tracking-widest">VALIDATE & UNLOCK</button>
+                </div>`;
+        }
+
+        function verifyCode() {
+            const code = document.getElementById('mPesaCode').value.trim().toUpperCase();
+            if(code.length < 8) { alert("Code Required"); return; }
+            showGenerator(false);
         }
     </script>
 </body>
