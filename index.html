@@ -8,55 +8,84 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;500;800&display=swap');
-        body { font-family: 'JetBrains Mono', monospace; background-color: #050505; color: #00ff41; overflow: hidden; margin: 0; }
+        body { font-family: 'JetBrains Mono', monospace; background-color: #050505; color: #00ff41; margin: 0; }
         .glow-border { box-shadow: 0 0 25px rgba(0, 255, 65, 0.15); border: 1px solid rgba(0, 255, 65, 0.3); }
         .bg-cyber { background: linear-gradient(145deg, #080808, #111111); }
-        .scanline { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(0, 255, 65, 0.03); z-index: 50; animation: scan 8s linear infinite; pointer-events: none; }
+        .scanline { position: fixed; top: 0; left: 0; width: 100%; height: 4px; background: rgba(0, 255, 65, 0.05); z-index: 50; animation: scan 8s linear infinite; pointer-events: none; }
         @keyframes scan { 0% { top: -10%; } 100% { top: 110%; } }
-        .fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4 relative">
+<body class="flex flex-col items-center min-h-screen p-4 pb-20 relative">
     <div class="scanline"></div>
-    <div id="payment-box" class="w-full max-w-md bg-cyber p-8 rounded-3xl glow-border text-center relative z-10 border-t border-green-500/30 fade-in-up">
-        <h1 class="text-2xl font-black tracking-[0.3em] text-white mb-6">CYBER<span class="text-green-500">VAULT</span></h1>
+
+    <div class="text-center mt-10 mb-8">
+        <h1 class="text-3xl font-black tracking-[0.4em] text-white">CYBER<span class="text-green-500">VAULT</span></h1>
+        <p class="text-[10px] text-green-500/60 tracking-[0.5em] uppercase font-bold mt-2">Developed by PREVELLAH</p>
+    </div>
+
+    <div id="payment-box" class="w-full max-w-md bg-cyber p-8 rounded-3xl glow-border text-center relative z-10 border-t border-green-500/30">
+        <div class="mb-6">
+            <span class="text-[9px] bg-green-500/10 text-green-500 px-4 py-1 rounded-full border border-green-500/20 uppercase tracking-widest font-black">System Ready</span>
+        </div>
+        
         <div class="space-y-6">
             <input type="number" id="phone" placeholder="ENTER M-PESA NO" class="w-full bg-black/40 border border-green-500/20 py-4 px-6 text-center text-green-400 font-bold rounded-2xl outline-none focus:border-green-500 transition-all">
-            <button onclick="initiateVault()" class="w-full bg-green-500 text-black font-black py-5 rounded-2xl text-[10px] uppercase tracking-[0.2em] hover:bg-white transition-all">INITIATE SECURITY SCAN</button>
+            <button onclick="initiateVault()" class="w-full bg-green-500 text-black font-black py-5 rounded-2xl text-[10px] uppercase tracking-[0.2em] hover:bg-white transition-all shadow-lg shadow-green-500/20">INITIATE SECURITY SCAN</button>
         </div>
         <div id="status" class="mt-4"></div>
     </div>
-    <div id="generator-box" class="hidden w-full max-w-md bg-cyber p-10 rounded-3xl glow-border text-center relative z-10 fade-in-up">
+
+    <div id="generator-box" class="hidden w-full max-w-md bg-cyber p-10 rounded-3xl glow-border text-center relative z-10">
         <span class="text-green-500 text-[9px] font-black border-2 border-green-500 px-5 py-2 rounded-full uppercase tracking-[0.3em]">Master Key Unlocked</span>
-        <div id="pass-out" class="text-3xl font-black tracking-[0.2em] text-white py-10 my-8 bg-black/40 rounded-2xl shadow-inner"></div>
-        <button onclick="location.reload()" class="text-[9px] text-zinc-700 uppercase tracking-widest font-bold">Close Session</button>
+        <div id="pass-out" class="text-3xl font-black tracking-[0.2em] text-white py-10 my-8 bg-black/40 rounded-2xl shadow-inner border border-green-500/10"></div>
+        <button onclick="location.reload()" class="text-[9px] text-zinc-700 uppercase tracking-widest font-bold">Destroy Session</button>
     </div>
+
+    <div class="w-full max-w-md mt-10 space-y-4 z-10">
+        <div class="p-6 bg-black/40 rounded-2xl border border-green-500/10">
+            <h3 class="text-green-500 text-[11px] font-black uppercase tracking-widest mb-2">Security Guard Protocols</h3>
+            <p class="text-[11px] text-zinc-400 leading-relaxed italic">
+                "Our automated guards monitor every transaction. CyberVault ensures your digital footprint is encrypted before the Master Key is even generated."
+            </p>
+        </div>
+
+        <div class="p-6 bg-black/40 rounded-2xl border border-green-500/10">
+            <h3 class="text-green-500 text-[11px] font-black uppercase tracking-widest mb-2">User Documentation</h3>
+            <p class="text-[10px] text-zinc-500 leading-relaxed">
+                To bypass the firewall, users must provide a valid M-Pesa transaction code. This small fee (1 KES) covers the computational power required to synthesize the AES-256 bit key. Once verified, the vault opens immediately.
+            </p>
+        </div>
+    </div>
+
+    <footer class="mt-12 text-[9px] text-zinc-700 tracking-[0.3em] uppercase">
+        © 2026 PREVELLAH SEC-OPS | VERIFIED SYSTEM
+    </footer>
+
     <script>
         function initiateVault() {
             let phone = document.getElementById('phone').value.trim();
             if(phone.length < 9) return;
             document.getElementById('status').innerHTML = `
-                <div class="bg-black/95 p-6 border border-green-500/40 rounded-2xl mt-8 text-left fade-in-up">
-                    <p class="text-[9px] text-green-500 font-black uppercase mb-4">Payment Verification</p>
+                <div class="bg-black/95 p-6 border border-green-500/40 rounded-2xl mt-8 text-left animate-pulse">
+                    <p class="text-[9px] text-green-500 font-black uppercase mb-4 tracking-widest">Awaiting Verification</p>
                     <div class="space-y-2 text-[11px] text-zinc-400 font-bold">
                         <p>1. DIAL <span class="text-white">*334#</span></p>
                         <p>2. SELECT <span class="text-white">POCHI LA BIASHARA</span></p>
-                        <p>3. SEND TO: <span class="text-green-500 font-black">0142122710</span></p>
+                        <p>3. SEND TO: <span class="text-green-500">0142122710</span></p>
                         <p>4. AMOUNT: <span class="text-white">1 KES</span></p>
                     </div>
-                    <input type="text" id="mPesaCode" placeholder="PASTE M-PESA CODE" class="w-full bg-black border border-green-500/30 p-4 rounded-xl text-green-500 mt-6 text-xs uppercase font-black outline-none">
-                    <button onclick="verifyCode()" class="w-full bg-white text-black font-black py-4 rounded-xl text-[10px] mt-4 uppercase tracking-widest">VALIDATE TRANSACTION</button>
+                    <input type="text" id="mPesaCode" placeholder="PASTE M-PESA CODE" class="w-full bg-black border border-green-500/30 p-4 rounded-xl text-green-500 mt-6 text-xs uppercase font-black outline-none focus:border-green-500">
+                    <button onclick="verifyCode()" class="w-full bg-white text-black font-black py-4 rounded-xl text-[10px] mt-4 uppercase tracking-widest transition-all hover:bg-green-500">VALIDATE KEY</button>
                 </div>`;
         }
         function verifyCode() {
             const code = document.getElementById('mPesaCode').value.trim().toUpperCase();
-            if(code.length < 8) { alert("Enter Code"); return; }
-            document.getElementById('status').innerHTML = '<p class="text-green-500 animate-pulse text-[10px] mt-4">DECRYPTING...</p>';
+            if(code.length < 8) { alert("Invalid Code"); return; }
+            document.getElementById('status').innerHTML = '<p class="text-green-500 animate-bounce text-[10px] mt-4 tracking-[0.2em] font-black">BYPASSING FIREWALL... GENERATING...</p>';
             setTimeout(() => {
                 document.getElementById('payment-box').classList.add('hidden');
                 document.getElementById('generator-box').classList.remove('hidden');
-                let masterKey = "CV-" + Math.random().toString(36).substring(2, 10).toUpperCase();
+                let masterKey = "PREV-" + Math.random().toString(36).substring(2, 10).toUpperCase();
                 document.getElementById('pass-out').innerText = masterKey;
             }, 3000);
         }
