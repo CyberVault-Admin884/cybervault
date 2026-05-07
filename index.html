@@ -3,55 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CYBERVAULT | PREVELLAH</title>
+    <title>CYBERVAULT | SEC-OPS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;800&display=swap');
-        body { background: #000; color: #00ff41; font-family: 'JetBrains Mono', monospace; overflow: hidden; margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; }
-        
-        /* Matrix Rain Background */
-        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.2; }
-
-        .vault-container { background: rgba(0, 0, 0, 0.9); border: 2px solid #00ff41; border-radius: 10px; box-shadow: 0 0 20px #00ff4133; width: 90%; max-width: 400px; padding: 30px; position: relative; }
-        
-        .glitch-text { animation: glitch 2s infinite; text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9; }
-        @keyframes glitch { 0% { transform: skew(0deg); } 20% { transform: skew(-1deg); } 40% { transform: skew(1deg); } 100% { transform: skew(0deg); } }
-
-        input { background: #000; border: 1px solid #00ff41; color: #00ff41; padding: 15px; width: 100%; text-align: center; margin-bottom: 20px; outline: none; }
-        .btn { background: #00ff41; color: #000; padding: 15px; width: 100%; font-weight: 800; text-transform: uppercase; cursor: pointer; border: none; }
-        .btn:active { background: #fff; }
-
-        /* Reveal Layer */
-        #reveal-layer { display: none; text-align: center; }
-        .identity-text { font-size: 2.5rem; font-weight: 900; color: #fff; text-transform: uppercase; letter-spacing: 10px; }
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;800&display=swap');
+        body { background: #000; color: #00ff41; font-family: 'JetBrains Mono', monospace; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.25; }
+        .card { background: rgba(10,10,10,0.98); border: 1px solid #00ff41; border-radius: 1rem; width: 90%; max-width: 360px; padding: 25px; box-shadow: 0 0 30px rgba(0,255,65,0.1); }
+        input { background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; width: 100%; padding: 15px; text-align: center; outline: none; font-size: 16px; margin-top: 10px; }
+        .btn { background: #00ff41; color: #000; width: 100%; padding: 16px; border-radius: 8px; font-weight: 900; text-transform: uppercase; margin-top: 15px; cursor: pointer; border: none; }
+        .btn:active { background: #fff; transform: scale(0.98); }
+        #reveal-screen { position: fixed; inset: 0; background: #000; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
+        .prevellah-pulse { font-size: 2.2rem; color: #fff; letter-spacing: 8px; animation: pulse 0.8s infinite alternate; font-weight: 900; }
+        @keyframes pulse { from { opacity: 0.3; transform: scale(0.95); } to { opacity: 1; transform: scale(1.05); } }
     </style>
 </head>
 <body>
+    <canvas id="m"></canvas>
 
-    <canvas id="matrix"></canvas>
-
-    <div class="vault-container" id="main-vault">
-        <div id="ui-content">
-            <h1 class="glitch-text text-center text-2xl font-black mb-8 uppercase tracking-widest italic">CyberVault</h1>
-            <input type="text" id="access-id" placeholder="NODE ID: 07XXXXXXXX" maxlength="10">
-            <button onclick="startSequence()" class="btn">Authorize Access</button>
+    <div id="ui-wrap" class="w-full flex flex-col items-center">
+        <div class="card mb-4">
+            <h2 class="text-[9px] text-zinc-500 uppercase tracking-widest mb-2">Protocol Briefing</h2>
+            <p class="text-[11px] leading-relaxed">System generates 256-bit entropy keys. A 1 KES maintenance fee is required via Pochi La Biashara.</p>
         </div>
 
-        <div id="reveal-layer">
-            <p class="text-[10px] mb-4 text-green-500 tracking-[1em]">IDENTITY VERIFIED</p>
-            <h2 class="identity-text animate-pulse">PREVELLAH</h2>
-            <p class="text-[8px] mt-4 opacity-50">BYPASSING SECURE PROTOCOLS...</p>
+        <div id="action-card" class="card">
+            <div id="flow">
+                <p class="text-center text-[10px] text-zinc-400 uppercase tracking-widest">Authorized Node Access</p>
+                <input type="text" id="uid" placeholder="ID: 07XXXXXXXX" maxlength="10">
+                <button onclick="auth()" class="btn">Initialize</button>
+            </div>
         </div>
     </div>
 
+    <div id="reveal-screen">
+        <p class="text-[10px] text-green-500 tracking-[0.5em] mb-4 uppercase">Identity Confirmed</p>
+        <h1 class="prevellah-pulse">PREVELLAH</h1>
+    </div>
+
     <script>
-        // Matrix Rain Logic
-        const canvas = document.getElementById('matrix');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%\"'#&_(),.;:?!\\|{}<>[]^~";
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const drops = Array
-        
+        // Matrix Rain
+        const c = document.getElementById('m');
+        const ctx = c.getContext('2d');
+        c.width = window.innerWidth; c.height = window.innerHeight;
+        const drops = Array(Math.floor(c.width/16)).fill(1);
+        function draw() {
+            ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,c.width,c.height);
+            ctx.fillStyle = "#00ff41"; ctx.font = "16px monospace";
+            drops.forEach((y, i) => {
+                ctx.fillText(Math.floor(Math.random()*2), i*16, y*16);
+                if(y*16 > c.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(draw, 45);
+
+        function auth() {
+            const id = document.getElementById('uid');
+            if(id.value === "0000" || /^(07|01)\d{8}$/.test(id.value)) {
+                document.getElementById('flow').innerHTML = `<div class="py-10 text-center"><div class="inline-block border-2 border-green-500 border-t-transparent rounded-full w-8 h-8 animate-spin"></div></div>`;
+                setTimeout(() => { document.getElementById('reveal-screen').style.display = 'flex'; }, 800);
+                setTimeout(showPayment, 3200);
+            } else {
+                if(navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            }
+        }
+
+        function showPayment() {
+            document.getElementById('reveal-screen').style.display = 'none';
+            document.getElementById('flow').innerHTML = `
+                <div class="space-y-4">
+                    <div class="bg-zinc-900/80 p-5 rounded-xl border border-green-500/30 text-center">
+                        <p class="text-[9px] text-zinc-500 mb-1">POCHI LA BIASHARA</p>
+                        <p class="text-2xl font-bold text-white tracking-widest">0142122710</p>
+                        <p class="text-[9px] text-green-500 mt-2 font-bold">1 KES REQUIRED</p>
+                    </div>
+                    <input type="text" id="mcode" placeholder="M-PESA CODE" class="uppercase">
+                    <button onclick="unlock()" class="btn !bg-white">Extract Key</button>
+                </div>`;
+        }
+
+        function unlock() {
+            const k = "SEC-" + Math.random().toString(36).substring(2,12).toUpperCase();
+            document.getElementById('flow').innerHTML = `
+                <div class="space-y-5 text-center">
+                    <div class="bg-black py-8 border border-green-500/20 text-white font-bold break-all px-4 text-lg">${k}</div>
+                    <button onclick="copy('${k}', this)" class="btn">Copy to Clipboard</button>
+                    <button onclick="location.reload()" class="text-[8px] text-zinc-700 uppercase mt-4 block mx-auto tracking-widest underline">Reset</button>
+                </div>`;
+        }
+
+        async function copy(val, btn) {
+            await navigator.clipboard.writeText(val);
+            btn.innerText = "COPIED ✅"; btn.style.background = "#fff";
+            setTimeout(() => { btn.innerText = "Copy to Clipboard"; btn.style.background = "#00ff41"; }, 2000);
+        }
+    </script>
+</body>
+</html>
