@@ -3,134 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBERVAULT | GLOBAL SECURITY</title>
+    <title>CYBERVAULT | KENYA SECURE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intl-tel-input.css"/>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
-        body { background-color: #050505; color: #eee; font-family: 'Space Mono', monospace; }
-        .vault-card { background: #0f0f0f; border: 1px solid #1a1a1a; box-shadow: 0 0 30px rgba(0,0,0,1); }
+        
+        body { background-color: #050505; color: #eee; font-family: 'Space Mono', monospace; margin: 0; overflow-x: hidden; }
+
+        /* LOADING OVERLAY SCREEN */
+        #loader-screen {
+            position: fixed;
+            inset: 0;
+            background: #050505;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .boot-text {
+            font-size: 10px;
+            color: #00ff41;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeInOut 2s infinite;
+        }
+
+        .copyright-tag {
+            position: absolute;
+            bottom: 30px;
+            font-size: 8px;
+            color: #333;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .spinner-ring {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #111;
+            border-top: 2px solid #00ff41;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* MAIN CONTENT */
+        .vault-card { background: #0f0f0f; border: 1px solid #1a1a1a; box-shadow: 0 0 40px rgba(0,0,0,1); }
         .accent-green { color: #00ff41; }
         .bg-green { background-color: #00ff41; color: #000; }
         
-        /* THE VISIBILITY FIX */
-        .iti { width: 100% !important; display: block !important; }
-        .iti__selected-flag { 
-            background-color: #1a1a1a !important; 
-            border-right: 1px solid #333 !important; 
-            padding: 0 15px !important;
-            border-radius: 12px 0 0 12px !important;
+        .input-group {
+            position: relative;
+            background: #000;
+            border: 1px solid #333;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            height: 60px;
+            overflow: hidden;
         }
-        /* Extra padding so text doesn't overlap the flag/code */
-        input#phone { 
-            padding-left: 105px !important; 
-            background: #000 !important; 
-            border: 1px solid #333 !important; 
-            height: 60px !important;
-            color: #00ff41 !important;
-            width: 100% !important;
-            font-size: 16px !important;
-        }
-        .iti__country-list { background-color: #0a0a0a !important; color: #00ff41 !important; border: 1px solid #333 !important; }
-        .iti__arrow { border-top-color: #00ff41 !important; }
-        .iti__selected-dial-code { color: #00ff41 !important; margin-left: 8px; font-weight: bold; }
 
-        .loader { border: 2px solid #111; border-top: 2px solid #00ff41; border-radius: 50%; width: 14px; height: 14px; animation: spin 0.8s linear infinite; display: none; }
+        .prefix {
+            padding: 0 15px;
+            background: #1a1a1a;
+            color: #00ff41;
+            font-weight: bold;
+            border-right: 1px solid #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            height: 100%;
+        }
+
+        input#phone {
+            background: transparent;
+            border: none;
+            color: #00ff41;
+            padding: 0 15px;
+            width: 100%;
+            height: 100%;
+            outline: none;
+            font-size: 18px;
+        }
+
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="min-h-screen p-4 flex items-center justify-center">
+<body>
 
-    <div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-12">
-        <div class="space-y-6">
-            <h1 class="text-4xl font-black accent-green italic uppercase tracking-tighter">CYBERVAULT</h1>
-            <div class="space-y-4 text-xs text-gray-400">
-                <p>Establishing high-entropy cryptographic standards. CYBERVAULT generates non-dictionary keys to eliminate brute-force AI risks.</p>
-                <div class="bg-white/5 p-4 rounded border-l border-green-500">
-                    <p class="text-[11px] font-bold text-white mb-1 uppercase tracking-widest">Gateway Status:</p>
-                    <p>Active for M-PESA regions (KE, TZ, UG). Regional detection enabled.</p>
-                </div>
-                <div class="p-4 border border-red-900/30 rounded bg-red-950/10 text-[9px]">
-                    <p class="font-bold text-red-500 uppercase mb-1 underline">Legal Rules</p>
-                    <p>No liability for user data. 1 KES fee for server maintenance. International card testing in progress.</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="vault-card p-10 rounded-2xl border-t-2 border-green-500">
-            <div id="payment-box">
-                <h2 class="text-center font-bold mb-8 text-white text-xs uppercase tracking-widest">Verify Region</h2>
-                <div class="space-y-8">
-                    <div>
-                        <label class="text-[9px] text-gray-500 uppercase block mb-2 font-bold ml-1">Flag & Country Code</label>
-                        <input type="tel" id="phone" autocomplete="off" class="rounded-xl outline-none">
-                    </div>
-                    
-                    <button onclick="initiateVault()" id="payBtn" class="w-full bg-green font-black py-5 rounded-xl uppercase text-xs flex justify-center items-center gap-3 transition-all active:scale-95">
-                        <span id="btnText">UNLOCK (1 KES)</span>
-                        <div id="spinner" class="loader"></div>
-                    </button>
-                    
-                    <p id="status" class="text-[10px] text-center text-gray-400 italic h-4 uppercase tracking-tighter"></p>
-                </div>
-            </div>
-
-            <div id="generator-box" class="hidden text-center space-y-6">
-                <div class="py-10 border border-green-500/20 rounded-lg bg-black/50">
-                    <i class="fas fa-fingerprint accent-green text-3xl mb-4"></i>
-                    <p class="text-[10px] text-gray-500 uppercase mb-2">Secure Key Generated</p>
-                    <div id="pass-out" class="text-2xl font-bold text-white tracking-widest">********</div>
-                </div>
-            </div>
-        </div>
+    <div id="loader-screen">
+        <div class="spinner-ring"></div>
+        <p class="boot-text">Initializing CyberVault...</p>
+        <p class="copyright-tag">© 2026 Developed by Prevellah</p>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intl-tel-input.min.js"></script>
+    <main class="min-h-screen p-4 flex items-center justify-center">
+        <div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-12">
+            
+            <div class="space-y-6">
+                <h1 class="text-4xl font-black accent-green italic uppercase tracking-tighter">CYBERVAULT</h1>
+                <p class="text-[10px] text-gray-500 uppercase tracking-[0.4em]">Kenya Secure Terminal</p>
+                <div class="bg-white/5 p-5 rounded border-l-2 border-green-500 text-xs text-gray-400">
+                    <p class="text-[11px] font-bold text-white mb-2 uppercase italic">Verification Engine:</p>
+                    <p>Optimized for Kenyan Mobile Networks. M-PESA payment gateway is live.</p>
+                </div>
+            </div>
+
+            <div class="vault-card p-10 rounded-3xl border-t-2 border-green-500">
+                <div id="payment-box">
+                    <h2 class="text-center font-bold mb-8 text-white text-xs uppercase tracking-widest italic">Identity Authentication</h2>
+                    
+                    <div class="space-y-8">
+                        <div>
+                            <label class="text-[9px] text-gray-400 uppercase block mb-3 font-bold ml-1">Network: Kenya (+254)</label>
+                            <div class="input-group">
+                                <div class="prefix">
+                                    <img src="https://flagcdn.com/w20/ke.png" width="20" alt="Kenya">
+                                    <span>+254</span>
+                                </div>
+                                <input type="tel" id="phone" placeholder="712345678" maxlength="9" autocomplete="off">
+                            </div>
+                        </div>
+                        
+                        <button onclick="initiateVault()" id="payBtn" class="w-full bg-green font-black py-5 rounded-2xl uppercase text-xs flex justify-center items-center gap-3 active:scale-95 transition-all shadow-[0_0_20px_rgba(0,255,65,0.2)]">
+                            <span id="btnText">UNLOCK VAULT (1 KES)</span>
+                        </button>
+                        
+                        <p id="status" class="text-[10px] text-center text-gray-400 italic h-4 uppercase tracking-tighter"></p>
+                    </div>
+                </div>
+
+                <div id="generator-box" class="hidden text-center space-y-6">
+                    <div class="py-10 border border-green-500/20 rounded-2xl bg-black">
+                        <i class="fas fa-key accent-green text-3xl mb-4"></i>
+                        <p class="text-[10px] text-gray-500 uppercase mb-2">Access Granted</p>
+                        <div id="pass-out" class="text-2xl font-bold text-white tracking-widest my-4">********</div>
+                        <p class="text-[8px] text-gray-600 uppercase">Developed by Prevellah</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
     <script>
-        const phoneInput = document.querySelector("#phone");
-        const iti = window.intlTelInput(phoneInput, {
-            initialCountry: "ke",
-            separateDialCode: true,
-            preferredCountries: ["ke", "tz", "ug"],
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+        // HANDLE BOOT LOADING ANIMATION
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader-screen');
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 800);
+            }, 2500); // Plays for 2.5 seconds
         });
 
-        // Smart Regional Lockdown
-        function checkRegion() {
-            const countryData = iti.getSelectedCountryData();
-            const payBtn = document.getElementById('payBtn');
-            const btnText = document.getElementById('btnText');
-            const allowed = ["ke", "tz", "ug"];
-
-            if (!allowed.includes(countryData.iso2)) {
-                payBtn.style.backgroundColor = "#222";
-                payBtn.style.color = "#555";
-                btnText.innerText = "REGION NOT SUPPORTED";
-                payBtn.disabled = true;
-            } else {
-                payBtn.style.backgroundColor = "#00ff41";
-                payBtn.style.color = "#000";
-                btnText.innerText = "UNLOCK (1 KES)";
-                payBtn.disabled = false;
-            }
-        }
-
-        phoneInput.addEventListener("countrychange", checkRegion);
-
         async function initiateVault() {
+            const phone = document.getElementById('phone').value;
             const btnText = document.getElementById('btnText');
-            const spinner = document.getElementById('spinner');
             const status = document.getElementById('status');
-            const fullNumber = iti.getNumber().replace('+', '');
 
-            if(!iti.isValidNumber()) {
-                status.innerText = "INVALID NUMBER FORMAT";
+            if(phone.length < 9) {
+                status.innerText = "INVALID NUMBER";
                 return;
             }
 
-            spinner.style.display = "block";
-            btnText.innerText = "PROCESSING...";
+            const fullNumber = "254" + phone;
+            btnText.innerText = "CONNECTING...";
 
             try {
                 const res = await fetch('https://tinypesa.com/api/v1/express/initialize', {
@@ -140,7 +188,7 @@
                 });
 
                 if(res.ok) {
-                    status.innerText = "PUSH SENT. CHECK PIN.";
+                    status.innerText = "STK PUSH SENT";
                     setTimeout(() => {
                         document.getElementById('payment-box').style.display = "none";
                         document.getElementById('generator-box').classList.remove('hidden');
@@ -150,8 +198,7 @@
             } catch (e) {
                 status.innerText = "GATEWAY OFFLINE";
             } finally {
-                spinner.style.display = "none";
-                btnText.innerText = "UNLOCK (1 KES)";
+                btnText.innerText = "UNLOCK VAULT (1 KES)";
             }
         }
     </script>
