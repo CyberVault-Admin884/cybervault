@@ -3,97 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBERVAULT | SECURE TERMINAL</title>
+    <title>CYBERVAULT | ELITE SECURITY TERMINAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
-        
-        body { background-color: #050505; color: #eee; font-family: 'Space Mono', monospace; margin: 0; overflow: hidden; }
+        body { background-color: #050505; color: #eee; font-family: 'Space Mono', monospace; margin: 0; overflow-x: hidden; }
 
-        /* 1. THE CIRCULAR BOOT LOADER */
+        /* --- 1. THE BOOT LOADER (ULTRA BRIGHT SIGNATURE) --- */
         #boot-loader {
-            position: fixed;
-            inset: 0;
-            background: #050505;
-            z-index: 999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            position: fixed; inset: 0; background: #050505; z-index: 999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: opacity 1s ease-in-out;
         }
-
-        .circular-loader {
-            width: 80px;
-            height: 80px;
-            border: 3px solid #111;
-            border-top: 3px solid #00ff41;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .circular-loader { 
+            width: 75px; height: 75px; border: 4px solid #111; border-top: 4px solid #00ff41; 
+            border-radius: 50%; animation: spin 0.8s linear infinite;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+        .boot-brand { 
+            margin-top: 30px; font-size: 28px; font-weight: 900; color: #00ff41; 
+            letter-spacing: 0.4em; text-transform: uppercase; font-style: italic;
+            text-shadow: 0 0 15px rgba(0, 255, 65, 0.4);
+        }
+        .dev-signature-bright { 
+            position: absolute; bottom: 50px; font-size: 12px; color: #ffffff; 
+            letter-spacing: 0.25em; text-transform: uppercase; font-weight: 800;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
-        .boot-brand {
-            margin-top: 30px;
-            font-size: 24px;
-            font-weight: 900;
-            color: #00ff41;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            font-style: italic;
-        }
-
-        .dev-signature {
-            position: absolute;
-            bottom: 40px;
-            font-size: 10px;
-            color: #444;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-        }
-
-        /* 2. THE MAIN TERMINAL */
-        .vault-card { background: #0a0a0a; border: 1px solid #1a1a1a; box-shadow: 0 0 50px rgba(0,0,0,1); }
+        /* --- 2. THE TERMINAL UI --- */
+        .vault-card { background: #0a0a0a; border: 1px solid #1a1a1a; box-shadow: 0 0 60px rgba(0,0,0,1); }
         .accent-green { color: #00ff41; }
         .bg-green { background-color: #00ff41; color: #000; }
         
-        .kenya-input-wrapper {
-            display: flex;
-            align-items: center;
-            background: #000;
-            border: 2px solid #222;
-            border-radius: 15px;
-            height: 65px;
-            overflow: hidden;
-            transition: 0.3s;
+        .kenya-input-wrapper { 
+            display: flex; align-items: center; background: #000; border: 2px solid #333; 
+            border-radius: 18px; height: 70px; overflow: hidden; transition: 0.3s; 
         }
-        .kenya-input-wrapper:focus-within { border-color: #00ff41; }
-
-        .country-code {
-            padding: 0 20px;
-            background: #111;
-            color: #00ff41;
-            font-weight: bold;
-            font-size: 18px;
-            border-right: 1px solid #222;
-            height: 100%;
-            display: flex;
-            align-items: center;
+        .kenya-input-wrapper:focus-within { border-color: #00ff41; box-shadow: 0 0 15px rgba(0, 255, 65, 0.1); }
+        
+        .country-code { 
+            padding: 0 20px; background: #1a1a1a; color: #00ff41; font-weight: bold; 
+            font-size: 18px; border-right: 1px solid #333; height: 100%; 
+            display: flex; align-items: center; 
         }
-
-        input#phone {
-            background: transparent;
-            border: none;
-            color: #00ff41;
-            padding: 0 20px;
-            width: 100%;
-            height: 100%;
-            outline: none;
-            font-size: 20px;
-            letter-spacing: 2px;
-        }
-
+        input#phone { background: transparent; border: none; color: #00ff41; padding: 0 20px; width: 100%; height: 100%; outline: none; font-size: 22px; letter-spacing: 2px; }
+        
+        .disclaimer-box { background: rgba(255, 255, 255, 0.02); border-left: 3px solid #00ff41; padding: 20px; border-radius: 0 15px 15px 0; }
+        
         @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        .pulse-btn { animation: pulse-shadow 2.5s infinite; }
+        @keyframes pulse-shadow {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0.4); }
+            70% { box-shadow: 0 0 0 20px rgba(0, 255, 65, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0); }
+        }
     </style>
 </head>
 <body>
@@ -101,83 +67,93 @@
     <div id="boot-loader">
         <div class="circular-loader"></div>
         <h1 class="boot-brand">CYBERVAULT</h1>
-        <p class="dev-signature">Developed by Prevellah © 2026</p>
+        <p class="dev-signature-bright">Developed by Prevellah © 2026</p>
     </div>
 
     <main class="min-h-screen p-6 flex items-center justify-center">
-        <div class="max-w-4xl w-full grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             
-            <div class="space-y-6">
+            <div class="space-y-8 py-4">
                 <header>
-                    <h1 class="text-5xl font-black accent-green italic tracking-tighter uppercase">CYBERVAULT</h1>
-                    <p class="text-[10px] text-gray-500 uppercase tracking-[0.5em] mt-2">Kenyan Secure Access Terminal</p>
+                    <h1 class="text-6xl font-black accent-green italic tracking-tighter uppercase">CYBERVAULT</h1>
+                    <p class="text-[11px] text-gray-500 uppercase tracking-[0.6em] mt-2 font-bold">Kenya Digital Defense Hub</p>
                 </header>
-                
-                <div class="bg-green/5 p-6 rounded-xl border-l-4 border-green-500 text-sm text-gray-400">
-                    <p class="text-white font-bold mb-2 uppercase text-xs">Authentication Protocol:</p>
-                    <p>Enter your Safaricom/Airtel number to trigger the secure M-PESA handshake. Key generation follows verification.</p>
+
+                <div class="space-y-6">
+                    <div class="disclaimer-box">
+                        <h3 class="text-white text-[13px] font-bold uppercase mb-3"><i class="fas fa-microchip mr-2 text-green-500"></i> AI Password Cracking</h3>
+                        <p class="text-[12px] text-gray-400 leading-relaxed">As AI evolves, standard human-created passwords can be decrypted in milliseconds using <strong>Neural Pattern Recognition</strong>. Static security is dead.</p>
+                    </div>
+
+                    <div class="disclaimer-box" style="border-left-color: #ff3e3e;">
+                        <h3 class="text-white text-[13px] font-bold uppercase mb-3"><i class="fas fa-user-ninja mr-2 text-red-500"></i> The Necessity of Entropy</h3>
+                        <p class="text-[12px] text-gray-400 leading-relaxed">CyberVault generates high-entropy cryptographic strings that bypass dictionary-based AI attacks. Secure your digital identity with non-repeating logic.</p>
+                    </div>
+
+                    <div class="p-6 border border-white/5 rounded-xl bg-white/5 text-[10px] text-gray-500 uppercase italic tracking-widest text-center">
+                        Authorized Regional Gateway: 254-EL-CONSOLE-2026
+                    </div>
                 </div>
             </div>
 
-            <div class="vault-card p-10 rounded-[40px] border-b-4 border-b-green-500">
+            <div class="vault-card p-12 rounded-[50px] border-t-2 border-green-500 relative">
                 <div id="payment-box">
-                    <h2 class="text-center font-bold mb-10 text-white text-xs uppercase tracking-widest opacity-50">Identity Verification</h2>
-                    
-                    <div class="space-y-10">
-                        <div class="relative">
-                            <label class="text-[10px] text-gray-500 uppercase block mb-3 font-bold ml-2">Regional Network Code</label>
+                    <h2 class="text-center font-bold mb-12 text-white text-[11px] uppercase tracking-[0.4em] opacity-50">Identity Verification</h2>
+                    <div class="space-y-12">
+                        <div>
+                            <label class="text-[10px] text-gray-500 uppercase block mb-4 font-bold ml-2">Regional Mobile Number (M-PESA)</label>
                             <div class="kenya-input-wrapper">
                                 <div class="country-code">+254</div>
-                                <input type="tel" id="phone" placeholder="712345678" maxlength="9" autocomplete="off">
+                                <input type="tel" id="phone" placeholder="07... or 01..." maxlength="10" autocomplete="off">
                             </div>
                         </div>
-                        
-                        <button onclick="initiateVault()" id="payBtn" class="w-full bg-green font-black py-6 rounded-2xl uppercase text-xs flex justify-center items-center gap-3 transition-all active:scale-95 shadow-[0_10px_30px_rgba(0,255,65,0.15)]">
-                            <span id="btnText">UNLOCK VAULT (1 KES)</span>
+                        <button onclick="initiateVault()" id="payBtn" class="pulse-btn w-full bg-green font-black py-7 rounded-2xl uppercase text-[13px] flex justify-center items-center gap-3 active:scale-95 transition-all">
+                            <span id="btnText">INITIATE SECURE UNLOCK</span>
                         </button>
+                        <p id="status" class="text-[11px] text-center text-green-500 uppercase tracking-tight h-5 font-bold italic"></p>
                     </div>
                 </div>
 
-                <div id="generator-box" class="hidden text-center space-y-6 py-4">
-                    <div class="bg-black/80 p-10 rounded-3xl border-2 border-dashed border-green-900/50">
-                        <i class="fas fa-fingerprint accent-green text-5xl mb-6"></i>
-                        <p class="text-[10px] text-gray-500 uppercase mb-4">Master Key Deployed</p>
-                        <div id="pass-out" class="text-3xl font-bold text-white tracking-widest mb-6">********</div>
-                        <p class="text-[9px] text-gray-600 uppercase">Developed by Prevellah</p>
+                <div id="generator-box" class="hidden text-center space-y-8 py-6">
+                    <div class="bg-black/90 p-12 rounded-[40px] border-2 border-dashed border-green-500/20 shadow-inner">
+                        <i class="fas fa-fingerprint accent-green text-6xl mb-8"></i>
+                        <p class="text-[11px] text-gray-500 uppercase mb-4 tracking-widest">Master Key Deployed</p>
+                        <div id="pass-out" class="text-4xl font-bold text-white tracking-[0.3em] uppercase">********</div>
+                        <p class="text-[12px] text-white font-black mt-10 uppercase tracking-[0.4em]">Developed by Prevellah</p>
                     </div>
                 </div>
             </div>
+
         </div>
     </main>
 
     <script>
-        // BOOT SEQUENCE LOGIC
+        // BOOT SEQUENCE MANAGER
         window.addEventListener('load', () => {
             const loader = document.getElementById('boot-loader');
-            // Show the loader for exactly 3 seconds for a professional feel
             setTimeout(() => {
                 loader.style.opacity = '0';
                 document.body.style.overflow = 'auto';
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                }, 1000);
+                setTimeout(() => loader.style.display = 'none', 1000);
             }, 3000);
         });
 
         async function initiateVault() {
-            const phone = document.getElementById('phone').value;
+            let phone = document.getElementById('phone').value.trim();
             const btnText = document.getElementById('btnText');
-            const payBtn = document.getElementById('payBtn');
+            const status = document.getElementById('status');
 
-            if(phone.length < 9) {
-                btnText.innerText = "INVALID NUMBER";
-                setTimeout(() => btnText.innerText = "UNLOCK VAULT (1 KES)", 2000);
+            // KENYA SMART STRIPPING LOGIC
+            if (phone.startsWith('0')) { phone = phone.substring(1); }
+            
+            if(phone.length !== 9) {
+                status.innerText = "DIGIT COUNT ERROR: ENTER 07XX... OR 01XX...";
                 return;
             }
 
             const fullNumber = "254" + phone;
-            btnText.innerText = "AUTHORIZING...";
-            payBtn.disabled = true;
+            btnText.innerText = "VERIFYING...";
+            status.innerText = "ESTABLISHING SECURE HANDSHAKE...";
 
             try {
                 const res = await fetch('https://tinypesa.com/api/v1/express/initialize', {
@@ -187,7 +163,7 @@
                 });
 
                 if(res.ok) {
-                    btnText.innerText = "CHECK PHONE PIN";
+                    status.innerText = "STK PUSH SENT TO " + fullNumber;
                     setTimeout(() => {
                         document.getElementById('payment-box').style.display = "none";
                         document.getElementById('generator-box').classList.remove('hidden');
@@ -195,8 +171,8 @@
                     }, 5000);
                 }
             } catch (e) {
-                btnText.innerText = "SIGNAL ERROR";
-                payBtn.disabled = false;
+                status.innerText = "GATEWAY TIMEOUT";
+                btnText.innerText = "RETRY UNLOCK";
             }
         }
     </script>
