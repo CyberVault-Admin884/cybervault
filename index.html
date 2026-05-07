@@ -16,40 +16,35 @@
         .btn { width: 100%; padding: 16px; border-radius: 8px; font-weight: 800; text-transform: uppercase; cursor: pointer; border: none; transition: 0.2s; font-size: 12px; letter-spacing: 1px; }
         .btn-green { background: #00ff41; color: #000; }
         .btn-red { background: #ff3b3b; color: #fff; margin-top: 10px; }
-        .btn:active { transform: scale(0.98); }
-        #reveal-screen { position: fixed; inset: 0; background: #000; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
+        .error-state { border-color: #ff3b3b !important; }
         .logo-pulse { font-size: 2.2rem; font-weight: 900; font-style: italic; animation: pulse 1s infinite alternate; }
         @keyframes pulse { from { opacity: 0.5; } to { opacity: 1; } }
-        .error-state { border-color: #ff3b3b !important; }
+        #reveal-screen { position: fixed; inset: 0; background: #000; display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 100; }
         .copyright { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #444; margin-top: auto; padding-top: 40px; text-transform: uppercase; letter-spacing: 2px; }
     </style>
 </head>
 <body>
     <canvas id="m"></canvas>
 
-    <div class="card accent-border">
+    <div class="card accent-border text-center">
         <h1 class="text-xl font-black italic mb-2">CYBER<span class="text-green-500">VAULT</span></h1>
-        <p class="text-[11px] text-zinc-400 leading-relaxed">
-            CyberVault provides high-entropy security keys for system authentication. Verified transactions ensure only authorized users access encrypted nodes.
-        </p>
+        <p class="text-[11px] text-zinc-400">Security Key Provisioning System</p>
     </div>
 
     <div class="card">
-        <h2 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3">Pochi La Biashara Guide</h2>
+        <h2 class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest mb-3 italic">Verification Guide</h2>
         <ul class="text-[11px] space-y-2 text-zinc-300">
-            <li>1. Dial <span class="text-white font-bold">*334#</span>.</li>
-            <li>2. Select <span class="text-white">Pochi La Biashara</span>.</li>
-            <li>3. Enter: <span class="text-green-500 font-bold">0142122710</span>.</li>
-            <li>4. Amount: <span class="text-white font-bold">1 KES</span>.</li>
-            <li>5. Copy the <span class="text-white font-bold">M-PESA Code</span> from SMS.</li>
+            <li>1. Pay <span class="text-white font-bold">1 KES</span> to Pochi: <span class="text-green-500 font-bold">0142122710</span>.</li>
+            <li>2. Note down the <span class="text-white font-bold">M-PESA Code</span>.</li>
+            <li>3. Enter <span class="text-green-500 font-bold">YOUR mobile number</span> below for verification.</li>
         </ul>
     </div>
 
     <div id="action-card" class="card border-zinc-800">
         <div id="flow">
-            <p class="text-center text-[10px] text-zinc-500 uppercase tracking-widest">System Initialization</p>
-            <button onclick="startFlow()" class="btn btn-green mt-4">Initialize Gateway</button>
-            <button onclick="confirmExit()" class="btn btn-red">Exit System</button>
+            <p class="text-center text-[10px] text-zinc-500 uppercase tracking-widest">Initialize Node</p>
+            <button onclick="startFlow()" class="btn btn-green mt-4">Begin Authentication</button>
+            <button onclick="confirmExit()" class="btn btn-red">Exit</button>
         </div>
     </div>
 
@@ -59,11 +54,9 @@
 
     <div id="reveal-screen">
         <h1 class="logo-pulse">CYBER<span class="text-green-500">VAULT</span></h1>
-        <p class="text-[9px] text-green-500 tracking-[0.5em] mt-4 uppercase">Securing Connection</p>
     </div>
 
     <script>
-        // Matrix Background Logic
         const c = document.getElementById('m');
         const ctx = c.getContext('2d');
         c.width = window.innerWidth; c.height = window.innerHeight;
@@ -80,8 +73,8 @@
         setInterval(draw, 50);
 
         function confirmExit() {
-            if (confirm("Are you sure you want to exit the CyberVault system?")) {
-                window.location.href = "about:blank"; // Fallback for closed systems
+            if (confirm("Terminate secure connection?")) {
+                window.location.href = "about:blank";
                 window.close();
             }
         }
@@ -96,11 +89,11 @@
             document.getElementById('reveal-screen').style.display = 'none';
             document.getElementById('flow').innerHTML = `
                 <div class="space-y-4">
-                    <p class="text-[10px] text-center text-zinc-500 uppercase tracking-widest">Verify Credentials</p>
-                    <input type="text" id="mobile" placeholder="MOBILE: 07XXXXXXXX" maxlength="10" inputmode="numeric">
-                    <input type="text" id="mcode" placeholder="M-PESA TRANSACTION CODE" class="uppercase">
-                    <button onclick="validate()" class="btn btn-green">Validate & Unlock</button>
-                    <button onclick="confirmExit()" class="btn btn-red">End Session</button>
+                    <p class="text-[9px] text-center text-zinc-500 uppercase tracking-widest">SENDER VERIFICATION</p>
+                    <input type="text" id="mobile" placeholder="YOUR SAFARICOM NUMBER" maxlength="10" inputmode="numeric">
+                    <input type="text" id="mcode" placeholder="M-PESA CODE (e.g. SAK2...)" class="uppercase">
+                    <button onclick="validate()" class="btn btn-green">Verify & Unlock</button>
+                    <button onclick="confirmExit()" class="btn btn-red">Cancel</button>
                 </div>`;
         }
 
@@ -108,7 +101,7 @@
             const mob = document.getElementById('mobile');
             const cod = document.getElementById('mcode');
             const isMobValid = /^(07|01)\d{8}$/.test(mob.value);
-            const isCodValid = cod.value.trim().length >= 6;
+            const isCodValid = cod.value.trim().length >= 8;
 
             if (!isMobValid || !isCodValid) {
                 if(navigator.vibrate) navigator.vibrate([200, 100, 200]);
@@ -122,8 +115,8 @@
             document.getElementById('flow').innerHTML = `
                 <div class="space-y-4 text-center">
                     <div class="bg-black py-8 border border-green-500/30 text-white font-mono break-all px-4 text-lg rounded-lg">${key}</div>
-                    <button onclick="copy('${key}', this)" class="btn btn-green">Copy to Clipboard</button>
-                    <button onclick="confirmExit()" class="btn btn-red">Terminate Link</button>
+                    <button onclick="copy('${key}', this)" class="btn btn-green">Copy Key</button>
+                    <button onclick="confirmExit()" class="btn btn-red">Terminate</button>
                 </div>`;
         }
 
