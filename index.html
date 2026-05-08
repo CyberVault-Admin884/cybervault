@@ -2,247 +2,216 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CYBERVAULT</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CYBERVAULT | Secure Node</title>
 <style>
 body{
-  margin:0;
-  font-family:monospace;
-  background:#020617;
-  color:#7dd3fc;
-  overflow-x:hidden;
+    margin:0;
+    font-family:'JetBrains Mono', monospace;
+    background:#010518;
+    color:#00d4ff;
+    overflow-x:hidden;
 }
-
-/* ===== HACKER BACKGROUND ===== */
 body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background:
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
     radial-gradient(circle at 20% 20%, #0ea5e9, transparent 40%),
     radial-gradient(circle at 80% 70%, #22c55e, transparent 40%),
     radial-gradient(circle at 50% 50%, #6366f1, transparent 60%);
-  opacity:0.12;
-  pointer-events:none;
+    opacity:0.15;
+    pointer-events:none;
 }
-
-/* ===== LOADING ===== */
-#boot{
-  position:fixed;
-  inset:0;
-  background:#020617;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
+/* Loading screen */
+#loading{
+    position:fixed;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    background:#010518;
+    z-index:9999;
 }
-
-.glitch{
-  font-size:32px;
-  color:#38bdf8;
-  text-shadow:0 0 15px #38bdf8;
-}
-
 .loader{
-  width:50px;height:50px;
-  border:3px solid #1e293b;
-  border-top:3px solid #38bdf8;
-  border-radius:50%;
-  animation:spin 1s linear infinite;
+    width:60px;
+    height:60px;
+    border:5px solid #000;
+    border-top:5px solid #00d4ff;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin-top:20px;
+}
+@keyframes spin{100%{transform:rotate(360deg);}}
+
+/* Floating shields */
+.shield{
+    position:absolute;
+    width:50px;
+    height:50px;
+    background:url('https://i.imgur.com/yqQpFvN.png') no-repeat center/contain;
+    opacity:0.3;
+    animation:float linear infinite;
+}
+@keyframes float{
+    0%{transform:translateY(0px);}
+    50%{transform:translateY(-20px);}
+    100%{transform:translateY(0px);}
 }
 
-@keyframes spin{
-  100%{transform:rotate(360deg);}
-}
-
-/* ===== UI ===== */
-.container{
-  max-width:520px;
-  margin:auto;
-  padding:20px;
-}
-
+.container{max-width:500px;margin:auto;padding:20px;}
 .card{
-  background:#0f172a;
-  padding:15px;
-  margin-top:15px;
-  border-radius:12px;
-  border:1px solid #1e293b;
+    background:rgba(0,20,50,0.85);
+    padding:20px;
+    margin-top:15px;
+    border-radius:12px;
+    border:1px solid #00d4ff33;
 }
-
 input,button{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
-  border-radius:8px;
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border-radius:8px;
+    border:none;
+    font-weight:bold;
+    text-align:center;
 }
-
-button{
-  background:#38bdf8;
-  border:none;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-/* ===== ERROR SHAKE ===== */
+button{background:#00d4ff;color:#000;cursor:pointer;}
 .shake{
-  animation:shake 0.3s linear 2;
+    animation:shake 0.3s linear 2;
 }
 @keyframes shake{
-  0%{transform:translateX(0);}
-  25%{transform:translateX(-5px);}
-  50%{transform:translateX(5px);}
-  75%{transform:translateX(-5px);}
-  100%{transform:translateX(0);}
+    0%{transform:translateX(0);}
+    25%{transform:translateX(-5px);}
+    50%{transform:translateX(5px);}
+    75%{transform:translateX(-5px);}
+    100%{transform:translateX(0);}
 }
-
-/* ===== MODAL ===== */
 #exit{
-  position:fixed;
-  inset:0;
-  display:none;
-  justify-content:center;
-  align-items:center;
-  background:rgba(0,0,0,0.7);
+    position:fixed;
+    inset:0;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,0,0,0.7);
+    z-index:1000;
 }
-
 .modal{
-  background:#0f172a;
-  padding:20px;
-  border-radius:10px;
+    background:#010518;
+    padding:20px;
+    border-radius:10px;
+    text-align:center;
 }
 </style>
 </head>
-
 <body>
 
-<!-- LOADING -->
-<div id="boot">
-  <div class="glitch">CYBERVAULT</div>
-  <div class="loader"></div>
+<!-- Floating shields -->
+<div class="shield" style="top:10%;left:5%;animation-duration:6s;"></div>
+<div class="shield" style="top:50%;left:80%;animation-duration:10s;"></div>
+<div class="shield" style="top:30%;left:50%;animation-duration:8s;"></div>
+<div class="shield" style="top:70%;left:20%;animation-duration:12s;"></div>
+
+<div id="loading">
+    <div style="font-size:32px;font-weight:bold;color:#00d4ff;">CYBERVAULT</div>
+    <div class="loader"></div>
+    <p style="margin-top:10px;font-size:12px;color:#38bdf8;">Initializing Security Layers...</p>
 </div>
 
-<!-- EXIT -->
 <div id="exit">
-  <div class="modal">
-    <p>Exit system?</p>
-    <button onclick="closeExit()">Cancel</button>
-    <button onclick="exitNow()">Exit</button>
-  </div>
+    <div class="modal">
+        <p>Do you want to exit the system?</p>
+        <button onclick="closeExit()">Cancel</button>
+        <button onclick="exitNow()">Exit</button>
+    </div>
 </div>
 
 <div class="container" id="app" style="display:none;">
+    <h1 style="text-align:center;font-size:28px;">CYBERVAULT</h1>
 
-<h2>CYBERVAULT SYSTEM</h2>
+    <!-- Documentation & Instructions -->
+    <div class="card">
+        <h3>Why CYBERVAULT Exists & How To Use</h3>
+        <p>Security is paramount. CYBERVAULT allows verified users to generate unbreakable passwords safely. All data is handled securely, and no passwords are stored.</p>
+        <p>The 1 KES payment is <strong>not optional</strong>. It helps:</p>
+        <ul>
+            <li>Prevent bots from abusing the system</li>
+            <li>Keep the app ads-free and smooth</li>
+            <li>Support the developer</li>
+        </ul>
+        <h4>Step-by-step instructions:</h4>
+        <ol>
+            <li>Dial <strong>*334#</strong> on your phone.</li>
+            <li>Navigate to <strong>Pochi La Biashara</strong>.</li>
+            <li>Send <strong>1 KES</strong> to the number <strong>0142122710</strong>.</li>
+            <li>Enter your <strong>phone number</strong> in the field below (used to identify verified users).</li>
+            <li>Wait for the voucher verification to be confirmed by the admin.</li>
+            <li>Enter the voucher received and generate your secure password key.</li>
+        </ol>
+        <p style="font-size:10px;">Developed by Prevellah • Kenya</p>
+    </div>
 
-<!-- DOCUMENTATION -->
-<div class="card">
-<h3>📘 Documentation</h3>
-<p>
-1. Enter phone (identity only)<br>
-2. Admin generates voucher<br>
-3. User enters voucher<br>
-4. System verifies and generates secure key<br><br>
+    <!-- User verification -->
+    <div class="card" id="userBox">
+        <h3>User Verification</h3>
+        <input id="phone" placeholder="Your Phone">
+        <input id="voucher" placeholder="Voucher">
+        <button onclick="verify()">Verify & Generate Key</button>
+        <p id="out" style="margin-top:10px;"></p>
+    </div>
 
-⚠ This is a simulated cybersecurity SaaS environment.
-</p>
+    <!-- Admin panel -->
+    <div class="card">
+        <h3>Admin Panel</h3>
+        <input id="adminKey" placeholder="Admin Key">
+        <input id="adminPhone" placeholder="User Phone">
+        <button onclick="generate()">Generate Voucher</button>
+        <p id="adminOut" style="margin-top:10px;"></p>
+    </div>
+
+    <button style="background:red;margin-top:15px;" onclick="showExit()">Exit System</button>
 </div>
-
-<!-- USER -->
-<div class="card" id="userBox">
-<h3>User Verification</h3>
-<input id="phone" placeholder="Phone">
-<input id="voucher" placeholder="Voucher">
-<button onclick="verify()">Verify</button>
-<p id="out"></p>
-</div>
-
-<!-- ADMIN -->
-<div class="card">
-<h3>Admin Panel</h3>
-<input id="adminKey" placeholder="Admin Key">
-<input id="adminPhone" placeholder="User Phone">
-<button onclick="generate()">Generate Voucher</button>
-<p id="adminOut"></p>
-</div>
-
-<!-- EXIT BUTTON -->
-<button onclick="showExit()" style="margin-top:15px;background:red;">EXIT</button>
-
-</div>
-
-<!-- FOOTER -->
-<p style="text-align:center;font-size:10px;color:#475569;">
-Developed by Prevellah • Kenya
-</p>
 
 <script>
-
-/* ===== BOOT ===== */
 setTimeout(()=>{
-  document.getElementById("boot").style.display="none";
-  document.getElementById("app").style.display="block";
+    document.getElementById("loading").style.display="none";
+    document.getElementById("app").style.display="block";
 },2000);
 
-/* ===== ERROR SYSTEM ===== */
+function showExit(){document.getElementById("exit").style.display="flex";}
+function closeExit(){document.getElementById("exit").style.display="none";}
+function exitNow(){window.location.href="about:blank";}
+
 function error(id,msg){
-  document.getElementById(id).classList.add("shake");
-  setTimeout(()=>document.getElementById(id).classList.remove("shake"),400);
-  if(navigator.vibrate) navigator.vibrate(200);
-  alert("Invalid input entered by user: " + msg);
+    document.getElementById(id).classList.add("shake");
+    setTimeout(()=>document.getElementById(id).classList.remove("shake"),400);
+    if(navigator.vibrate) navigator.vibrate(200);
+    alert("Invalid input: "+msg);
 }
 
-/* ===== EXIT ===== */
-function showExit(){
-  document.getElementById("exit").style.display="flex";
-}
-function closeExit(){
-  document.getElementById("exit").style.display="none";
-}
-function exitNow(){
-  window.location.href="about:blank";
-}
-
-/* ===== STORAGE (SIMULATION DB) ===== */
+// Simulated DB
 let DB = {};
+const ADMIN="CYBER-ADMIN-2026";
 
-/* ===== ADMIN KEY ===== */
-const ADMIN = "CYBER-ADMIN-2026";
-
-/* ===== GENERATE ===== */
+// Admin generates voucher
 function generate(){
-  let key = document.getElementById("adminKey").value;
-  let phone = document.getElementById("adminPhone").value;
-
-  if(key !== ADMIN){
-    error("adminKey","wrong admin key");
-    return;
-  }
-
-  let voucher = "CV-" + Math.random().toString(36).substr(2,6).toUpperCase();
-
-  DB[phone] = voucher;
-
-  document.getElementById("adminOut").innerText = voucher;
+    let key=document.getElementById("adminKey").value;
+    let phone=document.getElementById("adminPhone").value;
+    if(key!==ADMIN){error("adminKey","Wrong admin key"); return;}
+    let voucher="CV-"+Math.random().toString(36).substr(2,6).toUpperCase();
+    DB[phone]=voucher;
+    document.getElementById("adminOut").innerText="Voucher: "+voucher;
 }
 
-/* ===== VERIFY ===== */
+// User verification
 function verify(){
-  let phone = document.getElementById("phone").value;
-  let voucher = document.getElementById("voucher").value;
-
-  if(DB[phone] !== voucher){
-    error("userBox","voucher mismatch");
-    return;
-  }
-
-  let key = Math.random().toString(36).substr(2,16);
-
-  document.getElementById("out").innerText =
-    "SECURE KEY: " + key;
+    let phone=document.getElementById("phone").value;
+    let voucher=document.getElementById("voucher").value;
+    if(DB[phone]!==voucher){error("userBox","Voucher does not match"); return;}
+    let key=Math.random().toString(36).substr(2,16);
+    document.getElementById("out").innerText="SECURE KEY: "+key;
 }
-
 </script>
 
 </body>
