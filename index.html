@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CYBERVAULT | Secure Vault</title>
+<title>CYBERVAULT | Secure System</title>
 
 <style>
 body{
@@ -15,7 +15,7 @@ body{
     overflow-x:hidden;
 }
 
-/* ===== LOADING SCREEN ===== */
+/* ===== BOOT ===== */
 #boot{
     position:fixed;
     inset:0;
@@ -31,13 +31,12 @@ body{
     font-size:30px;
     font-weight:bold;
     color:#38bdf8;
-    text-shadow:0 0 15px #38bdf8;
 }
 
 .loader{
     width:50px;
     height:50px;
-    margin-top:20px;
+    margin-top:15px;
     border-radius:50%;
     border:3px solid #1e293b;
     border-top:3px solid #38bdf8;
@@ -102,20 +101,22 @@ button{
 
 <body>
 
-<!-- LOADING -->
+<!-- BOOT SCREEN -->
 <div id="boot">
     <div class="logo">CYBERVAULT</div>
     <div class="loader"></div>
-    <p style="margin-top:15px;font-size:12px;">Initializing secure environment...</p>
+    <p style="font-size:12px;margin-top:10px;">
+        Initializing secure system...
+    </p>
 </div>
 
 <!-- APP -->
 <div class="container" id="app" style="display:none;">
 
-<h2>CYBERVAULT SECURE SYSTEM</h2>
+<h2>CYBERVAULT VAULT SYSTEM</h2>
 
-<!-- USER -->
 <div class="card">
+
 <h3>User Request</h3>
 
 <input id="phone" placeholder="Enter phone number">
@@ -125,23 +126,25 @@ Submit Request
 </button>
 
 <p id="status" style="font-size:12px;color:#93c5fd;">
-Waiting for approval...
+Waiting for admin approval...
 </p>
+
 </div>
 
-<!-- VOUCHER -->
 <div class="card">
-<h3>Voucher Access</h3>
+
+<h3>Voucher Entry</h3>
 
 <input id="voucher" placeholder="Enter voucher">
 
 <button class="primary" onclick="verifyVoucher()">
 Unlock System
 </button>
+
 </div>
 
-<!-- PASSWORD -->
 <div class="card">
+
 <h3>Password Generator</h3>
 
 <div class="box" id="output">LOCKED</div>
@@ -149,10 +152,11 @@ Unlock System
 <button class="secondary" onclick="copyPass()">
 Copy Password
 </button>
+
 </div>
 
-<!-- ADMIN -->
 <div class="card">
+
 <h3>Admin Panel</h3>
 
 <input id="adminPhone" placeholder="User phone">
@@ -162,40 +166,64 @@ Generate Voucher
 </button>
 
 <div class="box" id="adminOut"></div>
+
 </div>
 
 </div>
 
 <script>
 
-/* ===== SAFE LOADING (FIXED — NO FREEZE) ===== */
-window.onload = () => {
-    setTimeout(() => {
-        document.getElementById("boot").style.display = "none";
-        document.getElementById("app").style.display = "block";
-    }, 2000);
-};
+/* =========================
+   SAFE BOOT (NO FREEZE EVER)
+========================= */
+(function () {
 
-/* ===== DATA ===== */
+    function startApp(){
+        const boot = document.getElementById("boot");
+        const app = document.getElementById("app");
+
+        if(boot){
+            boot.style.opacity="0";
+            boot.style.transition="0.4s";
+            setTimeout(()=>boot.style.display="none",400);
+        }
+
+        if(app){
+            app.style.display="block";
+        }
+    }
+
+    setTimeout(startApp,2000);
+    setTimeout(startApp,3000);
+
+})();
+
+/* =========================
+   SYSTEM LOGIC
+========================= */
+
 let activeUser = null;
 
-/* ===== USER REQUEST ===== */
+/* USER REQUEST */
 function submitRequest(){
+
     const phone = document.getElementById("phone").value;
 
     if(phone.length < 10){
-        alert("Invalid phone number");
+        alert("Invalid number");
         return;
     }
 
     activeUser = phone;
+
     localStorage.setItem("status","pending");
 
     document.getElementById("status").innerText =
-    "Request submitted. Await admin voucher.";
+    "Request sent. Await voucher.";
+
 }
 
-/* ===== ADMIN VOUCHER ===== */
+/* ADMIN GENERATE VOUCHER */
 function generateVoucher(){
 
     const phone = document.getElementById("adminPhone").value;
@@ -213,13 +241,12 @@ function generateVoucher(){
     document.getElementById("adminOut").innerText =
     "PHONE: " + phone + "\nVOUCHER: " + voucher;
 
-    alert("Voucher created (manual delivery required)");
 }
 
-/* ===== VERIFY VOUCHER ===== */
+/* VERIFY VOUCHER */
 function verifyVoucher(){
 
-    const voucher = document.getElementById("voucher").value;
+    const v = document.getElementById("voucher").value;
     const stored = localStorage.getItem("voucher_"+activeUser);
 
     if(!stored){
@@ -227,7 +254,7 @@ function verifyVoucher(){
         return;
     }
 
-    if(voucher !== stored){
+    if(v !== stored){
         alert("Invalid voucher");
         return;
     }
@@ -237,13 +264,13 @@ function verifyVoucher(){
     document.getElementById("output").innerText = pass;
 }
 
-/* ===== PASSWORD GENERATOR ===== */
+/* PASSWORD */
 function generatePassword(len){
 
     const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!";
 
-    let p = "";
+    let p="";
 
     for(let i=0;i<len;i++){
         p += chars[Math.floor(Math.random()*chars.length)];
@@ -252,13 +279,13 @@ function generatePassword(len){
     return p;
 }
 
-/* ===== COPY ===== */
+/* COPY */
 function copyPass(){
 
     const text = document.getElementById("output").innerText;
 
     if(text === "LOCKED"){
-        alert("Nothing generated yet");
+        alert("Nothing generated");
         return;
     }
 
