@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CYBERVAULT OS</title>
+<title>CYBERVAULT SYSTEM</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -14,7 +14,7 @@ color:#00ffea;
 overflow-x:hidden;
 }
 
-/* HACKER SCANLINES */
+/* HACKER EFFECT */
 body::before{
 content:"";
 position:fixed;
@@ -35,7 +35,7 @@ pointer-events:none;
 100%{transform:translateY(40px);}
 }
 
-/* BOOT */
+/* BOOT SCREEN */
 #boot{
 position:fixed;
 inset:0;
@@ -49,12 +49,12 @@ z-index:9999;
 
 .boot-line{
 opacity:0;
-animation:show 0.5s forwards;
+animation:fade 0.5s forwards;
 }
 
-@keyframes show{to{opacity:1;}}
+@keyframes fade{to{opacity:1;}}
 
-/* UI */
+/* LAYOUT */
 .container{
 max-width:900px;
 margin:auto;
@@ -66,7 +66,7 @@ border:1px solid #00ffea55;
 padding:15px;
 margin-top:10px;
 background:rgba(0,40,50,0.25);
-box-shadow:0 0 10px rgba(0,255,234,0.2);
+box-shadow:0 0 12px rgba(0,255,234,0.2);
 }
 
 button{
@@ -103,10 +103,10 @@ padding:6px;
 .hidden{display:none;}
 
 .footer{
-margin-top:20px;
 text-align:center;
 font-size:11px;
 opacity:0.7;
+margin-top:20px;
 }
 </style>
 </head>
@@ -117,21 +117,21 @@ opacity:0.7;
 <div id="boot">
 <div class="boot-line">INITIALIZING CYBERVAULT...</div>
 <div class="boot-line">LOADING SECURITY MODULES...</div>
-<div class="boot-line">ENCRYPTING SYSTEM CORE...</div>
+<div class="boot-line">ESTABLISHING TERMINAL LINK...</div>
 <div class="boot-line">SYSTEM READY ✓</div>
 </div>
 
 <div class="container">
 
-<h2>CYBERVAULT TERMINAL OS</h2>
+<h2>CYBERVAULT SYSTEM</h2>
 
 <!-- USER PANEL -->
 <div id="user">
 
 <div class="card">
-<h3>USER ACCESS REQUEST</h3>
+<h3>USER REQUEST ACCESS</h3>
 <input id="phone" placeholder="ENTER PHONE NUMBER">
-<button onclick="request()">REQUEST ACCESS KEY</button>
+<button onclick="request()">REQUEST KEY</button>
 <p id="keyOut"></p>
 </div>
 
@@ -143,7 +143,7 @@ opacity:0.7;
 <p id="result"></p>
 </div>
 
-<button onclick="showAdmin()">ADMIN DASHBOARD</button>
+<button onclick="openAdmin()">ADMIN DASHBOARD</button>
 
 </div>
 
@@ -171,20 +171,19 @@ opacity:0.7;
 </thead>
 <tbody id="table"></tbody>
 </table>
-
 </div>
 
 <!-- INFO SECTION -->
 <div class="card">
 <h3>WHY THIS SYSTEM EXISTS</h3>
 <p>
-CYBERVAULT is a controlled access system designed to manage user authentication, prevent bots, and regulate access to secure password generation services.
+CYBERVAULT is a controlled access system built for secure user verification, anti-bot control, and password generation workflow management.
 </p>
 
 <h4>💳 PAYMENT SYSTEM</h4>
 <p>
 Users send 1 KES via M-PESA:
-<br>*334# → Pochi La Biashara → Send to 0142122710
+<br>*334# → Pochi La Biashara → 0142122710
 </p>
 
 <p>
@@ -194,16 +193,15 @@ Purpose:
 <br>✔ Ad-free operation
 </p>
 
-<h4>⚠ IMPORTANT</h4>
+<h4>⚠ PASSWORD RULE</h4>
 <p>
-The system does NOT permanently store passwords. Passwords are generated once and must be copied immediately.
+Passwords are not stored. They are generated once and must be copied immediately.
 </p>
 
 <h4>👨‍💻 DEVELOPER</h4>
 <p>
 Developed in Kenya by Prevellah / Gloom Cyber Systems
 </p>
-
 </div>
 
 <div class="footer">
@@ -255,8 +253,8 @@ password=Math.random().toString(36).substring(2,12);
 document.getElementById("result").innerText="PASSWORD: "+password;
 }
 
-/* ADMIN ACCESS */
-function showAdmin(){
+/* ADMIN ENTRY */
+function openAdmin(){
 document.getElementById("adminLogin").classList.remove("hidden");
 }
 
