@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>CYBERVAULT | HACKER CORE</title>
+<title>CYBERVAULT | Secure Node</title>
 
 <style>
 body{
@@ -12,45 +11,48 @@ body{
     font-family:monospace;
     background:#020617;
     color:#7dd3fc;
-    overflow-x:hidden;
 }
 
-/* =========================
-   GLITCH BACKGROUND LAYER
-========================= */
-body::before{
-    content:"";
+/* ================= BOOT ================= */
+#boot{
     position:fixed;
     inset:0;
-    background:
-    radial-gradient(circle at 20% 20%, #0ea5e9 0%, transparent 40%),
-    radial-gradient(circle at 80% 80%, #22c55e 0%, transparent 40%);
-    opacity:0.08;
-    z-index:-1;
+    background:#020617;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
 }
 
-/* =========================
-   GLITCH TITLE
-========================= */
 .glitch{
-    font-size:28px;
+    font-size:32px;
     font-weight:bold;
     color:#38bdf8;
-    text-shadow:
-    0 0 5px #38bdf8,
-    0 0 15px #0ea5e9,
-    0 0 25px #38bdf8;
-    animation:flicker 1.8s infinite alternate;
+    text-shadow:0 0 10px #38bdf8, 0 0 25px #0ea5e9;
+    animation:flicker 1.5s infinite alternate;
 }
 
 @keyframes flicker{
-    0%{opacity:1;transform:translateX(0);}
-    100%{opacity:0.7;transform:translateX(1px);}
+    0%{opacity:1;}
+    100%{opacity:0.6;}
 }
 
-/* =========================
-   LAYOUT
-========================= */
+.loader{
+    width:50px;
+    height:50px;
+    margin-top:15px;
+    border-radius:50%;
+    border:3px solid #1e293b;
+    border-top:3px solid #38bdf8;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    100%{transform:rotate(360deg);}
+}
+
+/* ================= APP ================= */
 .container{
     max-width:520px;
     margin:auto;
@@ -58,18 +60,14 @@ body::before{
 }
 
 .card{
-    background:rgba(15,23,42,0.9);
+    background:rgba(15,23,42,0.95);
     padding:16px;
     margin-top:15px;
     border-radius:14px;
     border:1px solid #1e293b;
     box-shadow:0 0 20px rgba(56,189,248,0.08);
-    backdrop-filter: blur(5px);
 }
 
-/* =========================
-   INPUTS
-========================= */
 input{
     width:100%;
     padding:12px;
@@ -80,9 +78,6 @@ input{
     color:#7dd3fc;
 }
 
-/* =========================
-   BUTTONS
-========================= */
 button{
     width:100%;
     margin-top:10px;
@@ -91,20 +86,13 @@ button{
     border-radius:10px;
     cursor:pointer;
     font-weight:bold;
-    transition:0.2s;
-}
-
-button:active{
-    transform:scale(0.98);
 }
 
 .primary{background:#38bdf8;color:#000;}
 .secondary{background:#1e293b;color:#7dd3fc;}
 .danger{background:#ef4444;color:#fff;}
 
-/* =========================
-   OUTPUT BOX
-========================= */
+/* OUTPUT */
 .box{
     margin-top:10px;
     padding:12px;
@@ -116,9 +104,7 @@ button:active{
     min-height:40px;
 }
 
-/* =========================
-   SHAKE ANIMATION (ERROR)
-========================= */
+/* ERROR SHAKE */
 .shake{
     animation:shake 0.3s linear 2;
 }
@@ -130,30 +116,46 @@ button:active{
     75%{transform:translateX(-5px);}
     100%{transform:translateX(0);}
 }
+
+/* ADMIN HIDDEN */
+#adminPanel{
+    display:none;
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- BOOT -->
+<div id="boot">
+    <div class="glitch">CYBERVAULT</div>
+    <div class="loader"></div>
+    <p style="font-size:12px;margin-top:10px;">
+        Initializing secure system...
+    </p>
+</div>
 
-<h2 class="glitch">CYBERVAULT v3 // HACKER CORE</h2>
+<!-- MAIN -->
+<div class="container" id="app" style="display:none;">
 
-<!-- SYSTEM INFO -->
+<button class="danger" onclick="exitSystem()">EXIT SYSTEM</button>
+
+<!-- DOCS -->
 <div class="card">
+<h3>📘 SYSTEM GUIDE</h3>
 <small>
-📘 SYSTEM FLOW:<br>
 1. Pay via Pochi La Biashara (*334#)<br>
-2. Enter phone (identifier only)<br>
-3. Wait admin voucher<br>
-4. Unlock password generator
+2. Send 1 KES to 0142122710<br>
+3. Enter phone number (identity only)<br>
+4. Wait for admin voucher<br>
+5. Unlock password system
 </small>
 </div>
 
 <!-- PAYMENT -->
 <div class="card">
 <h3>💰 PAYMENT NODE</h3>
-<p>Send 1 KES to:</p>
+<p>Send <b>1 KES</b> to:</p>
 <p><b>0142122710</b></p>
 </div>
 
@@ -172,7 +174,7 @@ Submit Request
 
 <!-- VOUCHER -->
 <div class="card" id="voucherCard">
-<h3>Voucher Unlock</h3>
+<h3>Voucher Input</h3>
 
 <input id="voucher" placeholder="CV-XXXXXX">
 
@@ -192,9 +194,21 @@ Copy Key
 </button>
 </div>
 
-<!-- ADMIN -->
+<!-- ADMIN LOCKED PANEL -->
 <div class="card">
-<h3>Admin Control</h3>
+<h3>Admin Access</h3>
+
+<input id="adminKey" placeholder="Enter admin key">
+
+<button class="primary" onclick="unlockAdmin()">
+Unlock Admin Panel
+</button>
+
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="card" id="adminPanel">
+<h3>Admin Control Panel</h3>
 
 <input id="adminPhone" placeholder="User phone">
 
@@ -209,30 +223,38 @@ Generate Voucher
 
 <script>
 
-/* =========================
-   STATE
-========================= */
-let user=null;
+/* ================= BOOT ================= */
+(function(){
+    function start(){
+        document.getElementById("boot").style.display="none";
+        document.getElementById("app").style.display="block";
+    }
+    setTimeout(start,2000);
+})();
 
-/* =========================
-   ERROR FEEDBACK (VIBRATE + SHAKE)
-========================= */
+/* ================= ERROR FX ================= */
 function errorFX(id){
     const el=document.getElementById(id);
     if(el){
         el.classList.add("shake");
-        setTimeout(()=>el.classList.remove("shake"),400);
+        setTimeout(()=>el.classList.remove("shake"),500);
     }
     if(navigator.vibrate){
         navigator.vibrate([200,100,200]);
     }
 }
 
-/* =========================
-   USER REQUEST
-========================= */
-function requestAccess(){
+/* ================= EXIT ================= */
+function exitSystem(){
+    if(confirm("Do you want to exit CYBERVAULT?")){
+        window.location.href="about:blank";
+    }
+}
 
+/* ================= USER REQUEST ================= */
+let user=null;
+
+function requestAccess(){
     const p=document.getElementById("phone").value;
 
     if(p.length<10){
@@ -243,18 +265,29 @@ function requestAccess(){
 
     user=p;
     document.getElementById("status").innerText=
-    "Request sent. Await admin voucher.";
+    "Request sent. Await voucher.";
 }
 
-/* =========================
-   ADMIN VOUCHER
-========================= */
+/* ================= ADMIN UNLOCK ================= */
+function unlockAdmin(){
+    const key=document.getElementById("adminKey").value;
+
+    if(key==="CYBER-ADMIN-2026"){
+        document.getElementById("adminPanel").style.display="block";
+        alert("Admin unlocked");
+    } else {
+        errorFX("adminKey");
+        alert("Wrong admin key");
+    }
+}
+
+/* ================= VOUCHER ================= */
 function generateVoucher(){
 
     const p=document.getElementById("adminPhone").value;
 
     if(p.length<10){
-        errorFX("adminOut");
+        errorFX("adminPanel");
         alert("Invalid phone");
         return;
     }
@@ -267,9 +300,7 @@ function generateVoucher(){
     "PHONE: "+p+"\nVOUCHER: "+v;
 }
 
-/* =========================
-   VERIFY
-========================= */
+/* ================= VERIFY ================= */
 function verifyVoucher(){
 
     const v=document.getElementById("voucher").value;
@@ -277,7 +308,7 @@ function verifyVoucher(){
 
     if(!stored){
         errorFX("voucherCard");
-        alert("No voucher yet");
+        alert("No voucher assigned yet");
         return;
     }
 
@@ -291,9 +322,7 @@ function verifyVoucher(){
     generatePassword(20);
 }
 
-/* =========================
-   PASSWORD ENGINE
-========================= */
+/* ================= PASSWORD ================= */
 function generatePassword(n){
     const c="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!";
     let r="";
@@ -303,9 +332,7 @@ function generatePassword(n){
     return r;
 }
 
-/* =========================
-   COPY
-========================= */
+/* ================= COPY ================= */
 function copyPass(){
     navigator.clipboard.writeText(
         document.getElementById("output").innerText
