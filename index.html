@@ -11,15 +11,62 @@ margin:0;
 font-family:monospace;
 background:#000;
 color:#00ffea;
+overflow-x:hidden;
 }
 
-.container{padding:20px;max-width:700px;margin:auto;}
+/* SCANLINES */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:repeating-linear-gradient(
+to bottom,
+rgba(0,255,255,0.05),
+rgba(0,255,255,0.05) 1px,
+transparent 1px,
+transparent 4px
+);
+animation:scan 6s linear infinite;
+pointer-events:none;
+}
+
+@keyframes scan{
+0%{transform:translateY(0);}
+100%{transform:translateY(40px);}
+}
+
+/* BOOT */
+#boot{
+position:fixed;
+inset:0;
+background:#000;
+display:flex;
+flex-direction:column;
+justify-content:center;
+padding:20px;
+z-index:9999;
+}
+
+.boot-line{
+opacity:0;
+animation:show 0.5s forwards;
+}
+
+@keyframes show{to{opacity:1;}}
+
+/* LAYOUT */
+.container{
+max-width:800px;
+margin:auto;
+padding:20px;
+}
 
 .card{
 border:1px solid #00ffea55;
 padding:15px;
 margin-top:10px;
 background:rgba(0,40,50,0.2);
+box-shadow:0 0 15px rgba(0,255,234,0.15);
 }
 
 button{
@@ -30,6 +77,12 @@ background:#00ffea;
 border:none;
 font-weight:bold;
 cursor:pointer;
+transition:0.2s;
+}
+
+button:hover{
+transform:scale(1.02);
+box-shadow:0 0 10px #00ffea;
 }
 
 input{
@@ -53,26 +106,54 @@ border:1px solid #00ffea33;
 padding:6px;
 }
 
-.modebar{
-display:flex;
-gap:10px;
+.hidden{display:none;}
+
+/* EXIT */
+#exit{
+position:fixed;
+inset:0;
+display:none;
+background:rgba(0,0,0,0.85);
+justify-content:center;
+align-items:center;
 }
 
-.modebar button{
-width:50%;
+.modal{
+background:#001010;
+padding:20px;
+border:1px solid #00ffea;
+width:300px;
 }
 </style>
 </head>
 
 <body>
 
+<!-- BOOT -->
+<div id="boot">
+<div class="boot-line">INITIALIZING CYBERVAULT OS...</div>
+<div class="boot-line">LOADING SECURITY MODULES...</div>
+<div class="boot-line">ENCRYPTING USER LAYER...</div>
+<div class="boot-line">SYSTEM READY ✓</div>
+</div>
+
+<!-- EXIT -->
+<div id="exit">
+<div class="modal">
+<p>EXIT SYSTEM?</p>
+<button onclick="closeExit()">CANCEL</button>
+<button onclick="exitNow()">EXIT</button>
+</div>
+</div>
+
 <div class="container">
 
-<h2>CYBERVAULT SYSTEM</h2>
+<h2>CYBERVAULT TERMINAL OS</h2>
 
-<div class="modebar">
-<button onclick="setMode('user')">USER MODE</button>
-<button onclick="setMode('admin')">ADMIN MODE</button>
+<!-- MODE SWITCH -->
+<div class="card">
+<button onclick="showUser()">USER DASHBOARD</button>
+<button onclick="lockAdmin()">ADMIN DASHBOARD</button>
 </div>
 
 <!-- USER -->
@@ -81,25 +162,38 @@ width:50%;
 <div class="card">
 <h3>REQUEST ACCESS</h3>
 <input id="phone" placeholder="ENTER PHONE">
-<button onclick="request()">REQUEST</button>
+<button onclick="request()">GENERATE KEY</button>
 <p id="keyOut"></p>
+<button onclick="copyKey()">COPY KEY</button>
 </div>
 
 <div class="card">
-<h3>LOGIN</h3>
+<h3>LOGIN SYSTEM</h3>
 <input id="loginPhone" placeholder="PHONE">
 <input id="loginKey" placeholder="ACCESS KEY">
 <button onclick="login()">GENERATE PASSWORD</button>
 <p id="result"></p>
+<button onclick="copyPass()">COPY PASSWORD</button>
 </div>
+
+<button style="background:red;color:white;" onclick="showExit()">EXIT SYSTEM</button>
 
 </div>
 
 <!-- ADMIN -->
-<div id="admin" style="display:none;">
+<div id="admin" class="hidden">
 
 <div class="card">
-<h3>ADMIN DASHBOARD</h3>
+<h3>ADMIN SECURITY GATE</h3>
+<input id="adminPass" placeholder="ENTER SECURITY KEY">
+<button onclick="adminLogin()">UNLOCK PANEL</button>
+</div>
+
+<div id="adminPanel" class="hidden">
+
+<div class="card">
+<h3>USER DATABASE</h3>
+
 <table>
 <thead>
 <tr>
@@ -111,6 +205,9 @@ width:50%;
 </thead>
 <tbody id="table"></tbody>
 </table>
+
+</div>
+
 </div>
 
 </div>
@@ -121,19 +218,31 @@ width:50%;
 
 let users = JSON.parse(localStorage.getItem("cv_users") || "{}");
 let password="";
+let lastKey="";
 
+/* SAVE */
 function save(){
 localStorage.setItem("cv_users",JSON.stringify(users));
 }
 
-/* MODE SWITCH */
-function setMode(m){
-document.getElementById("user").style.display = m==="user"?"block":"none";
-document.getElementById("admin").style.display = m==="admin"?"block":"none";
-render();
+/* BOOT */
+setTimeout(()=>{
+document.getElementById("boot").style.display="none";
+},3000);
+
+/* USER */
+function showUser(){
+document.getElementById("user").classList.remove("hidden");
+document.getElementById("admin").classList.add("hidden");
 }
 
-/* USER REQUEST */
+/* ADMIN LOCK */
+function lockAdmin(){
+document.getElementById("user").classList.add("hidden");
+document.getElementById("admin").classList.remove("hidden");
+}
+
+/* REQUEST */
 function request(){
 let p=document.getElementById("phone").value;
 if(!p)return;
@@ -143,6 +252,7 @@ let key="CV-"+Math.random().toString(36).substring(2,9).toUpperCase();
 users[p]={key:key,status:"PENDING"};
 save();
 
+lastKey=key;
 document.getElementById("keyOut").innerText="YOUR KEY: "+key;
 }
 
@@ -153,25 +263,46 @@ let k=document.getElementById("loginKey").value;
 
 if(!users[p])return alert("NOT FOUND");
 if(users[p].status!=="APPROVED")return alert("NOT APPROVED");
-if(users[p].key!==k)return alert("WRONG KEY");
+if(users[p].key!==k)return alert("INVALID KEY");
 
 password=Math.random().toString(36).substring(2,12);
-
 document.getElementById("result").innerText="PASSWORD: "+password;
 }
 
-/* ADMIN APPROVE */
+/* COPY */
+function copyKey(){
+navigator.clipboard.writeText(lastKey||"");
+alert("KEY COPIED");
+}
+
+function copyPass(){
+navigator.clipboard.writeText(password||"");
+alert("PASSWORD COPIED");
+}
+
+/* ADMIN LOGIN (UI SECURITY LAYER) */
+function adminLogin(){
+let pass=document.getElementById("adminPass").value;
+
+/* “SECURITY LAYER” (frontend gate) */
+if(pass==="CYBER-ADMIN-2026"){
+document.getElementById("adminPanel").classList.remove("hidden");
+render();
+}else{
+alert("ACCESS DENIED");
+}
+}
+
+/* APPROVE */
 function approve(p){
 users[p].status="APPROVED";
 save();
 render();
 }
 
-/* RENDER TABLE */
+/* TABLE */
 function render(){
 let t=document.getElementById("table");
-if(!t)return;
-
 t.innerHTML="";
 
 for(let p in users){
@@ -186,7 +317,18 @@ t.innerHTML+=`
 }
 }
 
-setMode('user');
+/* EXIT */
+function showExit(){
+document.getElementById("exit").style.display="flex";
+}
+function closeExit(){
+document.getElementById("exit").style.display="none";
+}
+function exitNow(){
+window.location.href="about:blank";
+}
+
+showUser();
 
 </script>
 
