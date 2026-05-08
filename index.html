@@ -2,132 +2,104 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CYBERVAULT TERMINAL OS</title>
+<title>CYBERVAULT OS</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
-    margin:0;
-    font-family:monospace;
-    background:#000;
-    color:#00ffea;
-    overflow-x:hidden;
+margin:0;
+font-family:monospace;
+background:#000;
+color:#00ffea;
 }
 
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:repeating-linear-gradient(
-        to bottom,
-        rgba(0,255,255,0.05),
-        rgba(0,255,255,0.05) 1px,
-        transparent 1px,
-        transparent 4px
-    );
-    animation:scan 6s linear infinite;
-    pointer-events:none;
-}
-
-@keyframes scan{
-    0%{transform:translateY(0);}
-    100%{transform:translateY(40px);}
-}
-
-#boot{
-    position:fixed;
-    inset:0;
-    background:#000;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    padding:20px;
-    z-index:9999;
-}
-
-.boot-line{
-    opacity:0;
-    animation:show 0.5s forwards;
-}
-
-@keyframes show{to{opacity:1;}}
-
-.container{
-    max-width:700px;
-    margin:auto;
-    padding:20px;
-    display:none;
-}
+.container{padding:20px;max-width:700px;margin:auto;}
 
 .card{
-    background:rgba(0,40,50,0.2);
-    border:1px solid #00ffea55;
-    padding:15px;
-    margin-top:12px;
+border:1px solid #00ffea55;
+padding:15px;
+margin-top:10px;
+background:rgba(0,40,50,0.2);
 }
 
 button{
-    width:100%;
-    padding:10px;
-    margin-top:8px;
-    background:#00ffea;
-    border:none;
-    font-weight:bold;
-    cursor:pointer;
+width:100%;
+padding:10px;
+margin-top:8px;
+background:#00ffea;
+border:none;
+font-weight:bold;
+cursor:pointer;
 }
 
 input{
-    width:100%;
-    padding:10px;
-    margin-top:8px;
-    background:#000;
-    border:1px solid #00ffea;
-    color:#00ffea;
+width:100%;
+padding:10px;
+margin-top:8px;
+background:#000;
+border:1px solid #00ffea;
+color:#00ffea;
 }
 
 table{
-    width:100%;
-    margin-top:10px;
-    border-collapse:collapse;
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+font-size:12px;
 }
 
 td,th{
-    border:1px solid #00ffea33;
-    padding:8px;
-    font-size:12px;
+border:1px solid #00ffea33;
+padding:6px;
 }
 
-.signature{
-    text-align:center;
-    margin-top:15px;
-    font-size:11px;
-    opacity:0.6;
+.modebar{
+display:flex;
+gap:10px;
+}
+
+.modebar button{
+width:50%;
 }
 </style>
 </head>
 
 <body>
 
-<div id="boot">
-<div class="boot-line">INITIALIZING CYBERVAULT...</div>
-<div class="boot-line">LOADING ADMIN MODULE...</div>
-<div class="boot-line">SYSTEM READY ✓</div>
+<div class="container">
+
+<h2>CYBERVAULT SYSTEM</h2>
+
+<div class="modebar">
+<button onclick="setMode('user')">USER MODE</button>
+<button onclick="setMode('admin')">ADMIN MODE</button>
 </div>
 
-<div class="container" id="app">
-
-<h2>CYBERVAULT ADMIN TERMINAL</h2>
+<!-- USER -->
+<div id="user">
 
 <div class="card">
-<h3>USER REQUEST</h3>
-
-<input id="phone" placeholder="ENTER USER PHONE">
-<button onclick="request()">CREATE USER REQUEST</button>
+<h3>REQUEST ACCESS</h3>
+<input id="phone" placeholder="ENTER PHONE">
+<button onclick="request()">REQUEST</button>
+<p id="keyOut"></p>
 </div>
+
+<div class="card">
+<h3>LOGIN</h3>
+<input id="loginPhone" placeholder="PHONE">
+<input id="loginKey" placeholder="ACCESS KEY">
+<button onclick="login()">GENERATE PASSWORD</button>
+<p id="result"></p>
+</div>
+
+</div>
+
+<!-- ADMIN -->
+<div id="admin" style="display:none;">
 
 <div class="card">
 <h3>ADMIN DASHBOARD</h3>
-
 <table>
 <thead>
 <tr>
@@ -137,98 +109,84 @@ td,th{
 <th>ACTION</th>
 </tr>
 </thead>
-<tbody id="usersTable"></tbody>
+<tbody id="table"></tbody>
 </table>
 </div>
 
-<div class="card">
-<h3>VERIFY USER LOGIN</h3>
-
-<input id="loginPhone" placeholder="PHONE">
-<input id="loginKey" placeholder="ACCESS KEY">
-<button onclick="login()">GENERATE PASSWORD</button>
-
-<p id="result"></p>
-</div>
-
-<div class="signature">
-GLOOM CYBER SIGNATURE // DEVELOPED BY PREVELLah © 2026
 </div>
 
 </div>
 
 <script>
 
-setTimeout(()=>{
-document.getElementById("boot").style.display="none";
-document.getElementById("app").style.display="block";
-render();
-},3000);
-
 let users = JSON.parse(localStorage.getItem("cv_users") || "{}");
-let password = "";
+let password="";
 
 function save(){
-localStorage.setItem("cv_users", JSON.stringify(users));
+localStorage.setItem("cv_users",JSON.stringify(users));
 }
 
+/* MODE SWITCH */
+function setMode(m){
+document.getElementById("user").style.display = m==="user"?"block":"none";
+document.getElementById("admin").style.display = m==="admin"?"block":"none";
+render();
+}
+
+/* USER REQUEST */
 function request(){
 let p=document.getElementById("phone").value;
+if(!p)return;
 
-if(!p) return alert("ENTER PHONE");
+let key="CV-"+Math.random().toString(36).substring(2,9).toUpperCase();
 
-let key = "CV-" + Math.random().toString(36).substring(2,10).toUpperCase();
-
-users[p]={
-key:key,
-status:"PENDING"
-};
-
+users[p]={key:key,status:"PENDING"};
 save();
-render();
 
-alert("USER CREATED\nKEY: " + key);
+document.getElementById("keyOut").innerText="YOUR KEY: "+key;
 }
 
-function approve(phone){
-users[phone].status="APPROVED";
+/* LOGIN */
+function login(){
+let p=document.getElementById("loginPhone").value;
+let k=document.getElementById("loginKey").value;
+
+if(!users[p])return alert("NOT FOUND");
+if(users[p].status!=="APPROVED")return alert("NOT APPROVED");
+if(users[p].key!==k)return alert("WRONG KEY");
+
+password=Math.random().toString(36).substring(2,12);
+
+document.getElementById("result").innerText="PASSWORD: "+password;
+}
+
+/* ADMIN APPROVE */
+function approve(p){
+users[p].status="APPROVED";
 save();
 render();
 }
 
+/* RENDER TABLE */
 function render(){
-let table=document.getElementById("usersTable");
-table.innerHTML="";
+let t=document.getElementById("table");
+if(!t)return;
+
+t.innerHTML="";
 
 for(let p in users){
-table.innerHTML += `
+t.innerHTML+=`
 <tr>
 <td>${p}</td>
 <td>${users[p].key}</td>
 <td>${users[p].status}</td>
-<td>
-<button onclick="approve('${p}')">APPROVE</button>
-</td>
+<td><button onclick="approve('${p}')">APPROVE</button></td>
 </tr>
 `;
 }
 }
 
-function login(){
-let p=document.getElementById("loginPhone").value;
-let k=document.getElementById("loginKey").value;
-
-if(!users[p]) return alert("USER NOT FOUND");
-
-if(users[p].status!=="APPROVED") return alert("NOT APPROVED");
-
-if(users[p].key!==k) return alert("INVALID KEY");
-
-password=Math.random().toString(36).substring(2,14);
-
-document.getElementById("result").innerText =
-"PASSWORD: " + password;
-}
+setMode('user');
 
 </script>
 
