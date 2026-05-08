@@ -2,206 +2,369 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>CYBERVAULT PASSWORD CORE</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{
-margin:0;
-font-family:monospace;
-background:#000;
-color:#00ffea;
-overflow-x:hidden;
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'JetBrains Mono', monospace;
+    background: #000;
+    color: #00ffea;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-/* SCANLINES */
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background:repeating-linear-gradient(
-to bottom,
-rgba(0,255,255,0.06),
-rgba(0,255,255,0.06) 1px,
-transparent 1px,
-transparent 4px
-);
-animation:scan 6s linear infinite;
-pointer-events:none;
+/* CRT SCANLINE & FLICKER EFFECT */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 255, 234, 0.04),
+        rgba(0, 255, 234, 0.04) 1px,
+        transparent 1.5px,
+        transparent 4px
+    );
+    animation: scan 10s linear infinite;
+    pointer-events: none;
+    z-index: 9999;
 }
 
-@keyframes scan{
-0%{transform:translateY(0);}
-100%{transform:translateY(40px);}
+@keyframes scan {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(100%); }
 }
 
 /* GLOW TEXT */
-h1,h2,h3{
-text-shadow:0 0 12px #00ffea;
+h1, h2, h3, .glow-text {
+    text-shadow: 0 0 10px rgba(0, 255, 234, 0.6);
 }
 
-/* BOOT */
-#boot{
-position:fixed;
-inset:0;
-background:#000;
-display:flex;
-flex-direction:column;
-justify-content:center;
-padding:20px;
-z-index:9999;
+/* BOOT LOADING SYSTEM */
+#boot {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 30px;
+    z-index: 10000;
 }
 
-.boot-line{
-opacity:0;
-animation:fade 0.6s forwards;
+.boot-line {
+    opacity: 0;
+    margin-bottom: 8px;
+    font-size: 13px;
+    letter-spacing: 1px;
 }
-
-@keyframes fade{to{opacity:1;}}
 
 /* LAYOUT */
-.container{
-max-width:800px;
-margin:auto;
-padding:20px;
+.container {
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-.card{
-border:1px solid #00ffea55;
-padding:15px;
-margin-top:10px;
-background:rgba(0,40,50,0.25);
-box-shadow:0 0 12px rgba(0,255,234,0.15);
+.card {
+    border: 1px solid rgba(0, 255, 234, 0.3);
+    padding: 20px;
+    margin-top: 15px;
+    background: rgba(0, 20, 25, 0.6);
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 255, 234, 0.05);
+    position: relative;
+    overflow: hidden;
 }
 
-button{
-width:100%;
-padding:10px;
-margin-top:8px;
-background:#00ffea;
-border:none;
-font-weight:bold;
-cursor:pointer;
-transition:0.2s;
+.card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 2px;
+    background: linear-gradient(90deg, transparent, #00ffea, transparent);
 }
 
-button:hover{
-transform:scale(1.03);
-box-shadow:0 0 10px #00ffea;
+button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    background: #00ffea;
+    border: none;
+    color: #000;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-input{
-width:100%;
-padding:10px;
-margin-top:8px;
-background:#000;
-border:1px solid #00ffea;
-color:#00ffea;
+button:active {
+    transform: scale(0.98);
+    background: #ffffff;
+    box-shadow: 0 0 15px #ffffff;
 }
 
-.output{
-margin-top:10px;
-padding:10px;
-border:1px dashed #00ffea55;
-word-break:break-all;
+.output {
+    margin-top: 12px;
+    padding: 15px;
+    border: 1px dashed rgba(0, 255, 234, 0.4);
+    background: rgba(0, 0, 0, 0.8);
+    word-break: break-all;
+    text-align: center;
+    font-size: 16px;
+    letter-spacing: 2px;
+    border-radius: 4px;
+    min-height: 24px;
 }
 
-.footer{
-text-align:center;
-font-size:11px;
-opacity:0.7;
-margin-top:20px;
+/* INTERACTIVE DEVELOPER TERMINAL */
+.reveal-terminal {
+    background: #020b0d;
+    border: 1px solid #00ffea;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 15px;
+    font-size: 12px;
+    min-height: 120px;
+}
+
+.terminal-header {
+    border-bottom: 1px solid rgba(0, 255, 234, 0.2);
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    color: rgba(0, 255, 234, 0.6);
+}
+
+.cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background: #00ffea;
+    animation: blink 0.8s infinite;
+    vertical-align: middle;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+.footer {
+    text-align: center;
+    font-size: 10px;
+    opacity: 0.5;
+    margin-top: auto;
+    padding: 25px 0;
+    letter-spacing: 2px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- BOOT -->
 <div id="boot">
-<div class="boot-line">INITIALIZING CYBERVAULT CORE...</div>
-<div class="boot-line">LOADING CRYPTO ENGINE...</div>
-<div class="boot-line">SECURITY MODULE READY...</div>
-<div class="boot-line">SYSTEM ONLINE ✓</div>
+    <div class="boot-line" style="animation: fade 0.1s forwards 0.2s;">[ SYSTEM ]: BOOT_SEQUENCE_INITIALIZED</div>
+    <div class="boot-line" style="animation: fade 0.1s forwards 0.8s;">[ ENGINE ]: PARSING CRYPTO MODULES...</div>
+    <div class="boot-line" style="animation: fade 0.1s forwards 1.4s;">[ CORE   ]: INJECTING ENTROPY BUFFER...</div>
+    <div class="boot-line" style="animation: fade 0.1s forwards 2.0s;">[ DEPLOY ]: GLOOM CYBER SYSTEMS INTERFACE UP ✓</div>
 </div>
 
 <div class="container">
 
-<h1>CYBERVAULT PASSWORD ENGINE</h1>
+    <h1 class="text-xl font-extrabold tracking-wider text-center mt-4">CYBER<span class="text-white">VAULT</span> CORE</h1>
+    <p class="text-center text-[10px] opacity-60 uppercase tracking-widest mt-1">Gloom Cyber Systems</p>
 
-<!-- PASSWORD GENERATOR -->
-<div class="card">
-<h3>GENERATE STRONG PASSWORD</h3>
+    <div class="card">
+        <h3 class="text-sm font-bold tracking-widest mb-2 uppercase">Core Generator</h3>
+        <button onclick="generate()">Generate High Entropy Key</button>
+        <div class="output font-bold text-white" id="out">_ AWAITING COMMAND _</div>
+        <button onclick="copy()" style="background: transparent; color: #00ffea; border: 1px solid #00ffea;">Copy Passkey</button>
+    </div>
 
-<button onclick="generate()">GENERATE PASSWORD</button>
+    <div class="card">
+        <h3 class="text-sm font-bold tracking-widest mb-2 uppercase">Developer Query</h3>
+        <p class="text-[11px] opacity-70 mb-3">Click below to query ownership records.</p>
+        
+        <button onclick="startDeveloperReveal()" class="!mt-0">Decrypt Creator Profile</button>
+        
+        <div class="reveal-terminal mt-3">
+            <div class="terminal-header">
+                <span>TERMINAL://GLOOM_SYS</span>
+                <span>SECURE NODE</span>
+            </div>
+            <div id="terminal-body" class="text-white leading-relaxed">
+                <span>Gloom-Core ready. Tap Decrypt above to query...</span><span class="cursor"></span>
+            </div>
+        </div>
+    </div>
 
-<div class="output" id="out">---</div>
+    <div class="card">
+        <h3 class="text-sm font-bold tracking-widest mb-2 uppercase">Node Directives</h3>
+        <ul class="text-[11px] space-y-2 opacity-80 list-none p-0 m-0">
+            <li>✦ <span class="text-white">Zero Cost:</span> Fully operational offline.</li>
+            <li>✦ <span class="text-white">Pure Entropy:</span> Browser cryptographically secure.</li>
+            <li>✦ <span class="text-white">Data Leak Protection:</span> 0% storage index.</li>
+        </ul>
+    </div>
 
-<button onclick="copy()">COPY PASSWORD</button>
-</div>
-
-<!-- INFO -->
-<div class="card">
-<h3>ABOUT THIS SYSTEM</h3>
-
-<p>
-CyberVault Password Engine is a free cybersecurity tool designed to generate strong, unpredictable passwords using randomized entropy logic.
-</p>
-
-<p>
-✔ No payment required<br>
-✔ No user tracking<br>
-✔ No data storage<br>
-✔ Works fully offline in browser
-</p>
-
-<p>
-Use this tool to improve account security across platforms.
-</p>
-</div>
-
-<!-- DEVELOPER -->
-<div class="card">
-<h3>DEVELOPER</h3>
-<p>
-Developed in Kenya by <b>Prevellah / Gloom Cyber Systems</b>
-</p>
-</div>
-
-<div class="footer">
-© 2026 CYBERVAULT CORE SYSTEM
-</div>
+    <div class="footer">
+        © 2026 CYBERVAULT SECURE ENGINE
+    </div>
 
 </div>
 
 <script>
+let current = "";
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-let current="";
-
-/* BOOT */
-setTimeout(()=>{
-document.getElementById("boot").style.display="none";
-},3000);
-
-/* PASSWORD GENERATOR */
-function generate(){
-let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
-let pass="";
-
-for(let i=0;i<16;i++){
-pass+=chars[Math.floor(Math.random()*chars.length)];
+// SYSTEM SYNTHESIZED KEYBOARD SOUNDS
+function playKeySound(type = 'press') {
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+    
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    if (type === 'press') {
+        // High-pitched short mechanical click
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(800 + Math.random() * 400, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.04);
+        gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.04);
+    } else if (type === 'space') {
+        // Lower clack for actions/spacebar
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(150 + Math.random() * 50, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.08);
+        gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.08);
+    }
 }
 
-current=pass;
-document.getElementById("out").innerText=pass;
+// Global click sound tracking
+document.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') {
+        playKeySound('space');
+    } else {
+        playKeySound('press');
+    }
+});
+
+/* BOOT SYSTEM */
+setTimeout(() => {
+    document.getElementById("boot").style.display = "none";
+    playKeySound('space');
+}, 2700);
+
+/* PASSWORD GENERATOR USING CRYPTOGRAPHIC ENTROPY */
+function generate() {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-{}[]";
+    let pass = "";
+    
+    // Using Cryptographically Secure pseudo-random number generator
+    const array = new Uint32Array(18);
+    window.crypto.getRandomValues(array);
+    
+    for (let i = 0; i < 18; i++) {
+        pass += chars[array[i] % chars.length];
+    }
+    
+    current = pass;
+    document.getElementById("out").innerText = pass;
 }
 
-/* COPY */
-function copy(){
-navigator.clipboard.writeText(current||"");
-alert("COPIED");
+/* COPY FUNCTION */
+function copy() {
+    if (!current) return;
+    navigator.clipboard.writeText(current);
+    const outBox = document.getElementById("out");
+    const originalText = outBox.innerText;
+    outBox.innerText = "✓ COPIED SECURELY";
+    outBox.style.color = "#00ff99";
+    
+    setTimeout(() => {
+        outBox.innerText = originalText;
+        outBox.style.color = "#ffffff";
+    }, 1500);
 }
 
+/* TYPEWRITER REVEAL FOR DEVELOPER PROFILE */
+let revealing = false;
+function startDeveloperReveal() {
+    if (revealing) return;
+    revealing = true;
+    
+    const terminal = document.getElementById("terminal-body");
+    terminal.innerHTML = ""; // Clear existing
+    
+    const lines = [
+        "Connecting to Gloom DNS...",
+        "Querying signature database...",
+        "----------------------------------",
+        "CREATOR: Prevellah",
+        "ORIGIN : Eldoret, Kenya",
+        "GROUP  : Gloom Cyber Systems",
+        "STATUS : SECURE NODE ACTIVE"
+    ];
+    
+    let currentLineIndex = 0;
+    let currentCharIndex = 0;
+    
+    function typeNextChar() {
+        if (currentLineIndex < lines.length) {
+            const currentLine = lines[currentLineIndex];
+            
+            if (currentCharIndex === 0) {
+                // If beginning of line, append container
+                terminal.innerHTML += `<div id="line-${currentLineIndex}"></div>`;
+            }
+            
+            const lineElement = document.getElementById(`line-${currentLineIndex}`);
+            lineElement.innerHTML = currentLine.substring(0, currentCharIndex + 1);
+            
+            // Play physical mechanical key click sound
+            playKeySound('press');
+            
+            currentCharIndex++;
+            
+            if (currentCharIndex < currentLine.length) {
+                setTimeout(typeNextChar, 30 + Math.random() * 40);
+            } else {
+                currentLineIndex++;
+                currentCharIndex = 0;
+                playKeySound('space'); // Play spacebar/enter clack for line breaks
+                setTimeout(typeNextChar, 150);
+            }
+        } else {
+            terminal.innerHTML += `<span>_</span><span class="cursor"></span>`;
+            revealing = false;
+        }
+    }
+    
+    typeNextChar();
+}
 </script>
 
 </body>
