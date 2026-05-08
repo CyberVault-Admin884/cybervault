@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CYBERVAULT TERMINAL OS</title>
+<title>CYBERVAULT PASSWORD CORE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -14,7 +14,7 @@ color:#00ffea;
 overflow-x:hidden;
 }
 
-/* ===== SCANLINES + GLOW ===== */
+/* SCANLINES */
 body::before{
 content:"";
 position:fixed;
@@ -26,7 +26,7 @@ rgba(0,255,255,0.06) 1px,
 transparent 1px,
 transparent 4px
 );
-animation:scan 5s linear infinite;
+animation:scan 6s linear infinite;
 pointer-events:none;
 }
 
@@ -35,12 +35,12 @@ pointer-events:none;
 100%{transform:translateY(40px);}
 }
 
-/* ===== GLITCH GLOW TEXT ===== */
-h2,h3{
-text-shadow:0 0 10px #00ffea;
+/* GLOW TEXT */
+h1,h2,h3{
+text-shadow:0 0 12px #00ffea;
 }
 
-/* ===== BOOT SCREEN ===== */
+/* BOOT */
 #boot{
 position:fixed;
 inset:0;
@@ -59,9 +59,9 @@ animation:fade 0.6s forwards;
 
 @keyframes fade{to{opacity:1;}}
 
-/* ===== LAYOUT ===== */
+/* LAYOUT */
 .container{
-max-width:900px;
+max-width:800px;
 margin:auto;
 padding:20px;
 }
@@ -99,19 +99,12 @@ border:1px solid #00ffea;
 color:#00ffea;
 }
 
-table{
-width:100%;
-border-collapse:collapse;
+.output{
 margin-top:10px;
-font-size:12px;
+padding:10px;
+border:1px dashed #00ffea55;
+word-break:break-all;
 }
-
-td,th{
-border:1px solid #00ffea33;
-padding:6px;
-}
-
-.hidden{display:none;}
 
 .footer{
 text-align:center;
@@ -124,186 +117,89 @@ margin-top:20px;
 
 <body>
 
-<!-- ===== BOOT ANIMATION ===== -->
+<!-- BOOT -->
 <div id="boot">
 <div class="boot-line">INITIALIZING CYBERVAULT CORE...</div>
-<div class="boot-line">LOADING ENCRYPTION MODULES...</div>
-<div class="boot-line">CONNECTING TERMINAL INTERFACE...</div>
-<div class="boot-line">SYSTEM READY ✓</div>
+<div class="boot-line">LOADING CRYPTO ENGINE...</div>
+<div class="boot-line">SECURITY MODULE READY...</div>
+<div class="boot-line">SYSTEM ONLINE ✓</div>
 </div>
 
 <div class="container">
 
-<h2>CYBERVAULT TERMINAL OS</h2>
+<h1>CYBERVAULT PASSWORD ENGINE</h1>
 
-<!-- ===== USER SECTION ===== -->
-<div id="user">
-
+<!-- PASSWORD GENERATOR -->
 <div class="card">
-<h3>USER ACCESS REQUEST</h3>
-<input id="phone" placeholder="ENTER PHONE NUMBER">
-<button onclick="request()">REQUEST ACCESS KEY</button>
-<p id="keyOut"></p>
+<h3>GENERATE STRONG PASSWORD</h3>
+
+<button onclick="generate()">GENERATE PASSWORD</button>
+
+<div class="output" id="out">---</div>
+
+<button onclick="copy()">COPY PASSWORD</button>
 </div>
 
+<!-- INFO -->
 <div class="card">
-<h3>LOGIN SYSTEM</h3>
-<input id="loginPhone" placeholder="PHONE">
-<input id="loginKey" placeholder="ACCESS KEY">
-<button onclick="login()">GENERATE PASSWORD</button>
-<p id="result"></p>
-</div>
+<h3>ABOUT THIS SYSTEM</h3>
 
-<button onclick="openAdmin()">ADMIN DASHBOARD</button>
-
-</div>
-
-<!-- ===== ADMIN LOGIN ===== -->
-<div id="adminLogin" class="card hidden">
-<h3>STAFF ONLY ACCESS</h3>
-<input id="adminPass" placeholder="ENTER ADMIN PASSKEY">
-<button onclick="adminLogin()">UNLOCK SYSTEM</button>
-</div>
-
-<!-- ===== ADMIN PANEL ===== -->
-<div id="adminPanel" class="hidden">
-
-<div class="card">
-<h3>FOR OFFICIAL USE ONLY / STAFF DASHBOARD</h3>
-
-<table>
-<thead>
-<tr>
-<th>PHONE</th>
-<th>KEY</th>
-<th>STATUS</th>
-<th>ACTION</th>
-</tr>
-</thead>
-<tbody id="table"></tbody>
-</table>
-</div>
-
-<!-- ===== DOCUMENTATION ===== -->
-<div class="card">
-<h3>WHY THIS SYSTEM EXISTS</h3>
 <p>
-CYBERVAULT is a secure terminal-based access system designed for controlled user authentication, bot prevention, and structured password generation workflows.
-</p>
-
-<h4>💳 PAYMENT SYSTEM</h4>
-<p>
-Users must send 1 KES via M-PESA:
-<br>*334# → Pochi La Biashara → 0142122710
+CyberVault Password Engine is a free cybersecurity tool designed to generate strong, unpredictable passwords using randomized entropy logic.
 </p>
 
 <p>
-Purpose:
-<br>✔ Anti-bot filtering
-<br>✔ System maintenance
-<br>✔ Ad-free stability
+✔ No payment required<br>
+✔ No user tracking<br>
+✔ No data storage<br>
+✔ Works fully offline in browser
 </p>
 
-<h4>⚠ SECURITY NOTE</h4>
 <p>
-Passwords are generated dynamically and are NOT stored in the system. Users must copy immediately after generation.
+Use this tool to improve account security across platforms.
 </p>
+</div>
 
-<h4>👨‍💻 DEVELOPER</h4>
+<!-- DEVELOPER -->
+<div class="card">
+<h3>DEVELOPER</h3>
 <p>
-Developed in Kenya by Prevellah / Gloom Cyber Systems
+Developed in Kenya by <b>Prevellah / Gloom Cyber Systems</b>
 </p>
 </div>
 
 <div class="footer">
-© 2026 CYBERVAULT SYSTEM | SUPPORT: 0142122710
-</div>
-
+© 2026 CYBERVAULT CORE SYSTEM
 </div>
 
 </div>
 
 <script>
 
-let users = JSON.parse(localStorage.getItem("cv_users") || "{}");
-let password="";
-
-/* SAVE */
-function save(){
-localStorage.setItem("cv_users",JSON.stringify(users));
-}
+let current="";
 
 /* BOOT */
 setTimeout(()=>{
 document.getElementById("boot").style.display="none";
 },3000);
 
-/* REQUEST */
-function request(){
-let p=document.getElementById("phone").value;
-if(!p)return;
+/* PASSWORD GENERATOR */
+function generate(){
+let chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
+let pass="";
 
-let key="CV-"+Math.random().toString(36).substring(2,9).toUpperCase();
-
-users[p]={key:key,status:"PENDING"};
-save();
-
-document.getElementById("keyOut").innerText="YOUR KEY: "+key;
+for(let i=0;i<16;i++){
+pass+=chars[Math.floor(Math.random()*chars.length)];
 }
 
-/* LOGIN */
-function login(){
-let p=document.getElementById("loginPhone").value;
-let k=document.getElementById("loginKey").value;
-
-if(!users[p])return alert("USER NOT FOUND");
-if(users[p].status!=="APPROVED")return alert("NOT APPROVED");
-if(users[p].key!==k)return alert("INVALID KEY");
-
-password=Math.random().toString(36).substring(2,12);
-document.getElementById("result").innerText="PASSWORD: "+password;
+current=pass;
+document.getElementById("out").innerText=pass;
 }
 
-/* ADMIN OPEN */
-function openAdmin(){
-document.getElementById("adminLogin").classList.remove("hidden");
-}
-
-/* ADMIN LOGIN */
-function adminLogin(){
-let pass=document.getElementById("adminPass").value;
-
-if(pass==="CYBER-ADMIN-2026"){
-document.getElementById("adminPanel").classList.remove("hidden");
-render();
-document.getElementById("adminLogin").classList.add("hidden");
-}else{
-alert("ACCESS DENIED");
-}
-}
-
-/* APPROVE USER */
-function approve(p){
-users[p].status="APPROVED";
-save();
-render();
-}
-
-/* RENDER TABLE */
-function render(){
-let t=document.getElementById("table");
-t.innerHTML="";
-
-for(let p in users){
-t.innerHTML+=`
-<tr>
-<td>${p}</td>
-<td>${users[p].key}</td>
-<td>${users[p].status}</td>
-<td><button onclick="approve('${p}')">APPROVE</button></td>
-</tr>
-`;
-}
+/* COPY */
+function copy(){
+navigator.clipboard.writeText(current||"");
+alert("COPIED");
 }
 
 </script>
