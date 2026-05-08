@@ -14,7 +14,7 @@ color:#00ffea;
 overflow-x:hidden;
 }
 
-/* SCANLINES */
+/* HACKER SCANLINES */
 body::before{
 content:"";
 position:fixed;
@@ -54,9 +54,9 @@ animation:show 0.5s forwards;
 
 @keyframes show{to{opacity:1;}}
 
-/* LAYOUT */
+/* UI */
 .container{
-max-width:800px;
+max-width:900px;
 margin:auto;
 padding:20px;
 }
@@ -65,8 +65,8 @@ padding:20px;
 border:1px solid #00ffea55;
 padding:15px;
 margin-top:10px;
-background:rgba(0,40,50,0.2);
-box-shadow:0 0 15px rgba(0,255,234,0.15);
+background:rgba(0,40,50,0.25);
+box-shadow:0 0 10px rgba(0,255,234,0.2);
 }
 
 button{
@@ -77,12 +77,6 @@ background:#00ffea;
 border:none;
 font-weight:bold;
 cursor:pointer;
-transition:0.2s;
-}
-
-button:hover{
-transform:scale(1.02);
-box-shadow:0 0 10px #00ffea;
 }
 
 input{
@@ -108,21 +102,11 @@ padding:6px;
 
 .hidden{display:none;}
 
-/* EXIT */
-#exit{
-position:fixed;
-inset:0;
-display:none;
-background:rgba(0,0,0,0.85);
-justify-content:center;
-align-items:center;
-}
-
-.modal{
-background:#001010;
-padding:20px;
-border:1px solid #00ffea;
-width:300px;
+.footer{
+margin-top:20px;
+text-align:center;
+font-size:11px;
+opacity:0.7;
 }
 </style>
 </head>
@@ -131,68 +115,50 @@ width:300px;
 
 <!-- BOOT -->
 <div id="boot">
-<div class="boot-line">INITIALIZING CYBERVAULT OS...</div>
+<div class="boot-line">INITIALIZING CYBERVAULT...</div>
 <div class="boot-line">LOADING SECURITY MODULES...</div>
-<div class="boot-line">ENCRYPTING USER LAYER...</div>
+<div class="boot-line">ENCRYPTING SYSTEM CORE...</div>
 <div class="boot-line">SYSTEM READY ✓</div>
-</div>
-
-<!-- EXIT -->
-<div id="exit">
-<div class="modal">
-<p>EXIT SYSTEM?</p>
-<button onclick="closeExit()">CANCEL</button>
-<button onclick="exitNow()">EXIT</button>
-</div>
 </div>
 
 <div class="container">
 
 <h2>CYBERVAULT TERMINAL OS</h2>
 
-<!-- MODE SWITCH -->
-<div class="card">
-<button onclick="showUser()">USER DASHBOARD</button>
-<button onclick="lockAdmin()">ADMIN DASHBOARD</button>
-</div>
-
-<!-- USER -->
+<!-- USER PANEL -->
 <div id="user">
 
 <div class="card">
-<h3>REQUEST ACCESS</h3>
-<input id="phone" placeholder="ENTER PHONE">
-<button onclick="request()">GENERATE KEY</button>
+<h3>USER ACCESS REQUEST</h3>
+<input id="phone" placeholder="ENTER PHONE NUMBER">
+<button onclick="request()">REQUEST ACCESS KEY</button>
 <p id="keyOut"></p>
-<button onclick="copyKey()">COPY KEY</button>
 </div>
 
 <div class="card">
-<h3>LOGIN SYSTEM</h3>
+<h3>LOGIN</h3>
 <input id="loginPhone" placeholder="PHONE">
 <input id="loginKey" placeholder="ACCESS KEY">
 <button onclick="login()">GENERATE PASSWORD</button>
 <p id="result"></p>
-<button onclick="copyPass()">COPY PASSWORD</button>
 </div>
 
-<button style="background:red;color:white;" onclick="showExit()">EXIT SYSTEM</button>
+<button onclick="showAdmin()">ADMIN DASHBOARD</button>
 
 </div>
 
-<!-- ADMIN -->
-<div id="admin" class="hidden">
-
-<div class="card">
-<h3>ADMIN SECURITY GATE</h3>
-<input id="adminPass" placeholder="ENTER SECURITY KEY">
-<button onclick="adminLogin()">UNLOCK PANEL</button>
+<!-- ADMIN LOGIN -->
+<div id="adminLogin" class="card hidden">
+<h3>STAFF ONLY ACCESS</h3>
+<input id="adminPass" placeholder="ENTER ADMIN PASSKEY">
+<button onclick="adminLogin()">UNLOCK</button>
 </div>
 
+<!-- ADMIN PANEL -->
 <div id="adminPanel" class="hidden">
 
 <div class="card">
-<h3>USER DATABASE</h3>
+<h3>FOR OFFICIAL USE ONLY / STAFF DASHBOARD</h3>
 
 <table>
 <thead>
@@ -208,6 +174,40 @@ width:300px;
 
 </div>
 
+<!-- INFO SECTION -->
+<div class="card">
+<h3>WHY THIS SYSTEM EXISTS</h3>
+<p>
+CYBERVAULT is a controlled access system designed to manage user authentication, prevent bots, and regulate access to secure password generation services.
+</p>
+
+<h4>💳 PAYMENT SYSTEM</h4>
+<p>
+Users send 1 KES via M-PESA:
+<br>*334# → Pochi La Biashara → Send to 0142122710
+</p>
+
+<p>
+Purpose:
+<br>✔ Anti-bot protection
+<br>✔ System maintenance
+<br>✔ Ad-free operation
+</p>
+
+<h4>⚠ IMPORTANT</h4>
+<p>
+The system does NOT permanently store passwords. Passwords are generated once and must be copied immediately.
+</p>
+
+<h4>👨‍💻 DEVELOPER</h4>
+<p>
+Developed in Kenya by Prevellah / Gloom Cyber Systems
+</p>
+
+</div>
+
+<div class="footer">
+© 2026 CYBERVAULT SYSTEM | Support: 0142122710
 </div>
 
 </div>
@@ -218,7 +218,6 @@ width:300px;
 
 let users = JSON.parse(localStorage.getItem("cv_users") || "{}");
 let password="";
-let lastKey="";
 
 /* SAVE */
 function save(){
@@ -230,18 +229,6 @@ setTimeout(()=>{
 document.getElementById("boot").style.display="none";
 },3000);
 
-/* USER */
-function showUser(){
-document.getElementById("user").classList.remove("hidden");
-document.getElementById("admin").classList.add("hidden");
-}
-
-/* ADMIN LOCK */
-function lockAdmin(){
-document.getElementById("user").classList.add("hidden");
-document.getElementById("admin").classList.remove("hidden");
-}
-
 /* REQUEST */
 function request(){
 let p=document.getElementById("phone").value;
@@ -252,7 +239,6 @@ let key="CV-"+Math.random().toString(36).substring(2,9).toUpperCase();
 users[p]={key:key,status:"PENDING"};
 save();
 
-lastKey=key;
 document.getElementById("keyOut").innerText="YOUR KEY: "+key;
 }
 
@@ -269,38 +255,32 @@ password=Math.random().toString(36).substring(2,12);
 document.getElementById("result").innerText="PASSWORD: "+password;
 }
 
-/* COPY */
-function copyKey(){
-navigator.clipboard.writeText(lastKey||"");
-alert("KEY COPIED");
+/* ADMIN ACCESS */
+function showAdmin(){
+document.getElementById("adminLogin").classList.remove("hidden");
 }
 
-function copyPass(){
-navigator.clipboard.writeText(password||"");
-alert("PASSWORD COPIED");
-}
-
-/* ADMIN LOGIN (UI SECURITY LAYER) */
+/* ADMIN LOGIN */
 function adminLogin(){
 let pass=document.getElementById("adminPass").value;
 
-/* “SECURITY LAYER” (frontend gate) */
 if(pass==="CYBER-ADMIN-2026"){
 document.getElementById("adminPanel").classList.remove("hidden");
 render();
+document.getElementById("adminLogin").classList.add("hidden");
 }else{
 alert("ACCESS DENIED");
 }
 }
 
-/* APPROVE */
+/* APPROVE USER */
 function approve(p){
 users[p].status="APPROVED";
 save();
 render();
 }
 
-/* TABLE */
+/* RENDER TABLE */
 function render(){
 let t=document.getElementById("table");
 t.innerHTML="";
@@ -316,19 +296,6 @@ t.innerHTML+=`
 `;
 }
 }
-
-/* EXIT */
-function showExit(){
-document.getElementById("exit").style.display="flex";
-}
-function closeExit(){
-document.getElementById("exit").style.display="none";
-}
-function exitNow(){
-window.location.href="about:blank";
-}
-
-showUser();
 
 </script>
 
