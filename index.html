@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CYBERVAULT | Secure Manual SaaS</title>
+<title>CYBERVAULT | Secure Vault</title>
 
 <style>
 body{
@@ -12,8 +12,43 @@ body{
     font-family:monospace;
     background:#020617;
     color:#7dd3fc;
+    overflow-x:hidden;
 }
 
+/* ===== LOADING SCREEN ===== */
+#boot{
+    position:fixed;
+    inset:0;
+    background:#020617;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:bold;
+    color:#38bdf8;
+    text-shadow:0 0 15px #38bdf8;
+}
+
+.loader{
+    width:50px;
+    height:50px;
+    margin-top:20px;
+    border-radius:50%;
+    border:3px solid #1e293b;
+    border-top:3px solid #38bdf8;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    100%{transform:rotate(360deg);}
+}
+
+/* ===== APP ===== */
 .container{
     max-width:520px;
     margin:auto;
@@ -36,6 +71,7 @@ input{
     border:1px solid #334155;
     background:#020617;
     color:#7dd3fc;
+    outline:none;
 }
 
 button{
@@ -50,7 +86,6 @@ button{
 
 .primary{ background:#38bdf8; color:#000; }
 .secondary{ background:#1e293b; color:#7dd3fc; }
-.danger{ background:#ef4444; color:#fff; }
 
 .box{
     margin-top:10px;
@@ -62,54 +97,51 @@ button{
     min-height:40px;
     color:#4ade80;
 }
-
-.status{
-    margin-top:10px;
-    font-size:12px;
-    color:#93c5fd;
-}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- LOADING -->
+<div id="boot">
+    <div class="logo">CYBERVAULT</div>
+    <div class="loader"></div>
+    <p style="margin-top:15px;font-size:12px;">Initializing secure environment...</p>
+</div>
 
-<h2>CYBERVAULT MANUAL SAAS</h2>
+<!-- APP -->
+<div class="container" id="app" style="display:none;">
 
-<!-- USER SECTION -->
+<h2>CYBERVAULT SECURE SYSTEM</h2>
+
+<!-- USER -->
 <div class="card">
-
 <h3>User Request</h3>
 
-<input id="phone" placeholder="Enter phone">
+<input id="phone" placeholder="Enter phone number">
 
 <button class="primary" onclick="submitRequest()">
 Submit Request
 </button>
 
-<div class="status" id="status">
-Waiting for admin approval...
+<p id="status" style="font-size:12px;color:#93c5fd;">
+Waiting for approval...
+</p>
 </div>
 
-</div>
-
-<!-- VOUCHER SECTION -->
+<!-- VOUCHER -->
 <div class="card">
+<h3>Voucher Access</h3>
 
-<h3>Enter Voucher</h3>
-
-<input id="voucher" placeholder="Enter voucher code">
+<input id="voucher" placeholder="Enter voucher">
 
 <button class="primary" onclick="verifyVoucher()">
 Unlock System
 </button>
-
 </div>
 
-<!-- OUTPUT -->
+<!-- PASSWORD -->
 <div class="card">
-
 <h3>Password Generator</h3>
 
 <div class="box" id="output">LOCKED</div>
@@ -117,13 +149,11 @@ Unlock System
 <button class="secondary" onclick="copyPass()">
 Copy Password
 </button>
-
 </div>
 
-<!-- ADMIN PANEL (SAME PAGE) -->
+<!-- ADMIN -->
 <div class="card">
-
-<h3>Admin Panel (YOU)</h3>
+<h3>Admin Panel</h3>
 
 <input id="adminPhone" placeholder="User phone">
 
@@ -132,39 +162,48 @@ Generate Voucher
 </button>
 
 <div class="box" id="adminOut"></div>
-
 </div>
 
 </div>
 
 <script>
 
+/* ===== SAFE LOADING (FIXED — NO FREEZE) ===== */
+window.onload = () => {
+    setTimeout(() => {
+        document.getElementById("boot").style.display = "none";
+        document.getElementById("app").style.display = "block";
+    }, 2000);
+};
+
+/* ===== DATA ===== */
 let activeUser = null;
 
-/* USER REQUEST */
+/* ===== USER REQUEST ===== */
 function submitRequest(){
-
     const phone = document.getElementById("phone").value;
 
     if(phone.length < 10){
-        alert("Invalid number");
+        alert("Invalid phone number");
         return;
     }
 
     activeUser = phone;
-
-    localStorage.setItem("status", "pending");
+    localStorage.setItem("status","pending");
 
     document.getElementById("status").innerText =
-    "Request submitted. Await voucher.";
-
+    "Request submitted. Await admin voucher.";
 }
 
-/* ADMIN GENERATES VOUCHER */
+/* ===== ADMIN VOUCHER ===== */
 function generateVoucher(){
 
-    const phone =
-    document.getElementById("adminPhone").value;
+    const phone = document.getElementById("adminPhone").value;
+
+    if(phone.length < 10){
+        alert("Invalid phone");
+        return;
+    }
 
     const voucher =
     "CV-" + Math.random().toString(36).substring(2,8).toUpperCase();
@@ -174,37 +213,37 @@ function generateVoucher(){
     document.getElementById("adminOut").innerText =
     "PHONE: " + phone + "\nVOUCHER: " + voucher;
 
-    alert("Voucher generated and sent manually.");
+    alert("Voucher created (manual delivery required)");
 }
 
-/* VERIFY VOUCHER */
+/* ===== VERIFY VOUCHER ===== */
 function verifyVoucher(){
 
-    const voucher =
-    document.getElementById("voucher").value;
+    const voucher = document.getElementById("voucher").value;
+    const stored = localStorage.getItem("voucher_"+activeUser);
 
-    const stored =
-    localStorage.getItem("voucher_"+activeUser);
+    if(!stored){
+        alert("No voucher assigned yet");
+        return;
+    }
 
-    if(voucher !== stored || !stored){
+    if(voucher !== stored){
         alert("Invalid voucher");
         return;
     }
 
-    const password = generatePassword(20);
+    const pass = generatePassword(20);
 
-    document.getElementById("output").innerText =
-    password;
-
+    document.getElementById("output").innerText = pass;
 }
 
-/* PASSWORD */
+/* ===== PASSWORD GENERATOR ===== */
 function generatePassword(len){
 
     const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!";
 
-    let p="";
+    let p = "";
 
     for(let i=0;i<len;i++){
         p += chars[Math.floor(Math.random()*chars.length)];
@@ -213,18 +252,17 @@ function generatePassword(len){
     return p;
 }
 
-/* COPY */
+/* ===== COPY ===== */
 function copyPass(){
 
-    const t =
-    document.getElementById("output").innerText;
+    const text = document.getElementById("output").innerText;
 
-    if(t==="LOCKED"){
-        alert("Nothing generated");
+    if(text === "LOCKED"){
+        alert("Nothing generated yet");
         return;
     }
 
-    navigator.clipboard.writeText(t);
+    navigator.clipboard.writeText(text);
     alert("Copied");
 }
 
