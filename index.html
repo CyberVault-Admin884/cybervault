@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CYBERVAULT | Secure Vault</title>
+
+<title>CYBERVAULT | HACKER CORE</title>
 
 <style>
 body{
@@ -11,41 +12,45 @@ body{
     font-family:monospace;
     background:#020617;
     color:#7dd3fc;
+    overflow-x:hidden;
 }
 
-/* BOOT */
-#boot{
+/* =========================
+   GLITCH BACKGROUND LAYER
+========================= */
+body::before{
+    content:"";
     position:fixed;
     inset:0;
-    background:#020617;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    z-index:9999;
+    background:
+    radial-gradient(circle at 20% 20%, #0ea5e9 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, #22c55e 0%, transparent 40%);
+    opacity:0.08;
+    z-index:-1;
 }
 
-.logo{
-    font-size:32px;
+/* =========================
+   GLITCH TITLE
+========================= */
+.glitch{
+    font-size:28px;
     font-weight:bold;
     color:#38bdf8;
+    text-shadow:
+    0 0 5px #38bdf8,
+    0 0 15px #0ea5e9,
+    0 0 25px #38bdf8;
+    animation:flicker 1.8s infinite alternate;
 }
 
-.loader{
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    border:3px solid #1e293b;
-    border-top:3px solid #38bdf8;
-    animation:spin 1s linear infinite;
-    margin-top:15px;
+@keyframes flicker{
+    0%{opacity:1;transform:translateX(0);}
+    100%{opacity:0.7;transform:translateX(1px);}
 }
 
-@keyframes spin{
-    100%{transform:rotate(360deg);}
-}
-
-/* APP */
+/* =========================
+   LAYOUT
+========================= */
 .container{
     max-width:520px;
     margin:auto;
@@ -53,13 +58,18 @@ body{
 }
 
 .card{
-    background:#0f172a;
-    padding:18px;
+    background:rgba(15,23,42,0.9);
+    padding:16px;
     margin-top:15px;
     border-radius:14px;
     border:1px solid #1e293b;
+    box-shadow:0 0 20px rgba(56,189,248,0.08);
+    backdrop-filter: blur(5px);
 }
 
+/* =========================
+   INPUTS
+========================= */
 input{
     width:100%;
     padding:12px;
@@ -70,6 +80,9 @@ input{
     color:#7dd3fc;
 }
 
+/* =========================
+   BUTTONS
+========================= */
 button{
     width:100%;
     margin-top:10px;
@@ -78,86 +91,90 @@ button{
     border-radius:10px;
     cursor:pointer;
     font-weight:bold;
+    transition:0.2s;
+}
+
+button:active{
+    transform:scale(0.98);
 }
 
 .primary{background:#38bdf8;color:#000;}
 .secondary{background:#1e293b;color:#7dd3fc;}
 .danger{background:#ef4444;color:#fff;}
 
+/* =========================
+   OUTPUT BOX
+========================= */
 .box{
     margin-top:10px;
     padding:12px;
     border-radius:10px;
     background:#020617;
     border:1px solid #334155;
-    word-break:break-word;
-    min-height:40px;
     color:#4ade80;
+    word-break:break-all;
+    min-height:40px;
 }
 
-small{
-    color:#94a3b8;
+/* =========================
+   SHAKE ANIMATION (ERROR)
+========================= */
+.shake{
+    animation:shake 0.3s linear 2;
+}
+
+@keyframes shake{
+    0%{transform:translateX(0);}
+    25%{transform:translateX(-5px);}
+    50%{transform:translateX(5px);}
+    75%{transform:translateX(-5px);}
+    100%{transform:translateX(0);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- BOOT SCREEN -->
-<div id="boot">
-    <div class="logo">CYBERVAULT</div>
-    <div class="loader"></div>
-    <p style="font-size:12px;margin-top:10px;">
-        Initializing secure system...
-    </p>
-</div>
+<div class="container">
 
-<!-- MAIN APP -->
-<div class="container" id="app" style="display:none;">
+<h2 class="glitch">CYBERVAULT v3 // HACKER CORE</h2>
 
-<!-- EXIT -->
-<button class="danger" onclick="exitApp()">EXIT SYSTEM</button>
-
-<!-- DOCUMENTATION -->
+<!-- SYSTEM INFO -->
 <div class="card">
-<h3>📘 How This System Works</h3>
 <small>
-1. Enter your phone number (used for verification request)<br>
-2. Send 1 KES via Pochi La Biashara to the provided number<br>
-3. Wait for admin voucher approval<br>
-4. Enter voucher to unlock password generator<br>
-5. Generate secure password
+📘 SYSTEM FLOW:<br>
+1. Pay via Pochi La Biashara (*334#)<br>
+2. Enter phone (identifier only)<br>
+3. Wait admin voucher<br>
+4. Unlock password generator
 </small>
 </div>
 
-<!-- PAYMENT INFO -->
+<!-- PAYMENT -->
 <div class="card">
-<h3>💰 Pochi La Biashara Payment</h3>
-<p>Send <b>1 KES</b> to:</p>
+<h3>💰 PAYMENT NODE</h3>
+<p>Send 1 KES to:</p>
 <p><b>0142122710</b></p>
-<small>This confirms your request for system access.</small>
 </div>
 
-<!-- USER INPUT -->
-<div class="card">
-<h3>User Request</h3>
-<small>Enter number to request access</small>
+<!-- USER -->
+<div class="card" id="userCard">
+<h3>User Access</h3>
+
 <input id="phone" placeholder="07XXXXXXXX">
 
-<button class="primary" onclick="submitRequest()">
-Submit Payment Request
+<button class="primary" onclick="requestAccess()">
+Submit Request
 </button>
 
-<p id="status" style="font-size:12px;color:#93c5fd;">
-Waiting for verification...
-</p>
+<p id="status">Awaiting verification...</p>
 </div>
 
 <!-- VOUCHER -->
-<div class="card">
-<h3>Voucher Verification</h3>
-<small>Enter code received after admin approval</small>
-<input id="voucher" placeholder="CV-XXXXX">
+<div class="card" id="voucherCard">
+<h3>Voucher Unlock</h3>
+
+<input id="voucher" placeholder="CV-XXXXXX">
 
 <button class="primary" onclick="verifyVoucher()">
 Unlock System
@@ -166,18 +183,18 @@ Unlock System
 
 <!-- PASSWORD -->
 <div class="card">
-<h3>Password Generator</h3>
+<h3>Generated Key</h3>
+
 <div class="box" id="output">LOCKED</div>
 
 <button class="secondary" onclick="copyPass()">
-Copy Password
+Copy Key
 </button>
 </div>
 
 <!-- ADMIN -->
 <div class="card">
-<h3>Admin Panel</h3>
-<small>Generate voucher for user manually</small>
+<h3>Admin Control</h3>
 
 <input id="adminPhone" placeholder="User phone">
 
@@ -192,94 +209,107 @@ Generate Voucher
 
 <script>
 
-/* SAFE BOOT (2 seconds ONLY) */
-(function(){
-    function start(){
-        document.getElementById("boot").style.display="none";
-        document.getElementById("app").style.display="block";
-    }
-    setTimeout(start,2000);
-})();
+/* =========================
+   STATE
+========================= */
+let user=null;
 
-/* EXIT */
-function exitApp(){
-    if(confirm("Exit CYBERVAULT system?")){
-        window.location.href="about:blank";
+/* =========================
+   ERROR FEEDBACK (VIBRATE + SHAKE)
+========================= */
+function errorFX(id){
+    const el=document.getElementById(id);
+    if(el){
+        el.classList.add("shake");
+        setTimeout(()=>el.classList.remove("shake"),400);
+    }
+    if(navigator.vibrate){
+        navigator.vibrate([200,100,200]);
     }
 }
 
-/* USER REQUEST */
-let activeUser=null;
+/* =========================
+   USER REQUEST
+========================= */
+function requestAccess(){
 
-function submitRequest(){
-    const phone=document.getElementById("phone").value;
+    const p=document.getElementById("phone").value;
 
-    if(phone.length<10){
-        alert("Enter valid number");
+    if(p.length<10){
+        errorFX("userCard");
+        alert("Invalid phone number");
         return;
     }
 
-    activeUser=phone;
-
+    user=p;
     document.getElementById("status").innerText=
     "Request sent. Await admin voucher.";
 }
 
-/* ADMIN */
+/* =========================
+   ADMIN VOUCHER
+========================= */
 function generateVoucher(){
 
-    const phone=document.getElementById("adminPhone").value;
+    const p=document.getElementById("adminPhone").value;
 
-    if(phone.length<10){
+    if(p.length<10){
+        errorFX("adminOut");
         alert("Invalid phone");
         return;
     }
 
-    const voucher="CV-"+Math.random().toString(36).substring(2,8).toUpperCase();
+    const v="CV-"+Math.random().toString(36).substring(2,8).toUpperCase();
 
-    localStorage.setItem("voucher_"+phone,voucher);
+    localStorage.setItem("voucher_"+p,v);
 
     document.getElementById("adminOut").innerText=
-    "PHONE: "+phone+"\nVOUCHER: "+voucher;
+    "PHONE: "+p+"\nVOUCHER: "+v;
 }
 
-/* VERIFY */
+/* =========================
+   VERIFY
+========================= */
 function verifyVoucher(){
 
     const v=document.getElementById("voucher").value;
-    const stored=localStorage.getItem("voucher_"+activeUser);
+    const stored=localStorage.getItem("voucher_"+user);
 
     if(!stored){
+        errorFX("voucherCard");
         alert("No voucher yet");
         return;
     }
 
     if(v!==stored){
+        errorFX("voucherCard");
         alert("Invalid voucher");
         return;
     }
 
-    const pass=generatePassword(20);
-
-    document.getElementById("output").innerText=pass;
+    document.getElementById("output").innerText=
+    generatePassword(20);
 }
 
-/* PASSWORD */
-function generatePassword(len){
+/* =========================
+   PASSWORD ENGINE
+========================= */
+function generatePassword(n){
     const c="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*!";
-
-    let p="";
-    for(let i=0;i<len;i++){
-        p+=c[Math.floor(Math.random()*c.length)];
+    let r="";
+    for(let i=0;i<n;i++){
+        r+=c[Math.floor(Math.random()*c.length)];
     }
-    return p;
+    return r;
 }
 
-/* COPY */
+/* =========================
+   COPY
+========================= */
 function copyPass(){
-    const t=document.getElementById("output").innerText;
-    if(t==="LOCKED"){alert("Nothing generated");return;}
-    navigator.clipboard.writeText(t);
+    navigator.clipboard.writeText(
+        document.getElementById("output").innerText
+    );
     alert("Copied");
 }
 
