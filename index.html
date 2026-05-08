@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-<title>CYBERVAULT // Secure Password Node</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CYBERVAULT // Secure Node</title>
 
 <style>
-/* =========================
-   CYBERVAULT FINAL VERSION
+
+/* ====================================
+   CYBERVAULT FINAL REFINED VERSION
    Developed by Prevellah — Kenya
-========================= */
+==================================== */
 
 *{
     margin:0;
@@ -18,8 +19,8 @@
 }
 
 body{
-    background:#000;
-    color:#00ffd5;
+    background:#020617;
+    color:#7dd3fc;
     font-family:monospace;
     overflow-x:hidden;
 }
@@ -33,11 +34,11 @@ canvas{
     pointer-events:none;
 }
 
-/* BOOT SCREEN */
-#boot-screen{
+/* BOOT */
+#boot{
     position:fixed;
     inset:0;
-    background:#000;
+    background:#020617;
     z-index:9999;
 
     display:flex;
@@ -48,27 +49,70 @@ canvas{
     transition:opacity .5s ease;
 }
 
-.boot-logo{
-    font-size:32px;
+/* FLOATING SHIELDS */
+.shield{
+    position:absolute;
+    width:70px;
+    opacity:.08;
+    animation:float 6s infinite ease-in-out;
+}
+
+.shield1{
+    top:15%;
+    left:10%;
+}
+
+.shield2{
+    bottom:18%;
+    right:10%;
+    animation-delay:2s;
+}
+
+@keyframes float{
+    0%{transform:translateY(0px);}
+    50%{transform:translateY(-20px);}
+    100%{transform:translateY(0px);}
+}
+
+/* CENTERED LOGO */
+.logo{
+    font-size:38px;
     font-weight:bold;
-    letter-spacing:2px;
-    text-shadow:0 0 12px #00ffd5;
-    animation:pulse 1.4s infinite;
+    text-align:center;
+
+    color:#38bdf8;
+
+    text-shadow:
+    0 0 8px #38bdf8,
+    0 0 20px #0ea5e9;
+
+    animation:pulse 1.6s infinite;
 }
 
 @keyframes pulse{
-    0%{opacity:.4}
+    0%{opacity:.5}
     50%{opacity:1}
-    100%{opacity:.4}
+    100%{opacity:.5}
 }
 
+.boot-sub{
+    margin-top:18px;
+    text-align:center;
+    line-height:1.8;
+    font-size:12px;
+    color:#7dd3fc;
+}
+
+/* LOADER */
 .loader{
     width:42px;
     height:42px;
-    border-radius:50%;
-    border:3px solid #00ffd522;
-    border-top:3px solid #00ffd5;
     margin-top:20px;
+
+    border-radius:50%;
+    border:3px solid #38bdf822;
+    border-top:3px solid #38bdf8;
+
     animation:spin 1s linear infinite;
 }
 
@@ -76,114 +120,90 @@ canvas{
     100%{transform:rotate(360deg);}
 }
 
-.boot-text{
-    margin-top:18px;
-    font-size:12px;
-    color:#8affea;
-    text-align:center;
-    line-height:1.7;
-}
-
-/* MAIN APP */
+/* APP */
 #app{
     display:none;
     position:relative;
     z-index:2;
-    padding:15px;
-    max-width:480px;
+
+    padding:18px;
+    max-width:500px;
     margin:auto;
-}
-
-/* NAV */
-.nav{
-    margin-top:10px;
-    margin-bottom:15px;
-
-    border:1px solid #00ffd533;
-    background:#031313cc;
-    border-radius:14px;
-
-    padding:16px;
-}
-
-.logo{
-    font-size:28px;
-    font-weight:bold;
-    text-shadow:0 0 12px #00ffd5;
-}
-
-.subtitle{
-    color:#94fff2;
-    margin-top:6px;
-    font-size:12px;
 }
 
 /* CARD */
 .card{
-    margin-top:15px;
-    background:#031313dd;
-    border:1px solid #00ffd522;
-    border-radius:14px;
-    padding:16px;
-    box-shadow:0 0 14px #00ffd511;
+    margin-top:18px;
+
+    background:rgba(15,23,42,.75);
+
+    border:1px solid rgba(56,189,248,.2);
+
+    border-radius:18px;
+
+    padding:18px;
+
+    backdrop-filter:blur(10px);
+
+    box-shadow:
+    0 0 15px rgba(56,189,248,.08),
+    inset 0 0 10px rgba(56,189,248,.03);
 }
 
 /* TITLES */
 .title{
-    font-size:16px;
+    color:#f8fafc;
+    font-size:18px;
     margin-bottom:12px;
-    color:#ffffff;
 }
 
-/* TEXT */
 .text{
+    color:#bae6fd;
     font-size:13px;
-    line-height:1.7;
-    color:#b9fff7;
-}
-
-/* LIST */
-.list{
-    margin-top:10px;
-    padding-left:18px;
-}
-
-.list li{
-    margin-bottom:10px;
-    color:#b9fff7;
-    font-size:13px;
+    line-height:1.8;
 }
 
 /* INPUTS */
+.input-group{
+    margin-top:14px;
+}
+
 input{
     width:100%;
-    margin-top:12px;
-    padding:14px;
+    padding:15px;
 
-    background:#000;
-    color:#00ffd5;
+    background:#020617;
 
-    border:1px solid #00ffd533;
-    border-radius:10px;
+    border:1px solid rgba(56,189,248,.25);
+
+    color:#7dd3fc;
+
+    border-radius:12px;
 
     outline:none;
-    font-size:14px;
+
+    transition:.2s;
+}
+
+input:focus{
+    border-color:#38bdf8;
+    box-shadow:0 0 10px rgba(56,189,248,.2);
 }
 
 /* BUTTONS */
 button{
     width:100%;
-    margin-top:14px;
 
-    padding:14px;
+    padding:15px;
 
     border:none;
-    border-radius:10px;
+    border-radius:12px;
+
+    margin-top:14px;
 
     cursor:pointer;
 
     font-weight:bold;
-    font-size:13px;
 
     transition:.2s;
 }
@@ -193,72 +213,71 @@ button:active{
 }
 
 .primary{
-    background:#00ffd5;
-    color:#000;
+    background:linear-gradient(
+    90deg,
+    #0ea5e9,
+    #38bdf8
+    );
+
+    color:#020617;
 }
 
 .exit{
-    background:#ff214f;
-    color:#fff;
+    background:#ef4444;
+    color:white;
 }
 
-/* STATUS */
-.status{
+/* ERROR */
+.error{
     margin-top:12px;
+    color:#fb7185;
     font-size:12px;
-    color:#8affea;
+    display:none;
+}
+
+/* SHAKE */
+.shake{
+    animation:shake .3s linear;
+}
+
+@keyframes shake{
+    0%{transform:translateX(0);}
+    25%{transform:translateX(-6px);}
+    50%{transform:translateX(6px);}
+    75%{transform:translateX(-6px);}
+    100%{transform:translateX(0);}
 }
 
 /* PASSWORD */
 .password-box{
     margin-top:15px;
-    background:#000;
-    border:1px solid #00ffd555;
-    border-radius:10px;
+
+    background:#020617;
+
+    border:1px solid rgba(56,189,248,.3);
+
+    border-radius:12px;
+
     padding:16px;
 
     word-break:break-all;
 
-    color:#00ff99;
-    font-weight:bold;
+    color:#4ade80;
+
     line-height:1.8;
-}
-
-/* ADMIN */
-.admin-item{
-    border:1px solid #00ffd522;
-    border-radius:10px;
-    padding:12px;
-    margin-top:10px;
-}
-
-.admin-item p{
-    margin-bottom:8px;
-    font-size:12px;
 }
 
 /* FOOTER */
 .footer{
-    margin-top:20px;
-    margin-bottom:20px;
     text-align:center;
+    margin-top:25px;
+    margin-bottom:25px;
+
+    color:#67e8f9;
     font-size:11px;
-    color:#6ed9cb;
     line-height:1.8;
 }
 
-/* MOBILE */
-@media(max-width:480px){
-
-    .boot-logo{
-        font-size:26px;
-    }
-
-    .logo{
-        font-size:24px;
-    }
-
-}
 </style>
 </head>
 
@@ -268,15 +287,24 @@ button:active{
 <canvas id="matrix"></canvas>
 
 <!-- BOOT -->
-<div id="boot-screen">
+<div id="boot">
 
-    <div class="boot-logo">
+    <!-- FLOATING SHIELDS -->
+    <svg class="shield shield1" viewBox="0 0 24 24" fill="#38bdf8">
+        <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/>
+    </svg>
+
+    <svg class="shield shield2" viewBox="0 0 24 24" fill="#38bdf8">
+        <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/>
+    </svg>
+
+    <div class="logo">
         CYBERVAULT
     </div>
 
     <div class="loader"></div>
 
-    <div class="boot-text">
+    <div class="boot-sub">
         Initializing Secure Encryption Layer...<br>
         Digital Protection ACTIVE<br><br>
 
@@ -288,39 +316,20 @@ button:active{
 <!-- APP -->
 <div id="app">
 
-    <!-- NAV -->
-    <div class="nav">
-        <div class="logo">
-            CYBERVAULT
-        </div>
-
-        <div class="subtitle">
-            Secure Password Infrastructure Platform
-        </div>
-    </div>
-
-    <!-- ABOUT -->
+    <!-- HERO -->
     <div class="card">
 
         <div class="title">
-            WHY USE CYBERVAULT?
+            CYBERVAULT SECURE NODE
         </div>
 
         <div class="text">
-            CYBERVAULT generates highly secure passwords using cryptographic randomness to improve digital protection and account safety.
+            Generate cryptographically secure passwords for maximum digital protection and account security.
         </div>
-
-        <ul class="list">
-            <li>Client-side secure password generation</li>
-            <li>No predictable password patterns</li>
-            <li>Strong digital protection infrastructure</li>
-            <li>Manual M-PESA verification system</li>
-            <li>Mobile optimized cyber security interface</li>
-        </ul>
 
     </div>
 
-    <!-- PAYMENT -->
+    <!-- ACCESS -->
     <div class="card">
 
         <div class="title">
@@ -328,19 +337,22 @@ button:active{
         </div>
 
         <div class="text">
-            To unlock secure password generation:
+            Pay 1 KES via Pochi La Biashara:<br><br>
+
+            *334# → Pochi La Biashara → 0142122710
         </div>
 
-        <ul class="list">
-            <li>Dial <b>*334#</b></li>
-            <li>Select <b>Pochi La Biashara</b></li>
-            <li>Send <b>1 KES</b> to:</li>
-            <li><b>0142122710</b></li>
-        </ul>
+        <div class="input-group">
+            <input id="phone" type="text" placeholder="ENTER PHONE NUMBER">
+        </div>
 
-        <input id="phone" type="text" placeholder="YOUR PHONE NUMBER">
+        <div class="input-group">
+            <input id="code" type="text" placeholder="ENTER M-PESA CODE">
+        </div>
 
-        <input id="code" type="text" placeholder="M-PESA TRANSACTION CODE">
+        <div class="error" id="error">
+            Invalid credentials. Please verify your information.
+        </div>
 
         <button class="primary" onclick="submitRequest()">
             GENERATE SECURE PASSWORD
@@ -349,10 +361,6 @@ button:active{
         <button class="exit" onclick="exitSystem()">
             EXIT SYSTEM
         </button>
-
-        <div class="status" id="status">
-            Awaiting secure connection...
-        </div>
 
     </div>
 
@@ -364,19 +372,8 @@ button:active{
         </div>
 
         <div class="password-box" id="password-box">
-            No password generated yet.
+            Waiting for secure generation...
         </div>
-
-    </div>
-
-    <!-- ADMIN -->
-    <div class="card">
-
-        <div class="title">
-            ADMIN CONTROL NODE
-        </div>
-
-        <div id="admin-list"></div>
 
     </div>
 
@@ -392,7 +389,7 @@ button:active{
 <script>
 
 /* =========================
-   GLOBAL ERROR PROTECTION
+   SAFE ERROR HANDLER
 ========================= */
 
 window.onerror = function(msg){
@@ -400,15 +397,18 @@ window.onerror = function(msg){
 };
 
 /* =========================
-   BOOT SYSTEM
+   BOOT
 ========================= */
 
 window.addEventListener("load", ()=>{
 
     setTimeout(()=>{
 
-        const boot = document.getElementById("boot-screen");
-        const app = document.getElementById("app");
+        const boot =
+        document.getElementById("boot");
+
+        const app =
+        document.getElementById("app");
 
         boot.style.opacity = "0";
 
@@ -417,46 +417,78 @@ window.addEventListener("load", ()=>{
             app.style.display = "block";
         },500);
 
-    },2000);
+    },2200);
 
 });
 
 /* =========================
-   MATRIX EFFECT
+   MATRIX
 ========================= */
 
-const canvas = document.getElementById("matrix");
-const ctx = canvas.getContext("2d");
+const canvas =
+document.getElementById("matrix");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+const ctx =
+canvas.getContext("2d");
 
-const letters = "01";
-const fontSize = 12;
-const columns = canvas.width / fontSize;
+canvas.width =
+window.innerWidth;
+
+canvas.height =
+window.innerHeight;
+
+const letters =
+"01";
+
+const fontSize =
+12;
+
+const columns =
+canvas.width / fontSize;
 
 const drops = [];
 
-for(let x = 0; x < columns; x++){
-    drops[x] = 1;
+for(let x=0; x<columns; x++){
+    drops[x]=1;
 }
 
 function drawMatrix(){
 
-    ctx.fillStyle = "rgba(0,0,0,0.08)";
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle =
+    "rgba(2,6,23,0.08)";
 
-    ctx.fillStyle = "#00ffd5";
-    ctx.font = fontSize + "px monospace";
+    ctx.fillRect(
+    0,
+    0,
+    canvas.width,
+    canvas.height
+    );
+
+    ctx.fillStyle =
+    "#38bdf8";
+
+    ctx.font =
+    fontSize + "px monospace";
 
     for(let i=0; i<drops.length; i++){
 
-        const text = letters[Math.floor(Math.random()*letters.length)];
+        const text =
+        letters[Math.floor(
+        Math.random()*letters.length
+        )];
 
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        ctx.fillText(
+        text,
+        i*fontSize,
+        drops[i]*fontSize
+        );
 
-        if(drops[i] * fontSize > canvas.height && Math.random() > 0.975){
-            drops[i] = 0;
+        if(
+        drops[i]*fontSize >
+        canvas.height &&
+        Math.random() > 0.975
+        ){
+            drops[i]=0;
         }
 
         drops[i]++;
@@ -464,159 +496,86 @@ function drawMatrix(){
 
 }
 
-setInterval(drawMatrix, 35);
-
-/* =========================
-   DATABASE
-========================= */
-
-let requests = [];
+setInterval(drawMatrix,35);
 
 /* =========================
    PASSWORD GENERATOR
 ========================= */
 
-function generatePassword(length = 24){
+function generatePassword(length=24){
 
     const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}<>?/";
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-={}[]<>?/";
 
     let result = "";
 
-    const array = new Uint32Array(length);
+    const array =
+    new Uint32Array(length);
 
     crypto.getRandomValues(array);
 
     for(let i=0; i<length; i++){
-        result += chars[array[i] % chars.length];
+
+        result +=
+        chars[array[i] % chars.length];
+
     }
 
     return result;
 }
 
 /* =========================
-   SUBMIT REQUEST
+   SUBMIT
 ========================= */
 
 function submitRequest(){
 
     const phone =
-        document.getElementById("phone").value.trim();
+    document.getElementById("phone");
 
     const code =
-        document.getElementById("code").value.trim();
+    document.getElementById("code");
 
-    const status =
-        document.getElementById("status");
+    const error =
+    document.getElementById("error");
 
-    if(!phone || !code){
+    /* VALIDATION */
 
-        alert("Please enter all credentials.");
+    if(
+        phone.value.trim().length < 10 ||
+        code.value.trim().length < 8
+    ){
+
+        /* SHOW ERROR */
+        error.style.display = "block";
+
+        /* SHAKE EFFECT */
+        phone.classList.add("shake");
+        code.classList.add("shake");
+
+        /* VIBRATION */
+        if(navigator.vibrate){
+            navigator.vibrate(200);
+        }
+
+        setTimeout(()=>{
+            phone.classList.remove("shake");
+            code.classList.remove("shake");
+        },300);
+
         return;
     }
 
-    const request = {
+    error.style.display = "none";
 
-        id:Date.now(),
-        phone,
-        code,
-        status:"pending",
-        password:null
+    /* GENERATE PASSWORD */
 
-    };
+    const password =
+    generatePassword(24);
 
-    requests.push(request);
-
-    status.innerText =
-        "Verification request submitted successfully.";
-
-    renderAdmin();
-
-}
-
-/* =========================
-   ADMIN RENDER
-========================= */
-
-function renderAdmin(){
-
-    const container =
-        document.getElementById("admin-list");
-
-    container.innerHTML = "";
-
-    requests.forEach(item=>{
-
-        const div = document.createElement("div");
-
-        div.className = "admin-item";
-
-        div.innerHTML = `
-
-            <p><b>PHONE:</b> ${item.phone}</p>
-            <p><b>CODE:</b> ${item.code}</p>
-            <p><b>STATUS:</b> ${item.status}</p>
-
-        `;
-
-        if(item.status === "pending"){
-
-            const btn =
-                document.createElement("button");
-
-            btn.className = "primary";
-
-            btn.innerText = "APPROVE REQUEST";
-
-            btn.onclick = ()=>approveRequest(item.id);
-
-            div.appendChild(btn);
-
-        }
-
-        if(item.password){
-
-            const pass =
-                document.createElement("div");
-
-            pass.className = "password-box";
-
-            pass.innerText = item.password;
-
-            div.appendChild(pass);
-
-        }
-
-        container.appendChild(div);
-
-    });
-
-}
-
-/* =========================
-   APPROVE
-========================= */
-
-function approveRequest(id){
-
-    const item =
-        requests.find(x=>x.id===id);
-
-    if(!item) return;
-
-    item.status = "approved";
-
-    item.password =
-        generatePassword(24);
-
-    document.getElementById("password-box")
-        .innerText = item.password;
-
-    alert(
-        "Secure Password Generated Successfully"
-    );
-
-    renderAdmin();
+    document.getElementById(
+    "password-box"
+    ).innerText = password;
 
 }
 
@@ -626,12 +585,14 @@ function approveRequest(id){
 
 function exitSystem(){
 
-    const leave = confirm(
-        "Terminate CYBERVAULT session?"
+    const leave =
+    confirm(
+    "Terminate CYBERVAULT session?"
     );
 
     if(leave){
-        window.location.href = "about:blank";
+        window.location.href =
+        "about:blank";
     }
 
 }
