@@ -1,22 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CYBERVAULT // Secure Password Node</title>
+<title>CYBERVAULT | Secure Node</title>
 
-<!-- PWA -->
-<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#020617">
 
 <style>
 
-/* =====================================
-   CYBERVAULT PWA FINAL VERSION
-   Developed by Prevellah — Kenya
-===================================== */
+/* ==============================
+   CYBERVAULT FINAL SYSTEM
+============================== */
 
 *{
     margin:0;
@@ -31,7 +27,7 @@ body{
     overflow-x:hidden;
 }
 
-/* MATRIX */
+/* MATRIX BACKGROUND */
 canvas{
     position:fixed;
     inset:0;
@@ -40,19 +36,16 @@ canvas{
     pointer-events:none;
 }
 
-/* BOOT */
+/* BOOT SCREEN */
 #boot{
     position:fixed;
     inset:0;
     background:#020617;
-
     z-index:9999;
-
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-
     transition:.5s;
 }
 
@@ -64,16 +57,8 @@ canvas{
     animation:float 6s infinite ease-in-out;
 }
 
-.shield1{
-    top:15%;
-    left:10%;
-}
-
-.shield2{
-    bottom:18%;
-    right:10%;
-    animation-delay:2s;
-}
+.shield1{ top:15%; left:10%; }
+.shield2{ bottom:18%; right:10%; animation-delay:2s; }
 
 @keyframes float{
     0%{transform:translateY(0);}
@@ -85,13 +70,8 @@ canvas{
 .logo{
     font-size:38px;
     font-weight:bold;
-
     color:#38bdf8;
-
-    text-shadow:
-    0 0 10px #38bdf8,
-    0 0 30px #0ea5e9;
-
+    text-shadow:0 0 15px #38bdf8;
     animation:pulse 1.5s infinite;
 }
 
@@ -101,27 +81,22 @@ canvas{
     100%{opacity:.5}
 }
 
-/* SUBTEXT */
 .boot-sub{
     margin-top:18px;
     text-align:center;
-    line-height:1.8;
     font-size:12px;
     color:#7dd3fc;
+    line-height:1.7;
 }
 
 /* LOADER */
 .loader{
     width:44px;
     height:44px;
-
     margin-top:20px;
-
     border-radius:50%;
-
     border:3px solid #38bdf822;
     border-top:3px solid #38bdf8;
-
     animation:spin 1s linear infinite;
 }
 
@@ -134,108 +109,56 @@ canvas{
     display:none;
     position:relative;
     z-index:2;
-
     max-width:520px;
     margin:auto;
-
     padding:18px;
 }
 
 /* CARD */
 .card{
     margin-top:18px;
-
-    background:rgba(15,23,42,.78);
-
+    background:rgba(15,23,42,.8);
     border:1px solid rgba(56,189,248,.2);
-
     border-radius:18px;
-
     padding:18px;
-
-    backdrop-filter:blur(12px);
-
-    box-shadow:
-    0 0 15px rgba(56,189,248,.08),
-    inset 0 0 15px rgba(56,189,248,.02);
+    backdrop-filter:blur(10px);
 }
 
-/* TITLES */
-.title{
-    color:#fff;
-    font-size:18px;
-    margin-bottom:12px;
-}
+/* TEXT */
+.title{ font-size:18px; color:#fff; margin-bottom:12px; }
+.text{ font-size:13px; color:#bae6fd; line-height:1.7; }
 
-.text{
-    color:#bae6fd;
-    font-size:13px;
-    line-height:1.8;
-}
-
-/* INPUTS */
+/* INPUT */
 input{
     width:100%;
-
-    margin-top:14px;
-
+    margin-top:12px;
     padding:15px;
-
     border-radius:12px;
-
-    border:1px solid rgba(56,189,248,.25);
-
+    border:1px solid rgba(56,189,248,.3);
     background:#020617;
-
     color:#7dd3fc;
-
-    outline:none;
-
-    transition:.2s;
-}
-
-input:focus{
-    border-color:#38bdf8;
-    box-shadow:0 0 10px rgba(56,189,248,.2);
 }
 
 /* BUTTONS */
 button{
     width:100%;
-
-    margin-top:14px;
-
-    padding:15px;
-
+    margin-top:12px;
+    padding:14px;
     border:none;
     border-radius:12px;
-
-    cursor:pointer;
-
     font-weight:bold;
-
-    transition:.2s;
-}
-
-button:active{
-    transform:scale(.98);
+    cursor:pointer;
 }
 
 .primary{
-    background:
-    linear-gradient(
-    90deg,
-    #0ea5e9,
-    #38bdf8
-    );
-
+    background:#38bdf8;
     color:#020617;
 }
 
 .secondary{
     background:#0f172a;
-    border:1px solid rgba(56,189,248,.2);
     color:#7dd3fc;
+    border:1px solid rgba(56,189,248,.2);
 }
 
 .exit{
@@ -243,15 +166,7 @@ button:active{
     color:#fff;
 }
 
-/* ERROR */
-.error{
-    margin-top:12px;
-    color:#fb7185;
-    font-size:12px;
-    display:none;
-}
-
-/* SHAKE */
+/* ERROR SHAKE */
 .shake{
     animation:shake .3s linear;
 }
@@ -264,70 +179,23 @@ button:active{
     100%{transform:translateX(0);}
 }
 
-/* PASSWORD */
+/* PASSWORD BOX */
 .password-box{
     margin-top:15px;
-
-    background:#020617;
-
-    border:1px solid rgba(56,189,248,.3);
-
-    border-radius:12px;
-
     padding:16px;
-
-    word-break:break-all;
-
+    background:#020617;
+    border:1px solid rgba(56,189,248,.3);
+    border-radius:12px;
     color:#4ade80;
-
-    line-height:1.8;
-}
-
-/* SHIELD ROW */
-.shield-row{
-    display:flex;
-    justify-content:center;
-    gap:12px;
-    margin-top:10px;
-}
-
-/* SECURITY TEXT */
-.security-note{
-    margin-top:14px;
-
-    color:#7dd3fc;
-
-    text-align:center;
-
-    line-height:1.7;
-
-    font-size:12px;
+    word-break:break-all;
 }
 
 /* FOOTER */
 .footer{
     text-align:center;
-
-    margin-top:25px;
-    margin-bottom:25px;
-
-    color:#67e8f9;
-
-    line-height:1.8;
-
+    margin:25px 0;
     font-size:11px;
-}
-
-/* INSTALL */
-.install-banner{
-    margin-top:15px;
-    padding:12px;
-    border-radius:12px;
-    background:#082f49;
-    color:#bae6fd;
-    text-align:center;
-    font-size:12px;
-    display:none;
+    color:#67e8f9;
 }
 
 </style>
@@ -335,13 +203,11 @@ button:active{
 
 <body>
 
-<!-- MATRIX -->
 <canvas id="matrix"></canvas>
 
 <!-- BOOT -->
 <div id="boot">
 
-    <!-- SHIELDS -->
     <svg class="shield shield1" viewBox="0 0 24 24" fill="#38bdf8">
         <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/>
     </svg>
@@ -350,16 +216,11 @@ button:active{
         <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/>
     </svg>
 
-    <div class="logo">
-        CYBERVAULT
-    </div>
-
+    <div class="logo">CYBERVAULT</div>
     <div class="loader"></div>
 
     <div class="boot-sub">
-        Initializing Secure Encryption Layer...<br>
-        Digital Protection ACTIVE<br><br>
-
+        Secure Encryption System<br>
         Developed by Prevellah — Kenya
     </div>
 
@@ -368,401 +229,120 @@ button:active{
 <!-- APP -->
 <div id="app">
 
-    <!-- HERO -->
-    <div class="card">
+<div class="card">
+    <div class="title">CYBERVAULT SECURE NODE</div>
+    <div class="text">
+        Pay 1 KES via Pochi La Biashara:
+        *334# → 0142122710
+    </div>
+</div>
 
-        <div class="title">
-            CYBERVAULT SECURE NODE
-        </div>
+<div class="card">
 
-        <div class="text">
-            Generate cryptographically secure passwords with cyber-grade randomness for stronger account protection.
-        </div>
+    <input id="phone" placeholder="Phone number">
 
+    <button class="primary" onclick="submitPayment()">
+        Submit Payment
+    </button>
+
+    <div id="status" class="text" style="margin-top:10px;">
+        Waiting for payment...
     </div>
 
-    <!-- ACCESS -->
-    <div class="card">
+</div>
 
-        <div class="title">
-            ACCESS TERMINAL
-        </div>
+<div class="card" id="verifyCard" style="display:none;">
 
-        <div class="text">
-            Pay 1 KES via Pochi La Biashara:<br><br>
+    <div class="title">Verification Code</div>
 
-            *334# → Pochi La Biashara → 0142122710
-        </div>
+    <input id="code" placeholder="Enter code">
 
-        <input
-        id="phone"
-        type="text"
-        placeholder="ENTER PHONE NUMBER">
+    <button class="primary" onclick="verify()">
+        Verify & Generate
+    </button>
 
-        <input
-        id="code"
-        type="text"
-        placeholder="ENTER M-PESA CODE">
+</div>
 
-        <div
-        class="error"
-        id="error">
+<div class="card">
 
-            Invalid credentials. Please verify your information.
+    <div class="title">Generated Password</div>
 
-        </div>
-
-        <button
-        class="primary"
-        onclick="submitRequest()">
-
-            GENERATE SECURE PASSWORD
-
-        </button>
-
-        <button
-        class="secondary"
-        onclick="savePassword()">
-
-            SAVE PASSWORD
-
-        </button>
-
-        <button
-        class="exit"
-        onclick="exitSystem()">
-
-            EXIT SYSTEM
-
-        </button>
-
-        <!-- INSTALL -->
-        <div
-        class="install-banner"
-        id="install-banner">
-
-            Install CYBERVAULT for a full app experience.
-
-            <button
-            class="primary"
-            onclick="installApp()">
-
-                INSTALL APP
-
-            </button>
-
-        </div>
-
+    <div class="password-box" id="output">
+        Awaiting verification...
     </div>
 
-    <!-- PASSWORD -->
-    <div class="card">
+    <button class="secondary" onclick="copyPass()">
+        Copy Password
+    </button>
 
-        <div class="title">
-            GENERATED PASSWORD
-        </div>
+</div>
 
-        <!-- SHIELDS -->
-        <div class="shield-row">
-
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="#38bdf8">
-                <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/>
-            </svg>
-
-            <svg width="34" height="34" viewBox="0 0 24 24" fill="#0ea5e9">
-                <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/>
-            </svg>
-
-        </div>
-
-        <div
-        class="password-box"
-        id="password-box">
-
-            Waiting for secure generation...
-
-        </div>
-
-        <div class="security-note">
-
-            CYBERVAULT does not store generated passwords.<br>
-            All passwords are generated securely on-device.
-
-        </div>
-
-    </div>
-
-    <!-- FOOTER -->
-    <div class="footer">
-
-        CYBERVAULT SYSTEM<br>
-        Developed by Prevellah — Kenya<br>
-        © 2026 All Rights Reserved
-
-    </div>
+<div class="footer">
+    CYBERVAULT © 2026 — Prevellah
+</div>
 
 </div>
 
 <script>
 
-/* =====================================
-   SAFE ERROR HANDLER
-===================================== */
+/* MATRIX */
+const c=document.getElementById("matrix");
+const x=c.getContext("2d");
+c.width=innerWidth;
+c.height=innerHeight;
 
-window.onerror = function(msg){
-    console.log("CYBERVAULT ERROR:", msg);
-};
+let cols=c.width/14;
+let drops=Array(Math.floor(cols)).fill(1);
 
-/* =====================================
-   BOOT
-===================================== */
+function draw(){
+    x.fillStyle="rgba(2,6,23,.1)";
+    x.fillRect(0,0,c.width,c.height);
+    x.fillStyle="#38bdf8";
+    x.font="14px monospace";
 
-window.addEventListener("load", ()=>{
-
-    setTimeout(()=>{
-
-        const boot =
-        document.getElementById("boot");
-
-        const app =
-        document.getElementById("app");
-
-        boot.style.opacity = "0";
-
-        setTimeout(()=>{
-
-            boot.style.display = "none";
-            app.style.display = "block";
-
-        },500);
-
-    },2200);
-
-});
-
-/* =====================================
-   MATRIX
-===================================== */
-
-const canvas =
-document.getElementById("matrix");
-
-const ctx =
-canvas.getContext("2d");
-
-canvas.width =
-window.innerWidth;
-
-canvas.height =
-window.innerHeight;
-
-const letters = "01";
-
-const fontSize = 12;
-
-const columns =
-canvas.width / fontSize;
-
-const drops = [];
-
-for(let x=0; x<columns; x++){
-    drops[x]=1;
-}
-
-function drawMatrix(){
-
-    ctx.fillStyle =
-    "rgba(2,6,23,0.08)";
-
-    ctx.fillRect(
-    0,
-    0,
-    canvas.width,
-    canvas.height
-    );
-
-    ctx.fillStyle =
-    "#38bdf8";
-
-    ctx.font =
-    fontSize + "px monospace";
-
-    for(let i=0; i<drops.length; i++){
-
-        const text =
-        letters[
-        Math.floor(
-        Math.random()*letters.length
-        )];
-
-        ctx.fillText(
-        text,
-        i*fontSize,
-        drops[i]*fontSize
-        );
-
-        if(
-        drops[i]*fontSize >
-        canvas.height &&
-        Math.random() > 0.975
-        ){
-            drops[i]=0;
-        }
-
+    drops.forEach((y,i)=>{
+        x.fillText("01",i*14,y*14);
+        if(y*14>c.height && Math.random()>0.95)drops[i]=0;
         drops[i]++;
-    }
-
+    });
 }
+setInterval(draw,40);
 
-setInterval(drawMatrix,35);
+/* SYSTEM */
 
-/* =====================================
-   PASSWORD GENERATOR
-===================================== */
+let APPROVAL_CODE="CYBER2026";
 
-function generatePassword(length=24){
+function submitPayment(){
 
-    const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-={}[]<>?/";
+    let p=document.getElementById("phone");
+    let s=document.getElementById("status");
 
-    let result = "";
-
-    const array =
-    new Uint32Array(length);
-
-    crypto.getRandomValues(array);
-
-    for(let i=0; i<length; i++){
-
-        result +=
-        chars[array[i] % chars.length];
-
-    }
-
-    return result;
-}
-
-/* =====================================
-   SUBMIT
-===================================== */
-
-function submitRequest(){
-
-    const phone =
-    document.getElementById("phone");
-
-    const code =
-    document.getElementById("code");
-
-    const error =
-    document.getElementById("error");
-
-    if(
-        phone.value.trim().length < 10 ||
-        code.value.trim().length < 8
-    ){
-
-        error.style.display = "block";
-
-        phone.classList.add("shake");
-        code.classList.add("shake");
-
-        if(navigator.vibrate){
-            navigator.vibrate(200);
-        }
-
-        setTimeout(()=>{
-            phone.classList.remove("shake");
-            code.classList.remove("shake");
-        },300);
-
+    if(p.value.length<10){
+        p.classList.add("shake");
+        setTimeout(()=>p.classList.remove("shake"),300);
         return;
     }
 
-    error.style.display = "none";
-
-    const password =
-    generatePassword(24);
-
-    document.getElementById(
-    "password-box"
-    ).innerText = password;
-
+    s.innerText="Awaiting manual verification...";
+    document.getElementById("verifyCard").style.display="block";
 }
 
-/* =====================================
-   SAVE PASSWORD
-===================================== */
+function verify(){
 
-function savePassword(){
+    let code=document.getElementById("code").value;
+    let out=document.getElementById("output");
 
-    const password =
-    document.getElementById(
-    "password-box"
-    ).innerText;
-
-    if(
-    password ===
-    "Waiting for secure generation..."
-    ){
-        alert("No password generated yet.");
+    if(code!==APPROVAL_CODE){
+        alert("Invalid verification code");
         return;
     }
 
-    navigator.clipboard.writeText(password);
-
-    alert(
-    "Password copied successfully."
-    );
-
+    out.innerText="CV-" + Math.random().toString(36).substring(2,14).toUpperCase();
 }
 
-/* =====================================
-   EXIT
-===================================== */
-
-function exitSystem(){
-
-    const leave =
-    confirm(
-    "Terminate CYBERVAULT session?"
-    );
-
-    if(leave){
-        window.location.href =
-        "about:blank";
-    }
-
-}
-
-/* =====================================
-   INSTALLABLE PWA
-===================================== */
-
-let deferredPrompt;
-
-window.addEventListener(
-"beforeinstallprompt",
-(e)=>{
-
-    e.preventDefault();
-
-    deferredPrompt = e;
-
-    document.getElementById(
-    "install-banner"
-    ).style.display = "block";
-
-});
-
-async function installApp(){
-
-    if(!deferredPrompt) return;
-
-    deferredPrompt.prompt();
-
-    deferredPrompt = null;
-
+function copyPass(){
+    navigator.clipboard.writeText(document.getElementById("output").innerText);
+    alert("Copied");
 }
 
 </script>
