@@ -1,125 +1,642 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CYBERVAULT // SECURE NODE</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>CYBERVAULT // Secure Password Node</title>
 
 <style>
-body{
+/* =========================
+   CYBERVAULT FINAL VERSION
+   Developed by Prevellah — Kenya
+========================= */
+
+*{
     margin:0;
-    font-family:monospace;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
     background:#000;
-    color:#00ffcc;
-    overflow:hidden;
+    color:#00ffd5;
+    font-family:monospace;
+    overflow-x:hidden;
 }
 
 /* MATRIX */
 canvas{
     position:fixed;
     inset:0;
-    opacity:0.15;
     z-index:0;
+    opacity:0.12;
+    pointer-events:none;
 }
 
-/* BOOT */
-#boot{
+/* BOOT SCREEN */
+#boot-screen{
     position:fixed;
     inset:0;
-    background:black;
+    background:#000;
+    z-index:9999;
+
     display:flex;
     flex-direction:column;
     justify-content:center;
     align-items:center;
-    z-index:9999;
-    text-align:center;
-    transition:opacity 0.5s ease;
+
+    transition:opacity .5s ease;
 }
 
-.title{
-    font-size:28px;
-    color:#00ffcc;
-    text-shadow:0 0 12px #00ffcc;
-    animation:pulse 1.2s infinite;
+.boot-logo{
+    font-size:32px;
+    font-weight:bold;
+    letter-spacing:2px;
+    text-shadow:0 0 12px #00ffd5;
+    animation:pulse 1.4s infinite;
 }
 
 @keyframes pulse{
-    0%{opacity:0.3}
+    0%{opacity:.4}
     50%{opacity:1}
-    100%{opacity:0.3}
+    100%{opacity:.4}
 }
 
 .loader{
-    width:35px;
-    height:35px;
-    border:3px solid #00ffcc33;
-    border-top:3px solid #00ffcc;
+    width:42px;
+    height:42px;
     border-radius:50%;
+    border:3px solid #00ffd522;
+    border-top:3px solid #00ffd5;
+    margin-top:20px;
     animation:spin 1s linear infinite;
-    margin-top:15px;
 }
 
 @keyframes spin{
     100%{transform:rotate(360deg);}
 }
 
-.small{
+.boot-text{
+    margin-top:18px;
     font-size:12px;
-    color:#888;
-    margin-top:10px;
+    color:#8affea;
+    text-align:center;
+    line-height:1.7;
 }
 
-/* APP */
+/* MAIN APP */
 #app{
     display:none;
     position:relative;
     z-index:2;
     padding:15px;
+    max-width:480px;
+    margin:auto;
+}
+
+/* NAV */
+.nav{
+    margin-top:10px;
+    margin-bottom:15px;
+
+    border:1px solid #00ffd533;
+    background:#031313cc;
+    border-radius:14px;
+
+    padding:16px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    text-shadow:0 0 12px #00ffd5;
+}
+
+.subtitle{
+    color:#94fff2;
+    margin-top:6px;
+    font-size:12px;
 }
 
 /* CARD */
 .card{
-    background:rgba(0,0,0,0.8);
-    border:1px solid #00ffcc33;
-    border-radius:12px;
-    padding:15px;
     margin-top:15px;
+    background:#031313dd;
+    border:1px solid #00ffd522;
+    border-radius:14px;
+    padding:16px;
+    box-shadow:0 0 14px #00ffd511;
 }
 
-/* INPUT */
+/* TITLES */
+.title{
+    font-size:16px;
+    margin-bottom:12px;
+    color:#ffffff;
+}
+
+/* TEXT */
+.text{
+    font-size:13px;
+    line-height:1.7;
+    color:#b9fff7;
+}
+
+/* LIST */
+.list{
+    margin-top:10px;
+    padding-left:18px;
+}
+
+.list li{
+    margin-bottom:10px;
+    color:#b9fff7;
+    font-size:13px;
+}
+
+/* INPUTS */
 input{
     width:100%;
-    padding:12px;
-    margin:8px 0;
+    margin-top:12px;
+    padding:14px;
+
     background:#000;
-    border:1px solid #00ffcc33;
-    color:#00ffcc;
-    border-radius:8px;
+    color:#00ffd5;
+
+    border:1px solid #00ffd533;
+    border-radius:10px;
+
+    outline:none;
+    font-size:14px;
 }
 
-/* BUTTON */
+/* BUTTONS */
 button{
     width:100%;
-    padding:12px;
-    background:#00ffcc;
+    margin-top:14px;
+
+    padding:14px;
+
     border:none;
+    border-radius:10px;
+
+    cursor:pointer;
+
     font-weight:bold;
-    margin-top:10px;
+    font-size:13px;
+
+    transition:.2s;
 }
 
-/* EXIT */
+button:active{
+    transform:scale(.98);
+}
+
+.primary{
+    background:#00ffd5;
+    color:#000;
+}
+
 .exit{
-    background:#ff0033;
-    color:white;
+    background:#ff214f;
+    color:#fff;
+}
+
+/* STATUS */
+.status{
+    margin-top:12px;
+    font-size:12px;
+    color:#8affea;
 }
 
 /* PASSWORD */
-.password{
-    color:#00ff99;
+.password-box{
+    margin-top:15px;
+    background:#000;
+    border:1px solid #00ffd555;
+    border-radius:10px;
+    padding:16px;
+
     word-break:break-all;
+
+    color:#00ff99;
+    font-weight:bold;
+    line-height:1.8;
 }
 
-/* ERROR */
-.error{
-    color:#ff5555;
-    font-size:11px
+/* ADMIN */
+.admin-item{
+    border:1px solid #00ffd522;
+    border-radius:10px;
+    padding:12px;
+    margin-top:10px;
+}
+
+.admin-item p{
+    margin-bottom:8px;
+    font-size:12px;
+}
+
+/* FOOTER */
+.footer{
+    margin-top:20px;
+    margin-bottom:20px;
+    text-align:center;
+    font-size:11px;
+    color:#6ed9cb;
+    line-height:1.8;
+}
+
+/* MOBILE */
+@media(max-width:480px){
+
+    .boot-logo{
+        font-size:26px;
+    }
+
+    .logo{
+        font-size:24px;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- MATRIX -->
+<canvas id="matrix"></canvas>
+
+<!-- BOOT -->
+<div id="boot-screen">
+
+    <div class="boot-logo">
+        CYBERVAULT
+    </div>
+
+    <div class="loader"></div>
+
+    <div class="boot-text">
+        Initializing Secure Encryption Layer...<br>
+        Digital Protection ACTIVE<br><br>
+
+        Developed by Prevellah — Kenya
+    </div>
+
+</div>
+
+<!-- APP -->
+<div id="app">
+
+    <!-- NAV -->
+    <div class="nav">
+        <div class="logo">
+            CYBERVAULT
+        </div>
+
+        <div class="subtitle">
+            Secure Password Infrastructure Platform
+        </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="card">
+
+        <div class="title">
+            WHY USE CYBERVAULT?
+        </div>
+
+        <div class="text">
+            CYBERVAULT generates highly secure passwords using cryptographic randomness to improve digital protection and account safety.
+        </div>
+
+        <ul class="list">
+            <li>Client-side secure password generation</li>
+            <li>No predictable password patterns</li>
+            <li>Strong digital protection infrastructure</li>
+            <li>Manual M-PESA verification system</li>
+            <li>Mobile optimized cyber security interface</li>
+        </ul>
+
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="card">
+
+        <div class="title">
+            ACCESS TERMINAL
+        </div>
+
+        <div class="text">
+            To unlock secure password generation:
+        </div>
+
+        <ul class="list">
+            <li>Dial <b>*334#</b></li>
+            <li>Select <b>Pochi La Biashara</b></li>
+            <li>Send <b>1 KES</b> to:</li>
+            <li><b>0142122710</b></li>
+        </ul>
+
+        <input id="phone" type="text" placeholder="YOUR PHONE NUMBER">
+
+        <input id="code" type="text" placeholder="M-PESA TRANSACTION CODE">
+
+        <button class="primary" onclick="submitRequest()">
+            GENERATE SECURE PASSWORD
+        </button>
+
+        <button class="exit" onclick="exitSystem()">
+            EXIT SYSTEM
+        </button>
+
+        <div class="status" id="status">
+            Awaiting secure connection...
+        </div>
+
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="card">
+
+        <div class="title">
+            GENERATED PASSWORD
+        </div>
+
+        <div class="password-box" id="password-box">
+            No password generated yet.
+        </div>
+
+    </div>
+
+    <!-- ADMIN -->
+    <div class="card">
+
+        <div class="title">
+            ADMIN CONTROL NODE
+        </div>
+
+        <div id="admin-list"></div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        CYBERVAULT SYSTEM<br>
+        Developed by Prevellah — Kenya<br>
+        © 2026 All Rights Reserved
+    </div>
+
+</div>
+
+<script>
+
+/* =========================
+   GLOBAL ERROR PROTECTION
+========================= */
+
+window.onerror = function(msg){
+    console.log("CYBERVAULT ERROR:", msg);
+};
+
+/* =========================
+   BOOT SYSTEM
+========================= */
+
+window.addEventListener("load", ()=>{
+
+    setTimeout(()=>{
+
+        const boot = document.getElementById("boot-screen");
+        const app = document.getElementById("app");
+
+        boot.style.opacity = "0";
+
+        setTimeout(()=>{
+            boot.style.display = "none";
+            app.style.display = "block";
+        },500);
+
+    },2000);
+
+});
+
+/* =========================
+   MATRIX EFFECT
+========================= */
+
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const letters = "01";
+const fontSize = 12;
+const columns = canvas.width / fontSize;
+
+const drops = [];
+
+for(let x = 0; x < columns; x++){
+    drops[x] = 1;
+}
+
+function drawMatrix(){
+
+    ctx.fillStyle = "rgba(0,0,0,0.08)";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle = "#00ffd5";
+    ctx.font = fontSize + "px monospace";
+
+    for(let i=0; i<drops.length; i++){
+
+        const text = letters[Math.floor(Math.random()*letters.length)];
+
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if(drops[i] * fontSize > canvas.height && Math.random() > 0.975){
+            drops[i] = 0;
+        }
+
+        drops[i]++;
+    }
+
+}
+
+setInterval(drawMatrix, 35);
+
+/* =========================
+   DATABASE
+========================= */
+
+let requests = [];
+
+/* =========================
+   PASSWORD GENERATOR
+========================= */
+
+function generatePassword(length = 24){
+
+    const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}<>?/";
+
+    let result = "";
+
+    const array = new Uint32Array(length);
+
+    crypto.getRandomValues(array);
+
+    for(let i=0; i<length; i++){
+        result += chars[array[i] % chars.length];
+    }
+
+    return result;
+}
+
+/* =========================
+   SUBMIT REQUEST
+========================= */
+
+function submitRequest(){
+
+    const phone =
+        document.getElementById("phone").value.trim();
+
+    const code =
+        document.getElementById("code").value.trim();
+
+    const status =
+        document.getElementById("status");
+
+    if(!phone || !code){
+
+        alert("Please enter all credentials.");
+        return;
+    }
+
+    const request = {
+
+        id:Date.now(),
+        phone,
+        code,
+        status:"pending",
+        password:null
+
+    };
+
+    requests.push(request);
+
+    status.innerText =
+        "Verification request submitted successfully.";
+
+    renderAdmin();
+
+}
+
+/* =========================
+   ADMIN RENDER
+========================= */
+
+function renderAdmin(){
+
+    const container =
+        document.getElementById("admin-list");
+
+    container.innerHTML = "";
+
+    requests.forEach(item=>{
+
+        const div = document.createElement("div");
+
+        div.className = "admin-item";
+
+        div.innerHTML = `
+
+            <p><b>PHONE:</b> ${item.phone}</p>
+            <p><b>CODE:</b> ${item.code}</p>
+            <p><b>STATUS:</b> ${item.status}</p>
+
+        `;
+
+        if(item.status === "pending"){
+
+            const btn =
+                document.createElement("button");
+
+            btn.className = "primary";
+
+            btn.innerText = "APPROVE REQUEST";
+
+            btn.onclick = ()=>approveRequest(item.id);
+
+            div.appendChild(btn);
+
+        }
+
+        if(item.password){
+
+            const pass =
+                document.createElement("div");
+
+            pass.className = "password-box";
+
+            pass.innerText = item.password;
+
+            div.appendChild(pass);
+
+        }
+
+        container.appendChild(div);
+
+    });
+
+}
+
+/* =========================
+   APPROVE
+========================= */
+
+function approveRequest(id){
+
+    const item =
+        requests.find(x=>x.id===id);
+
+    if(!item) return;
+
+    item.status = "approved";
+
+    item.password =
+        generatePassword(24);
+
+    document.getElementById("password-box")
+        .innerText = item.password;
+
+    alert(
+        "Secure Password Generated Successfully"
+    );
+
+    renderAdmin();
+
+}
+
+/* =========================
+   EXIT
+========================= */
+
+function exitSystem(){
+
+    const leave = confirm(
+        "Terminate CYBERVAULT session?"
+    );
+
+    if(leave){
+        window.location.href = "about:blank";
+    }
+
+}
+
+</script>
+
+</body>
+</html>
