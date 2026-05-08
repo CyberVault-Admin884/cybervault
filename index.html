@@ -4,344 +4,227 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>CYBERVAULT | Secure Node</title>
-
-<meta name="theme-color" content="#020617">
+<title>CYBERVAULT | Secure Manual SaaS</title>
 
 <style>
-
-/* ==============================
-   CYBERVAULT FINAL SYSTEM
-============================== */
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
 body{
-    background:#020617;
-    color:#7dd3fc;
+    margin:0;
     font-family:monospace;
-    overflow-x:hidden;
-}
-
-/* MATRIX BACKGROUND */
-canvas{
-    position:fixed;
-    inset:0;
-    z-index:0;
-    opacity:.12;
-    pointer-events:none;
-}
-
-/* BOOT SCREEN */
-#boot{
-    position:fixed;
-    inset:0;
     background:#020617;
-    z-index:9999;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    transition:.5s;
-}
-
-/* FLOATING SHIELDS */
-.shield{
-    position:absolute;
-    width:80px;
-    opacity:.08;
-    animation:float 6s infinite ease-in-out;
-}
-
-.shield1{ top:15%; left:10%; }
-.shield2{ bottom:18%; right:10%; animation-delay:2s; }
-
-@keyframes float{
-    0%{transform:translateY(0);}
-    50%{transform:translateY(-20px);}
-    100%{transform:translateY(0);}
-}
-
-/* LOGO */
-.logo{
-    font-size:38px;
-    font-weight:bold;
-    color:#38bdf8;
-    text-shadow:0 0 15px #38bdf8;
-    animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-    0%{opacity:.5}
-    50%{opacity:1}
-    100%{opacity:.5}
-}
-
-.boot-sub{
-    margin-top:18px;
-    text-align:center;
-    font-size:12px;
     color:#7dd3fc;
-    line-height:1.7;
 }
 
-/* LOADER */
-.loader{
-    width:44px;
-    height:44px;
-    margin-top:20px;
-    border-radius:50%;
-    border:3px solid #38bdf822;
-    border-top:3px solid #38bdf8;
-    animation:spin 1s linear infinite;
-}
-
-@keyframes spin{
-    100%{transform:rotate(360deg);}
-}
-
-/* APP */
-#app{
-    display:none;
-    position:relative;
-    z-index:2;
+.container{
     max-width:520px;
     margin:auto;
-    padding:18px;
+    padding:20px;
 }
 
-/* CARD */
 .card{
-    margin-top:18px;
-    background:rgba(15,23,42,.8);
-    border:1px solid rgba(56,189,248,.2);
-    border-radius:18px;
+    background:#0f172a;
     padding:18px;
-    backdrop-filter:blur(10px);
+    margin-top:15px;
+    border-radius:14px;
+    border:1px solid #1e293b;
 }
 
-/* TEXT */
-.title{ font-size:18px; color:#fff; margin-bottom:12px; }
-.text{ font-size:13px; color:#bae6fd; line-height:1.7; }
-
-/* INPUT */
 input{
     width:100%;
-    margin-top:12px;
-    padding:15px;
-    border-radius:12px;
-    border:1px solid rgba(56,189,248,.3);
+    padding:12px;
+    margin-top:10px;
+    border-radius:10px;
+    border:1px solid #334155;
     background:#020617;
     color:#7dd3fc;
 }
 
-/* BUTTONS */
 button{
     width:100%;
-    margin-top:12px;
-    padding:14px;
+    margin-top:10px;
+    padding:12px;
     border:none;
-    border-radius:12px;
-    font-weight:bold;
+    border-radius:10px;
     cursor:pointer;
+    font-weight:bold;
 }
 
-.primary{
-    background:#38bdf8;
-    color:#020617;
-}
+.primary{ background:#38bdf8; color:#000; }
+.secondary{ background:#1e293b; color:#7dd3fc; }
+.danger{ background:#ef4444; color:#fff; }
 
-.secondary{
-    background:#0f172a;
-    color:#7dd3fc;
-    border:1px solid rgba(56,189,248,.2);
-}
-
-.exit{
-    background:#ef4444;
-    color:#fff;
-}
-
-/* ERROR SHAKE */
-.shake{
-    animation:shake .3s linear;
-}
-
-@keyframes shake{
-    0%{transform:translateX(0);}
-    25%{transform:translateX(-6px);}
-    50%{transform:translateX(6px);}
-    75%{transform:translateX(-6px);}
-    100%{transform:translateX(0);}
-}
-
-/* PASSWORD BOX */
-.password-box{
-    margin-top:15px;
-    padding:16px;
+.box{
+    margin-top:10px;
+    padding:12px;
+    border-radius:10px;
     background:#020617;
-    border:1px solid rgba(56,189,248,.3);
-    border-radius:12px;
-    color:#4ade80;
+    border:1px solid #334155;
     word-break:break-all;
+    min-height:40px;
+    color:#4ade80;
 }
 
-/* FOOTER */
-.footer{
-    text-align:center;
-    margin:25px 0;
-    font-size:11px;
-    color:#67e8f9;
+.status{
+    margin-top:10px;
+    font-size:12px;
+    color:#93c5fd;
 }
-
 </style>
 </head>
 
 <body>
 
-<canvas id="matrix"></canvas>
+<div class="container">
 
-<!-- BOOT -->
-<div id="boot">
+<h2>CYBERVAULT MANUAL SAAS</h2>
 
-    <svg class="shield shield1" viewBox="0 0 24 24" fill="#38bdf8">
-        <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/>
-    </svg>
-
-    <svg class="shield shield2" viewBox="0 0 24 24" fill="#38bdf8">
-        <path d="M12 2L4 5v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V5l-8-3z"/>
-    </svg>
-
-    <div class="logo">CYBERVAULT</div>
-    <div class="loader"></div>
-
-    <div class="boot-sub">
-        Secure Encryption System<br>
-        Developed by Prevellah — Kenya
-    </div>
-
-</div>
-
-<!-- APP -->
-<div id="app">
-
-<div class="card">
-    <div class="title">CYBERVAULT SECURE NODE</div>
-    <div class="text">
-        Pay 1 KES via Pochi La Biashara:
-        *334# → 0142122710
-    </div>
-</div>
-
+<!-- USER SECTION -->
 <div class="card">
 
-    <input id="phone" placeholder="Phone number">
+<h3>User Request</h3>
 
-    <button class="primary" onclick="submitPayment()">
-        Submit Payment
-    </button>
+<input id="phone" placeholder="Enter phone">
 
-    <div id="status" class="text" style="margin-top:10px;">
-        Waiting for payment...
-    </div>
+<button class="primary" onclick="submitRequest()">
+Submit Request
+</button>
+
+<div class="status" id="status">
+Waiting for admin approval...
+</div>
 
 </div>
 
-<div class="card" id="verifyCard" style="display:none;">
-
-    <div class="title">Verification Code</div>
-
-    <input id="code" placeholder="Enter code">
-
-    <button class="primary" onclick="verify()">
-        Verify & Generate
-    </button>
-
-</div>
-
+<!-- VOUCHER SECTION -->
 <div class="card">
 
-    <div class="title">Generated Password</div>
+<h3>Enter Voucher</h3>
 
-    <div class="password-box" id="output">
-        Awaiting verification...
-    </div>
+<input id="voucher" placeholder="Enter voucher code">
 
-    <button class="secondary" onclick="copyPass()">
-        Copy Password
-    </button>
+<button class="primary" onclick="verifyVoucher()">
+Unlock System
+</button>
 
 </div>
 
-<div class="footer">
-    CYBERVAULT © 2026 — Prevellah
+<!-- OUTPUT -->
+<div class="card">
+
+<h3>Password Generator</h3>
+
+<div class="box" id="output">LOCKED</div>
+
+<button class="secondary" onclick="copyPass()">
+Copy Password
+</button>
+
+</div>
+
+<!-- ADMIN PANEL (SAME PAGE) -->
+<div class="card">
+
+<h3>Admin Panel (YOU)</h3>
+
+<input id="adminPhone" placeholder="User phone">
+
+<button class="primary" onclick="generateVoucher()">
+Generate Voucher
+</button>
+
+<div class="box" id="adminOut"></div>
+
 </div>
 
 </div>
 
 <script>
 
-/* MATRIX */
-const c=document.getElementById("matrix");
-const x=c.getContext("2d");
-c.width=innerWidth;
-c.height=innerHeight;
+let activeUser = null;
 
-let cols=c.width/14;
-let drops=Array(Math.floor(cols)).fill(1);
+/* USER REQUEST */
+function submitRequest(){
 
-function draw(){
-    x.fillStyle="rgba(2,6,23,.1)";
-    x.fillRect(0,0,c.width,c.height);
-    x.fillStyle="#38bdf8";
-    x.font="14px monospace";
+    const phone = document.getElementById("phone").value;
 
-    drops.forEach((y,i)=>{
-        x.fillText("01",i*14,y*14);
-        if(y*14>c.height && Math.random()>0.95)drops[i]=0;
-        drops[i]++;
-    });
-}
-setInterval(draw,40);
-
-/* SYSTEM */
-
-let APPROVAL_CODE="CYBER2026";
-
-function submitPayment(){
-
-    let p=document.getElementById("phone");
-    let s=document.getElementById("status");
-
-    if(p.value.length<10){
-        p.classList.add("shake");
-        setTimeout(()=>p.classList.remove("shake"),300);
+    if(phone.length < 10){
+        alert("Invalid number");
         return;
     }
 
-    s.innerText="Awaiting manual verification...";
-    document.getElementById("verifyCard").style.display="block";
+    activeUser = phone;
+
+    localStorage.setItem("status", "pending");
+
+    document.getElementById("status").innerText =
+    "Request submitted. Await voucher.";
+
 }
 
-function verify(){
+/* ADMIN GENERATES VOUCHER */
+function generateVoucher(){
 
-    let code=document.getElementById("code").value;
-    let out=document.getElementById("output");
+    const phone =
+    document.getElementById("adminPhone").value;
 
-    if(code!==APPROVAL_CODE){
-        alert("Invalid verification code");
+    const voucher =
+    "CV-" + Math.random().toString(36).substring(2,8).toUpperCase();
+
+    localStorage.setItem("voucher_"+phone, voucher);
+
+    document.getElementById("adminOut").innerText =
+    "PHONE: " + phone + "\nVOUCHER: " + voucher;
+
+    alert("Voucher generated and sent manually.");
+}
+
+/* VERIFY VOUCHER */
+function verifyVoucher(){
+
+    const voucher =
+    document.getElementById("voucher").value;
+
+    const stored =
+    localStorage.getItem("voucher_"+activeUser);
+
+    if(voucher !== stored || !stored){
+        alert("Invalid voucher");
         return;
     }
 
-    out.innerText="CV-" + Math.random().toString(36).substring(2,14).toUpperCase();
+    const password = generatePassword(20);
+
+    document.getElementById("output").innerText =
+    password;
+
 }
 
+/* PASSWORD */
+function generatePassword(len){
+
+    const chars =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*";
+
+    let p="";
+
+    for(let i=0;i<len;i++){
+        p += chars[Math.floor(Math.random()*chars.length)];
+    }
+
+    return p;
+}
+
+/* COPY */
 function copyPass(){
-    navigator.clipboard.writeText(document.getElementById("output").innerText);
+
+    const t =
+    document.getElementById("output").innerText;
+
+    if(t==="LOCKED"){
+        alert("Nothing generated");
+        return;
+    }
+
+    navigator.clipboard.writeText(t);
     alert("Copied");
 }
 
