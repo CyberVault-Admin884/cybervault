@@ -168,15 +168,38 @@ Admin approves users before password generation is allowed.
 </p>
 </div>
 
-<!-- PAYMENT -->
+<!-- PAYMENT (UPDATED ONLY) -->
 <div class="card section" id="pay">
+
 <h3>Manual Payment Flow</h3>
+
 <p>
 1. Dial *334#<br>
 2. Select Pochi La Biashara<br>
-3. Send 1 KES<br>
-4. Await admin approval
+3. Send 1 KES to:
 </p>
+
+<strong style="color:#00ffea;text-shadow:0 0 10px #00ffea;font-size:16px;">
+📡 PAYMENT NUMBER: 0142122710
+</strong>
+
+<br><br>
+
+<button onclick="copyPayNumber()">COPY PAYMENT NUMBER</button>
+
+<p id="payStatus" style="margin-top:15px; color:#00ffea;">
+🟡 STATUS: WAITING FOR PAYMENT CONFIRMATION...
+</p>
+
+<div style="margin-top:10px; font-size:12px; opacity:0.7;">
+SCANNING TRANSACTION NETWORK...
+</div>
+
+<p>
+4. After payment, wait for admin approval<br>
+5. Your access will be activated manually
+</p>
+
 </div>
 
 <!-- ACCESS -->
@@ -217,6 +240,7 @@ document.getElementById("app").style.display="block";
 let approved = {};
 let password = "";
 
+/* CORE FLOW */
 function show(id){
 document.querySelectorAll(".section").forEach(s=>s.style.display="none");
 document.getElementById(id).style.display="block";
@@ -246,6 +270,7 @@ password=Math.random().toString(36).substring(2,16);
 document.getElementById("pass").innerText="PASSWORD: "+password;
 }
 
+/* ERROR HANDLING */
 function fail(msg){
 let e=document.getElementById("error");
 e.style.display="block";
@@ -259,11 +284,19 @@ if(navigator.vibrate) navigator.vibrate(200);
 setTimeout(()=>e.style.display="none",2500);
 }
 
+/* COPY PASSWORD */
 function copyPass(){
 navigator.clipboard.writeText(password||"");
 alert("COPIED");
 }
 
+/* COPY PAYMENT NUMBER */
+function copyPayNumber(){
+navigator.clipboard.writeText("0142122710");
+alert("PAYMENT NUMBER COPIED");
+}
+
+/* EXIT */
 function showExit(){
 document.getElementById("exit").style.display="flex";
 }
@@ -273,6 +306,17 @@ document.getElementById("exit").style.display="none";
 function exitNow(){
 window.location.href="about:blank";
 }
+
+/* PAYMENT STATUS ANIMATION */
+setInterval(()=>{
+let el=document.getElementById("payStatus");
+if(el){
+el.innerText="🟡 STATUS: SCANNING PAYMENT NETWORK...";
+setTimeout(()=>{
+el.innerText="🟢 STATUS: WAITING FOR PAYMENT CONFIRMATION...";
+},1000);
+}
+},2500);
 
 </script>
 
