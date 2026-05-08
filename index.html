@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>CYBERVAULT SYSTEM</title>
+<title>CYBERVAULT TERMINAL OS</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -14,19 +14,19 @@ color:#00ffea;
 overflow-x:hidden;
 }
 
-/* HACKER EFFECT */
+/* ===== SCANLINES + GLOW ===== */
 body::before{
 content:"";
 position:fixed;
 inset:0;
 background:repeating-linear-gradient(
 to bottom,
-rgba(0,255,255,0.05),
-rgba(0,255,255,0.05) 1px,
+rgba(0,255,255,0.06),
+rgba(0,255,255,0.06) 1px,
 transparent 1px,
 transparent 4px
 );
-animation:scan 6s linear infinite;
+animation:scan 5s linear infinite;
 pointer-events:none;
 }
 
@@ -35,7 +35,12 @@ pointer-events:none;
 100%{transform:translateY(40px);}
 }
 
-/* BOOT SCREEN */
+/* ===== GLITCH GLOW TEXT ===== */
+h2,h3{
+text-shadow:0 0 10px #00ffea;
+}
+
+/* ===== BOOT SCREEN ===== */
 #boot{
 position:fixed;
 inset:0;
@@ -49,12 +54,12 @@ z-index:9999;
 
 .boot-line{
 opacity:0;
-animation:fade 0.5s forwards;
+animation:fade 0.6s forwards;
 }
 
 @keyframes fade{to{opacity:1;}}
 
-/* LAYOUT */
+/* ===== LAYOUT ===== */
 .container{
 max-width:900px;
 margin:auto;
@@ -66,7 +71,7 @@ border:1px solid #00ffea55;
 padding:15px;
 margin-top:10px;
 background:rgba(0,40,50,0.25);
-box-shadow:0 0 12px rgba(0,255,234,0.2);
+box-shadow:0 0 12px rgba(0,255,234,0.15);
 }
 
 button{
@@ -77,6 +82,12 @@ background:#00ffea;
 border:none;
 font-weight:bold;
 cursor:pointer;
+transition:0.2s;
+}
+
+button:hover{
+transform:scale(1.03);
+box-shadow:0 0 10px #00ffea;
 }
 
 input{
@@ -113,30 +124,30 @@ margin-top:20px;
 
 <body>
 
-<!-- BOOT -->
+<!-- ===== BOOT ANIMATION ===== -->
 <div id="boot">
-<div class="boot-line">INITIALIZING CYBERVAULT...</div>
-<div class="boot-line">LOADING SECURITY MODULES...</div>
-<div class="boot-line">ESTABLISHING TERMINAL LINK...</div>
+<div class="boot-line">INITIALIZING CYBERVAULT CORE...</div>
+<div class="boot-line">LOADING ENCRYPTION MODULES...</div>
+<div class="boot-line">CONNECTING TERMINAL INTERFACE...</div>
 <div class="boot-line">SYSTEM READY ✓</div>
 </div>
 
 <div class="container">
 
-<h2>CYBERVAULT SYSTEM</h2>
+<h2>CYBERVAULT TERMINAL OS</h2>
 
-<!-- USER PANEL -->
+<!-- ===== USER SECTION ===== -->
 <div id="user">
 
 <div class="card">
-<h3>USER REQUEST ACCESS</h3>
+<h3>USER ACCESS REQUEST</h3>
 <input id="phone" placeholder="ENTER PHONE NUMBER">
-<button onclick="request()">REQUEST KEY</button>
+<button onclick="request()">REQUEST ACCESS KEY</button>
 <p id="keyOut"></p>
 </div>
 
 <div class="card">
-<h3>LOGIN</h3>
+<h3>LOGIN SYSTEM</h3>
 <input id="loginPhone" placeholder="PHONE">
 <input id="loginKey" placeholder="ACCESS KEY">
 <button onclick="login()">GENERATE PASSWORD</button>
@@ -147,14 +158,14 @@ margin-top:20px;
 
 </div>
 
-<!-- ADMIN LOGIN -->
+<!-- ===== ADMIN LOGIN ===== -->
 <div id="adminLogin" class="card hidden">
 <h3>STAFF ONLY ACCESS</h3>
 <input id="adminPass" placeholder="ENTER ADMIN PASSKEY">
-<button onclick="adminLogin()">UNLOCK</button>
+<button onclick="adminLogin()">UNLOCK SYSTEM</button>
 </div>
 
-<!-- ADMIN PANEL -->
+<!-- ===== ADMIN PANEL ===== -->
 <div id="adminPanel" class="hidden">
 
 <div class="card">
@@ -173,29 +184,29 @@ margin-top:20px;
 </table>
 </div>
 
-<!-- INFO SECTION -->
+<!-- ===== DOCUMENTATION ===== -->
 <div class="card">
 <h3>WHY THIS SYSTEM EXISTS</h3>
 <p>
-CYBERVAULT is a controlled access system built for secure user verification, anti-bot control, and password generation workflow management.
+CYBERVAULT is a secure terminal-based access system designed for controlled user authentication, bot prevention, and structured password generation workflows.
 </p>
 
 <h4>💳 PAYMENT SYSTEM</h4>
 <p>
-Users send 1 KES via M-PESA:
+Users must send 1 KES via M-PESA:
 <br>*334# → Pochi La Biashara → 0142122710
 </p>
 
 <p>
 Purpose:
-<br>✔ Anti-bot protection
+<br>✔ Anti-bot filtering
 <br>✔ System maintenance
-<br>✔ Ad-free operation
+<br>✔ Ad-free stability
 </p>
 
-<h4>⚠ PASSWORD RULE</h4>
+<h4>⚠ SECURITY NOTE</h4>
 <p>
-Passwords are not stored. They are generated once and must be copied immediately.
+Passwords are generated dynamically and are NOT stored in the system. Users must copy immediately after generation.
 </p>
 
 <h4>👨‍💻 DEVELOPER</h4>
@@ -205,7 +216,7 @@ Developed in Kenya by Prevellah / Gloom Cyber Systems
 </div>
 
 <div class="footer">
-© 2026 CYBERVAULT SYSTEM | Support: 0142122710
+© 2026 CYBERVAULT SYSTEM | SUPPORT: 0142122710
 </div>
 
 </div>
@@ -245,7 +256,7 @@ function login(){
 let p=document.getElementById("loginPhone").value;
 let k=document.getElementById("loginKey").value;
 
-if(!users[p])return alert("NOT FOUND");
+if(!users[p])return alert("USER NOT FOUND");
 if(users[p].status!=="APPROVED")return alert("NOT APPROVED");
 if(users[p].key!==k)return alert("INVALID KEY");
 
@@ -253,7 +264,7 @@ password=Math.random().toString(36).substring(2,12);
 document.getElementById("result").innerText="PASSWORD: "+password;
 }
 
-/* ADMIN ENTRY */
+/* ADMIN OPEN */
 function openAdmin(){
 document.getElementById("adminLogin").classList.remove("hidden");
 }
