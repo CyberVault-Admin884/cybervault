@@ -34,7 +34,7 @@ body::before{
     100%{transform:translateY(40px);}
 }
 
-/* BOOT SCREEN */
+/* BOOT */
 #boot{
     position:fixed;
     inset:0;
@@ -63,6 +63,7 @@ body::before{
     display:none;
 }
 
+/* CARDS */
 .card{
     background:rgba(0,40,50,0.2);
     border:1px solid #00ffea55;
@@ -84,15 +85,6 @@ button{
 #error{
     color:#ff2e2e;
     display:none;
-}
-
-/* TERMINAL CURSOR */
-.cursor::after{
-    content:"_";
-    animation:blink 0.8s infinite;
-}
-@keyframes blink{
-    50%{opacity:0;}
 }
 
 /* SHAKE */
@@ -120,6 +112,16 @@ button{
     padding:20px;
     border:1px solid #00ffea;
 }
+
+/* CYBER SIGNATURE */
+.signature{
+    text-align:center;
+    margin-top:15px;
+    font-size:11px;
+    opacity:0.6;
+    color:#00ffea;
+    text-shadow:0 0 10px #00ffea;
+}
 </style>
 </head>
 
@@ -131,7 +133,8 @@ button{
 <div class="boot-line" style="animation-delay:1s">LOADING SECURITY MODULES...</div>
 <div class="boot-line" style="animation-delay:1.7s">ESTABLISHING TERMINAL LINK...</div>
 <div class="boot-line" style="animation-delay:2.4s">CHECKING MANUAL PAYMENT GATEWAY...</div>
-<div class="boot-line" style="animation-delay:3.2s">SYSTEM READY ✓</div>
+<div class="boot-line" style="animation-delay:3.0s">GLOOM CYBER SIGNATURE VERIFIED</div>
+<div class="boot-line" style="animation-delay:3.5s">SYSTEM READY ✓</div>
 </div>
 
 <!-- EXIT -->
@@ -146,7 +149,7 @@ button{
 <!-- APP -->
 <div class="container" id="app">
 
-<h2 class="cursor">CYBERVAULT TERMINAL</h2>
+<h2>CYBERVAULT TERMINAL</h2>
 
 <div class="card">
 <h3>COMMAND MENU</h3>
@@ -160,9 +163,8 @@ button{
 <h3>System Purpose</h3>
 <p>
 CYBERVAULT is a controlled access terminal system.
-Users pay a small fee (1 KES) via manual M-PESA verification.
+Users pay a small fee via manual M-PESA verification.
 Admin approves users before password generation is allowed.
-This prevents bots and keeps system secure.
 </p>
 </div>
 
@@ -172,9 +174,8 @@ This prevents bots and keeps system secure.
 <p>
 1. Dial *334#<br>
 2. Select Pochi La Biashara<br>
-3. Send 1 KES to admin number<br>
-4. Submit phone here<br>
-5. Wait for approval
+3. Send 1 KES<br>
+4. Await admin approval
 </p>
 </div>
 
@@ -195,38 +196,38 @@ This prevents bots and keeps system secure.
 
 <button onclick="copyPass()">COPY PASSWORD</button>
 
-<button onclick="showExit()" style="background:red;color:#fff;">EXIT</button>
+<button onclick="showExit()" style="background:red;color:white;">EXIT</button>
 
+</div>
+
+<!-- CYBER SIGNATURE -->
+<div class="signature">
+GLOOM CYBER SIGNATURE // DEVELOPED BY PREVELLah © 2026
 </div>
 
 </div>
 
 <script>
 
-/* BOOT SEQUENCE END */
 setTimeout(()=>{
 document.getElementById("boot").style.display="none";
 document.getElementById("app").style.display="block";
 },4000);
 
-/* SYSTEM STATE */
 let approved = {};
 let password = "";
 
-/* SECTION SWITCH */
 function show(id){
 document.querySelectorAll(".section").forEach(s=>s.style.display="none");
 document.getElementById(id).style.display="block";
 }
 
-/* REQUEST ACCESS */
 function request(){
 let p=document.getElementById("phone").value;
 approved[p]="PENDING";
-alert("Request sent. Await admin approval.");
+alert("REQUEST SENT");
 }
 
-/* VERIFY */
 function verify(){
 let p=document.getElementById("phone").value;
 let v=document.getElementById("voucher").value;
@@ -237,7 +238,7 @@ return;
 }
 
 if(v !== "CYBER-ADMIN"){
-fail("INVALID VOUCHER");
+fail("INVALID KEY");
 return;
 }
 
@@ -245,7 +246,6 @@ password=Math.random().toString(36).substring(2,16);
 document.getElementById("pass").innerText="PASSWORD: "+password;
 }
 
-/* ERROR */
 function fail(msg){
 let e=document.getElementById("error");
 e.style.display="block";
@@ -259,16 +259,20 @@ if(navigator.vibrate) navigator.vibrate(200);
 setTimeout(()=>e.style.display="none",2500);
 }
 
-/* COPY */
 function copyPass(){
 navigator.clipboard.writeText(password||"");
 alert("COPIED");
 }
 
-/* EXIT */
-function showExit(){document.getElementById("exit").style.display="flex";}
-function closeExit(){document.getElementById("exit").style.display="none";}
-function exitNow(){window.location.href="about:blank";}
+function showExit(){
+document.getElementById("exit").style.display="flex";
+}
+function closeExit(){
+document.getElementById("exit").style.display="none";
+}
+function exitNow(){
+window.location.href="about:blank";
+}
 
 </script>
 
