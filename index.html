@@ -19,15 +19,15 @@ body {
     flex-direction: column;
 }
 
-/* CRT SCANLINE & FLICKER EFFECT */
+/* CRT SCANLINE EFFECT */
 body::before {
     content: "";
     position: fixed;
     inset: 0;
     background: repeating-linear-gradient(
         to bottom,
-        rgba(0, 255, 234, 0.04),
-        rgba(0, 255, 234, 0.04) 1px,
+        rgba(0, 255, 234, 0.03),
+        rgba(0, 255, 234, 0.03) 1px,
         transparent 1.5px,
         transparent 4px
     );
@@ -46,26 +46,95 @@ h1, h2, h3, .glow-text {
     text-shadow: 0 0 10px rgba(0, 255, 234, 0.6);
 }
 
-/* BOOT LOADING SYSTEM */
+/* ==========================================
+   SHIELD INTRO SCREEN (2-SECOND LOADER)
+   ========================================== */
 #boot {
     position: fixed;
     inset: 0;
-    background: #000;
+    background: #00020a;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 30px;
+    align-items: center;
     z-index: 10000;
+    transition: opacity 0.5s ease, visibility 0.5s;
 }
 
-.boot-line {
-    opacity: 0;
-    margin-bottom: 8px;
-    font-size: 13px;
-    letter-spacing: 1px;
+/* Glowing Shield Vector */
+.shield-container {
+    position: relative;
+    width: 120px;
+    height: 130px;
+    margin-bottom: 25px;
+    animation: pulseGlow 1.5s infinite alternate ease-in-out;
 }
 
-/* LAYOUT */
+.shield-outer {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #021a30 0%, #000a12 100%);
+    border: 3px solid #00d4ff;
+    border-radius: 50% 50% 50% 50% / 15% 15% 85% 85%;
+    position: relative;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.shield-inner {
+    width: 80px;
+    height: 80px;
+    background: transparent;
+    border: 2px solid #00ffea;
+    border-radius: 50% 50% 50% 50% / 15% 15% 85% 85%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Padlock inside Shield */
+.lock {
+    width: 26px;
+    height: 22px;
+    background: #00ffea;
+    border-radius: 3px;
+    position: relative;
+    margin-top: 12px;
+    box-shadow: 0 0 10px #00ffea;
+}
+.lock::before {
+    content: "";
+    position: absolute;
+    border: 3px solid #00ffea;
+    border-bottom: none;
+    width: 14px;
+    height: 16px;
+    left: 3px;
+    top: -13px;
+    border-radius: 8px 8px 0 0;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(0.95); filter: drop-shadow(0 0 5px rgba(0, 255, 234, 0.3)); }
+    100% { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(0, 255, 234, 0.8)); }
+}
+
+.boot-text {
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #ffffff;
+    text-transform: uppercase;
+    animation: blinkText 1.2s infinite;
+}
+
+@keyframes blinkText {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* LAYOUT STRUCTURE */
 .container {
     max-width: 500px;
     width: 100%;
@@ -78,7 +147,7 @@ h1, h2, h3, .glow-text {
     border: 1px solid rgba(0, 255, 234, 0.3);
     padding: 20px;
     margin-top: 15px;
-    background: rgba(0, 20, 25, 0.6);
+    background: rgba(0, 20, 25, 0.7);
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 255, 234, 0.05);
     position: relative;
@@ -127,7 +196,7 @@ button:active {
     min-height: 24px;
 }
 
-/* INTERACTIVE DEVELOPER TERMINAL */
+/* REVEAL TERMINAL */
 .reveal-terminal {
     background: #020b0d;
     border: 1px solid #00ffea;
@@ -176,10 +245,14 @@ button:active {
 <body>
 
 <div id="boot">
-    <div class="boot-line" style="animation: fade 0.1s forwards 0.2s;">[ SYSTEM ]: BOOT_SEQUENCE_INITIALIZED</div>
-    <div class="boot-line" style="animation: fade 0.1s forwards 0.8s;">[ ENGINE ]: PARSING CRYPTO MODULES...</div>
-    <div class="boot-line" style="animation: fade 0.1s forwards 1.4s;">[ CORE   ]: INJECTING ENTROPY BUFFER...</div>
-    <div class="boot-line" style="animation: fade 0.1s forwards 2.0s;">[ DEPLOY ]: GLOOM CYBER SYSTEMS INTERFACE UP ✓</div>
+    <div class="shield-container">
+        <div class="shield-outer">
+            <div class="shield-inner">
+                <div class="lock"></div>
+            </div>
+        </div>
+    </div>
+    <div class="boot-text">INITIALIZING CYBERVAULT SECURE...</div>
 </div>
 
 <div class="container">
@@ -195,29 +268,43 @@ button:active {
     </div>
 
     <div class="card">
-        <h3 class="text-sm font-bold tracking-widest mb-2 uppercase">Developer Query</h3>
-        <p class="text-[11px] opacity-70 mb-3">Click below to query ownership records.</p>
-        
+        <h3 class="text-sm font-bold tracking-widest mb-2 uppercase text-white">Why Password Security is Paramount</h3>
+        <p class="text-[11px] opacity-80 leading-relaxed mb-3">
+            With the rise of <span class="text-cyan-400 font-bold">AI brute-forcing tools</span>, legacy passwords (like name/birthdate combos) can be cracked in under three seconds. True defensive cybersecurity requires modern randomization principles.
+        </p>
+        <ul class="text-[11px] space-y-2 opacity-80 list-none p-0 m-0 border-t border-cyan-950 pt-3">
+            <li>🔒 <span class="text-white font-bold">Countering AI Attacks:</span> Dynamic variables ensure that predictive dictionary models fail entirely.</li>
+            <li>🚫 <span class="text-white font-bold">Offline Sandbox:</span> Generated keys run purely inside your device's memory context—never on a server database.</li>
+            <li>🤖 <span class="text-white font-bold">Unhackable Entropy:</span> Over 70 unique variable indices to guarantee complex, long-term defensive patterns.</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3 class="text-sm font-bold tracking-widest mb-2 uppercase">Developer Identity</h3>
         <button onclick="startDeveloperReveal()" class="!mt-0">Decrypt Creator Profile</button>
         
         <div class="reveal-terminal mt-3">
             <div class="terminal-header">
                 <span>TERMINAL://GLOOM_SYS</span>
-                <span>SECURE NODE</span>
+                <span>SECURE</span>
             </div>
             <div id="terminal-body" class="text-white leading-relaxed">
-                <span>Gloom-Core ready. Tap Decrypt above to query...</span><span class="cursor"></span>
+                <span>Gloom-Core ready. Tap Decrypt above to run...</span><span class="cursor"></span>
             </div>
         </div>
     </div>
 
     <div class="card">
-        <h3 class="text-sm font-bold tracking-widest mb-2 uppercase">Node Directives</h3>
-        <ul class="text-[11px] space-y-2 opacity-80 list-none p-0 m-0">
-            <li>✦ <span class="text-white">Zero Cost:</span> Fully operational offline.</li>
-            <li>✦ <span class="text-white">Pure Entropy:</span> Browser cryptographically secure.</li>
-            <li>✦ <span class="text-white">Data Leak Protection:</span> 0% storage index.</li>
-        </ul>
+        <h3 class="text-sm font-bold tracking-widest mb-2 uppercase text-white">System Support</h3>
+        <p class="text-[11px] opacity-80 mb-3">
+            For custom security deployments, offline builds, or direct assistance:
+        </p>
+        <div class="bg-black/80 border border-cyan-900 p-3 rounded text-center">
+            <a href="tel:+254700000000" class="text-white font-bold text-sm tracking-widest hover:text-cyan-400 decoration-none">
+                📞 +254 7XX XXX XXX
+            </a>
+            <p class="text-[9px] opacity-50 mt-1">Gloom Cyber Assistance Node</p>
+        </div>
     </div>
 
     <div class="footer">
@@ -230,7 +317,7 @@ button:active {
 let current = "";
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-// SYSTEM SYNTHESIZED KEYBOARD SOUNDS
+// MECHANICAL KEYBOARD CLICK GENERATOR (NATIVE SYNTHESIS)
 function playKeySound(type = 'press') {
     if (audioCtx.state === 'suspended') {
         audioCtx.resume();
@@ -243,7 +330,6 @@ function playKeySound(type = 'press') {
     gainNode.connect(audioCtx.destination);
     
     if (type === 'press') {
-        // High-pitched short mechanical click
         osc.type = 'triangle';
         osc.frequency.setValueAtTime(800 + Math.random() * 400, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.04);
@@ -252,7 +338,6 @@ function playKeySound(type = 'press') {
         osc.start();
         osc.stop(audioCtx.currentTime + 0.04);
     } else if (type === 'space') {
-        // Lower clack for actions/spacebar
         osc.type = 'sine';
         osc.frequency.setValueAtTime(150 + Math.random() * 50, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.08);
@@ -263,7 +348,7 @@ function playKeySound(type = 'press') {
     }
 }
 
-// Global click sound tracking
+// Global button click listener
 document.addEventListener('click', (e) => {
     if (e.target.tagName === 'BUTTON') {
         playKeySound('space');
@@ -272,18 +357,25 @@ document.addEventListener('click', (e) => {
     }
 });
 
-/* BOOT SYSTEM */
-setTimeout(() => {
-    document.getElementById("boot").style.display = "none";
-    playKeySound('space');
-}, 2700);
+/* ==========================================
+   2-SECOND SHIELD LOADER EXECUTION
+   ========================================== */
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const bootScreen = document.getElementById("boot");
+        bootScreen.style.opacity = "0";
+        setTimeout(() => {
+            bootScreen.style.visibility = "hidden";
+        }, 500);
+        playKeySound('space');
+    }, 2000); // 2000 milliseconds = 2 seconds
+});
 
-/* PASSWORD GENERATOR USING CRYPTOGRAPHIC ENTROPY */
+/* PASSWORD GENERATION ENGINE */
 function generate() {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-{}[]";
     let pass = "";
     
-    // Using Cryptographically Secure pseudo-random number generator
     const array = new Uint32Array(18);
     window.crypto.getRandomValues(array);
     
@@ -295,7 +387,7 @@ function generate() {
     document.getElementById("out").innerText = pass;
 }
 
-/* COPY FUNCTION */
+/* SECURE COPY FUNCTION */
 function copy() {
     if (!current) return;
     navigator.clipboard.writeText(current);
@@ -310,14 +402,14 @@ function copy() {
     }, 1500);
 }
 
-/* TYPEWRITER REVEAL FOR DEVELOPER PROFILE */
+/* TERMINAL TYPEWRITER CREDITS REVEAL */
 let revealing = false;
 function startDeveloperReveal() {
     if (revealing) return;
     revealing = true;
     
     const terminal = document.getElementById("terminal-body");
-    terminal.innerHTML = ""; // Clear existing
+    terminal.innerHTML = "";
     
     const lines = [
         "Connecting to Gloom DNS...",
@@ -337,14 +429,13 @@ function startDeveloperReveal() {
             const currentLine = lines[currentLineIndex];
             
             if (currentCharIndex === 0) {
-                // If beginning of line, append container
                 terminal.innerHTML += `<div id="line-${currentLineIndex}"></div>`;
             }
             
             const lineElement = document.getElementById(`line-${currentLineIndex}`);
             lineElement.innerHTML = currentLine.substring(0, currentCharIndex + 1);
             
-            // Play physical mechanical key click sound
+            // Sound loops on every keystroke
             playKeySound('press');
             
             currentCharIndex++;
@@ -354,7 +445,7 @@ function startDeveloperReveal() {
             } else {
                 currentLineIndex++;
                 currentCharIndex = 0;
-                playKeySound('space'); // Play spacebar/enter clack for line breaks
+                playKeySound('space');
                 setTimeout(typeNextChar, 150);
             }
         } else {
