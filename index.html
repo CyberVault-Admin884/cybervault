@@ -61,7 +61,6 @@ h1, h2, h3, .glow-text {
     transition: opacity 0.5s ease, visibility 0.5s;
 }
 
-/* Glowing Shield Vector */
 .shield-container {
     position: relative;
     width: 120px;
@@ -94,7 +93,6 @@ h1, h2, h3, .glow-text {
     align-items: center;
 }
 
-/* Padlock inside Shield */
 .lock {
     width: 26px;
     height: 22px;
@@ -196,6 +194,24 @@ button:active {
     min-height: 24px;
 }
 
+/* SIMULATOR INPUT */
+.terminal-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px;
+    background: #000;
+    border: 1px solid #00ffea;
+    color: #fff;
+    font-family: 'JetBrains Mono', monospace;
+    border-radius: 4px;
+    margin-top: 10px;
+    outline: none;
+    font-size: 14px;
+}
+.terminal-input:focus {
+    box-shadow: 0 0 10px rgba(0, 255, 234, 0.5);
+}
+
 /* REVEAL TERMINAL */
 .reveal-terminal {
     background: #020b0d;
@@ -265,6 +281,24 @@ button:active {
         <button onclick="generate()">Generate High Entropy Key</button>
         <div class="output font-bold text-white" id="out">_ AWAITING COMMAND _</div>
         <button onclick="copy()" style="background: transparent; color: #00ffea; border: 1px solid #00ffea;">Copy Passkey</button>
+    </div>
+
+    <div class="card">
+        <h3 class="text-sm font-bold tracking-widest mb-1 uppercase text-white">Crack-Time Simulator</h3>
+        <p class="text-[11px] opacity-70 mb-2">Input any password to run a real-time decryption simulation.</p>
+        
+        <input type="text" id="sim-input" class="terminal-input" placeholder="Type password to test..." maxlength="40">
+        <button onclick="startSimulation()">Analyze Security Strength</button>
+
+        <div class="reveal-terminal mt-3" style="min-height: 140px;">
+            <div class="terminal-header">
+                <span>SIM_MODULE://DECRYPT_ATTACK</span>
+                <span>ONLINE</span>
+            </div>
+            <div id="sim-body" class="text-white leading-relaxed">
+                <span class="opacity-50">Enter target string and initialize analysis...</span>
+            </div>
+        </div>
     </div>
 
     <div class="card">
@@ -368,7 +402,7 @@ window.addEventListener('DOMContentLoaded', () => {
             bootScreen.style.visibility = "hidden";
         }, 500);
         playKeySound('space');
-    }, 2000); // 2000 milliseconds = 2 seconds
+    }, 2000);
 });
 
 /* PASSWORD GENERATION ENGINE */
@@ -400,6 +434,105 @@ function copy() {
         outBox.innerText = originalText;
         outBox.style.color = "#ffffff";
     }, 1500);
+}
+
+/* ==========================================
+   INTERACTIVE SIMULATOR SYSTEM
+   ========================================== */
+let simulatorActive = false;
+function startSimulation() {
+    if (simulatorActive) return;
+    
+    const inputVal = document.getElementById('sim-input').value.trim();
+    const simBody = document.getElementById('sim-body');
+    
+    if (!inputVal) {
+        simBody.innerHTML = "<span style='color: #ff3b30;'>[!] ERROR: Input is completely blank. Enter data.</span>";
+        return;
+    }
+    
+    simulatorActive = true;
+    simBody.innerHTML = "";
+    
+    let cycles = 0;
+    const interval = setInterval(() => {
+        // Generate random cyber binary noise for simulation atmosphere
+        let matrixLine = "";
+        for (let i = 0; i < 28; i++) {
+            matrixLine += Math.floor(Math.random() * 2).toString();
+        }
+        
+        simBody.innerHTML = `<div style="color: #00ffea; opacity: 0.6; font-size: 10px;">CYCLE_${cycles} // DATA_STR: ${matrixLine}</div>`;
+        playKeySound('press');
+        cycles++;
+        
+        if (cycles > 12) {
+            clearInterval(interval);
+            finishSimulation(inputVal);
+        }
+    }, 100);
+}
+
+function finishSimulation(pwd) {
+    const simBody = document.getElementById('sim-body');
+    
+    // Entropy math calculations
+    let poolSize = 0;
+    if (/[a-z]/.test(pwd)) poolSize += 26;
+    if (/[A-Z]/.test(pwd)) poolSize += 26;
+    if (/[0-9]/.test(pwd)) poolSize += 10;
+    if (/[^a-zA-Z0-9]/.test(pwd)) poolSize += 33;
+    
+    if (poolSize === 0) poolSize = 10; // Fallback
+    
+    const bitsOfEntropy = Math.round(pwd.length * Math.log2(poolSize));
+    const totalCombinations = Math.pow(poolSize, pwd.length);
+    
+    // Time translation formulas
+    const hashRate = 1e11; // 100 Billion guesses/sec (High-end attack speed)
+    const secondsToCrack = totalCombinations / (2 * hashRate);
+    
+    let displayTime = "";
+    let riskLabel = "";
+    let riskColor = "";
+    
+    if (secondsToCrack < 1) {
+        displayTime = "0.0003 Milliseconds";
+        riskLabel = "CRITICAL VULNERABILITY";
+        riskColor = "#ff3b30";
+    } else if (secondsToCrack < 60) {
+        displayTime = `${Math.round(secondsToCrack)} Seconds`;
+        riskLabel = "HIGH RISK - DICTIONARY COMPLIANT";
+        riskColor = "#ff6b00";
+    } else if (secondsToCrack < 86400) {
+        displayTime = `${Math.round(secondsToCrack / 3600)} Hours`;
+        riskLabel = "MODERATE SECURITY LAYER";
+        riskColor = "#ffb300";
+    } else if (secondsToCrack < 31536000) {
+        displayTime = `${Math.round(secondsToCrack / 86400)} Days`;
+        riskLabel = "STRONG PERSONAL DEFENSE";
+        riskColor = "#00ffea";
+    } else {
+        const years = Math.round(secondsToCrack / 31536000);
+        displayTime = years > 1e9 ? "Infinite (Quintillions of Years)" : `${years.toLocaleString()} Years`;
+        riskLabel = "MILITARY-GRADE COLD STORAGE";
+        riskColor = "#00ff99";
+    }
+    
+    playKeySound('space');
+    
+    simBody.innerHTML = `
+        <div style="color: ${riskColor}; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">
+            [+] RESULT: ${riskLabel}
+        </div>
+        <div style="font-size: 11px; margin-top: 8px; line-height: 1.5;">
+            - Total Entropy: <span style="color:#fff;">${bitsOfEntropy} Bits</span><br>
+            - Brute Force Speed: <span style="color:#fff;">100 Billion keys/sec</span><br>
+            - Time To Decrypt: <span style="color:${riskColor}; font-weight:bold;">${displayTime}</span>
+        </div>
+    `;
+    
+    simulatorActive = false;
 }
 
 /* TERMINAL TYPEWRITER CREDITS REVEAL */
@@ -435,7 +568,6 @@ function startDeveloperReveal() {
             const lineElement = document.getElementById(`line-${currentLineIndex}`);
             lineElement.innerHTML = currentLine.substring(0, currentCharIndex + 1);
             
-            // Sound loops on every keystroke
             playKeySound('press');
             
             currentCharIndex++;
