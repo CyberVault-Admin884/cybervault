@@ -61,6 +61,7 @@ h1, h2, h3 {
     justify-content: center;
     align-items: center;
     z-index: 10000;
+    transition: opacity 0.5s ease-out;
 }
 
 .shield-container {
@@ -426,17 +427,23 @@ let simulatorActive = false;
 let sandboxRunning = false;
 let revealing = false;
 
-// Safe load for boot screen
+// 2-SECOND ABSOLUTE FAILSAFE BOOT TIMER (Ensures loader dies)
+function clearBootScreen() {
+    var bootScreen = document.getElementById("boot");
+    if (bootScreen) {
+        bootScreen.style.opacity = "0";
+        setTimeout(function() {
+            bootScreen.style.display = "none";
+        }, 500);
+    }
+}
+
+// Fire the timer immediately upon executing script block
+setTimeout(clearBootScreen, 2000);
+
+// Also run it on standard load as a backup
 window.onload = function() {
-    setTimeout(function() {
-        var bootScreen = document.getElementById("boot");
-        if (bootScreen) {
-            bootScreen.style.opacity = "0";
-            setTimeout(function() {
-                bootScreen.style.display = "none";
-            }, 300);
-        }
-    }, 1500);
+    clearBootScreen();
 };
 
 // Collapsible protocol section
@@ -462,7 +469,6 @@ function generatePasskey() {
             pass += chars.charAt(array[i] % chars.length);
         }
     } catch(e) {
-        // Safe Math-based fallback if WebCrypto is blocked by sandbox
         for (var j = 0; j < 18; j++) {
             pass += chars.charAt(Math.floor(Math.random() * chars.length));
         }
@@ -601,8 +607,4 @@ function detonateMalwareSim() {
             body.innerHTML += '<div style="color: ' + stage.color + '; margin-bottom: 4px;">' + stage.text + '</div>';
             var parent = body.parentElement;
             if (parent) {
-                parent.scrollTop = parent.scrollHeight;
-            }
-            if (idx === stages.length - 1) {
-                sandboxRunning = false;
-                stat
+                parent.scrollTop = parent.scrollHe
