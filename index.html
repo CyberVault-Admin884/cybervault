@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CYBERVAULT TACTICAL CRYPTOCORE</title>
+<title>CYBERVAULT PASSWORD CORE</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap');
@@ -17,6 +17,7 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 /* CRT SCANLINE EFFECT */
@@ -39,6 +40,39 @@ body::before {
 @keyframes scan {
     0% { transform: translateY(0); }
     100% { transform: translateY(100%); }
+}
+
+/* ==========================================
+   MILITARY SCALE RADAR SCAN & GRID BACKGROUND
+   ========================================== */
+.radar-grid {
+    position: fixed;
+    inset: 0;
+    background-size: 40px 40px;
+    background-image: 
+        linear-gradient(to right, rgba(0, 255, 234, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 255, 234, 0.04) 1px, transparent 1px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.radar-sweep {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200vw;
+    height: 200vw;
+    background: conic-gradient(from 0deg, rgba(0, 255, 234, 0.07) 0deg, transparent 90deg, transparent 360deg);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 0;
+    animation: radarSweep 8s linear infinite;
+}
+
+@keyframes radarSweep {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* GLOW TEXT */
@@ -139,11 +173,11 @@ h1, h2, h3, .glow-text {
     margin: auto;
     padding: 20px;
     box-sizing: border-box;
+    position: relative;
+    z-index: 10; /* Keeps all cards readable on top of radar background */
 }
 
-/* ==========================================
-   HEADER WITH GLOWING RED SHIELD BACKGROUND
-   ========================================== */
+/* HEADER WITH GLOWING RED SHIELD BACKGROUND */
 .header-wrapper {
     position: relative;
     text-align: center;
@@ -181,7 +215,7 @@ h1, h2, h3, .glow-text {
     border: 1px solid rgba(0, 255, 234, 0.3);
     padding: 20px;
     margin-top: 15px;
-    background: rgba(0, 20, 25, 0.7);
+    background: rgba(0, 10, 12, 0.85); /* Slightly darker for optimal text readability on grids */
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 255, 234, 0.05);
     position: relative;
@@ -193,10 +227,6 @@ h1, h2, h3, .glow-text {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 2px;
     background: linear-gradient(90deg, transparent, #00ffea, transparent);
-}
-
-.card.tactical::after {
-    background: linear-gradient(90deg, transparent, #ff3b30, transparent);
 }
 
 button {
@@ -221,23 +251,18 @@ button:active {
     box-shadow: 0 0 15px #ffffff;
 }
 
-.btn-tactical {
-    background: #ff3b30;
-    color: #fff;
-}
-.btn-tactical:active {
-    background: #ff6b62;
-    box-shadow: 0 0 15px #ff3b30;
-}
-
 /* HOW IT WORKS SYSTEM */
 .protocol-btn {
+    width: 100%;
     background: transparent;
     border: 1px dashed rgba(0, 255, 234, 0.5);
     color: #00ffea;
     font-size: 11px;
     padding: 10px;
     margin-top: 15px;
+    font-family: 'JetBrains Mono', monospace;
+    cursor: pointer;
+    border-radius: 4px;
 }
 .protocol-btn:hover {
     background: rgba(0, 255, 234, 0.1);
@@ -247,7 +272,7 @@ button:active {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s ease-out;
-    background: rgba(0, 2, 10, 0.9);
+    background: rgba(0, 2, 10, 0.95);
     border-radius: 6px;
     border: 0 solid rgba(0, 255, 234, 0.2);
     margin-top: 0;
@@ -273,7 +298,7 @@ button:active {
     min-height: 24px;
 }
 
-/* SIMULATOR INPUTS */
+/* SIMULATOR INPUT */
 .terminal-input {
     width: 100%;
     box-sizing: border-box;
@@ -289,13 +314,6 @@ button:active {
 }
 .terminal-input:focus {
     box-shadow: 0 0 10px rgba(0, 255, 234, 0.5);
-}
-
-.input-tactical {
-    border-color: #ff3b30;
-}
-.input-tactical:focus {
-    box-shadow: 0 0 10px rgba(255, 59, 48, 0.5);
 }
 
 /* REVEAL TERMINAL */
@@ -319,11 +337,6 @@ button:active {
     color: rgba(0, 255, 234, 0.6);
 }
 
-.terminal-header.tactical {
-    border-bottom-color: rgba(255, 59, 48, 0.3);
-    color: rgba(255, 59, 48, 0.8);
-}
-
 .cursor {
     display: inline-block;
     width: 8px;
@@ -338,30 +351,6 @@ button:active {
     50% { opacity: 1; }
 }
 
-/* RADAR TACTICAL SWEEP */
-.radar-container {
-    width: 60px;
-    height: 60px;
-    border: 1px solid #ff3b30;
-    border-radius: 50%;
-    margin: 10px auto;
-    position: relative;
-    overflow: hidden;
-    background: rgba(255, 59, 48, 0.05);
-}
-.radar-sweep {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: conic-gradient(from 0deg, transparent 50%, rgba(255, 59, 48, 0.4) 100%);
-    border-radius: 50%;
-    animation: sweep 2s linear infinite;
-}
-@keyframes sweep {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
 .footer {
     text-align: center;
     font-size: 10px;
@@ -374,6 +363,9 @@ button:active {
 </head>
 
 <body>
+
+<div class="radar-grid"></div>
+<div class="radar-sweep"></div>
 
 <div id="boot">
     <div class="shield-container">
@@ -400,42 +392,11 @@ button:active {
     <div id="protocol-box" class="protocol-dropdown">
         <div style="font-size: 11px; line-height: 1.6; color: #ffffff;">
             <span style="color:#00ffea; font-weight:bold;">[1] Core Engine:</span> Generates high-entropy, military-grade unhackable passwords completely offline on your device's sandbox.<br><br>
-            <span style="color:#00ffea; font-weight:bold;">[2] Threat Sandbox:</span> Allows you to input and test your current everyday passwords inside the Quantum Crack-Time Simulator to verify if they are genuinely safe from automated brute-force attacks.<br><br>
-            <span style="color:#ff3b30; font-weight:bold;">[3] Tactical Cryptocore:</span> Hide highly classified, secret payloads inside completely normal-looking decoy system logs that nobody would ever suspect.
+            <span style="color:#00ffea; font-weight:bold;">[2] Threat Sandbox:</span> Allows you to input and test your current everyday passwords inside the Quantum Crack-Time Simulator to verify if they are genuinely safe from automated brute-force attacks.
         </div>
     </div>
 
-    <div class="card tactical" style="border-color: rgba(255, 59, 48, 0.4); background: rgba(15, 0, 0, 0.75);">
-        <h3 class="text-sm font-bold tracking-widest mb-1 uppercase" style="color: #ff3b30; text-shadow: 0 0 10px rgba(255,59,48,0.5);">Tactical Payload Cloak</h3>
-        <p class="text-[11px] opacity-70 mb-2" style="color: #ff9b96;">Hide private secrets inside decoy system metrics. Completely unreadable without key indices.</p>
-        
-        <input type="text" id="tactical-secret" class="terminal-input input-tactical" placeholder="Type secret message to hide...">
-        <input type="password" id="tactical-key" class="terminal-input input-tactical" placeholder="Secure Decryption Password..." style="margin-top: 5px;">
-        
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <button onclick="encodeTactical()" class="btn-tactical" style="margin-top: 0; font-size: 11px;">[ CLOAK PAYLOAD ]</button>
-            <button onclick="decodeTactical()" style="background: transparent; color: #ff3b30; border: 1px solid #ff3b30; margin-top: 0; font-size: 11px;">[ UNVEIL PAYLOAD ]</button>
-        </div>
-
-        <div id="radar-ui" style="display: none; text-align: center; margin-top: 15px;">
-            <div class="radar-container">
-                <div class="radar-sweep"></div>
-            </div>
-            <div style="font-size: 9px; color: #ff3b30; letter-spacing: 2px;" class="blinkText">RUNNING MILITARY DECOY DEPLOYMENT...</div>
-        </div>
-
-        <div class="reveal-terminal mt-3" style="min-height: 130px; border-color: #ff3b30; background: #0b0202;">
-            <div class="terminal-header tactical">
-                <span>TACTICAL://COVERT_SANDBOX</span>
-                <span>COVERT</span>
-            </div>
-            <div id="tactical-body" class="text-white leading-relaxed" style="font-size: 11px; word-break: break-all; color: #ff9b96;">
-                <span style="opacity: 0.5;">Awaiting tactical operations...</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
+    <div class="card" style="margin-top: 15px;">
         <h3 class="text-sm font-bold tracking-widest mb-2 uppercase">Core Generator</h3>
         <button onclick="generate()">Generate High Entropy Key</button>
         <div class="output font-bold text-white" id="out">_ AWAITING COMMAND _</div>
@@ -494,5 +455,203 @@ button:active {
         </p>
         <div class="bg-black/80 border border-cyan-900 p-3 rounded text-center">
             <a href="tel:+254142122710" class="text-white font-bold text-sm tracking-widest hover:text-cyan-400 decoration-none">
-                📞 +254 142 12
+                📞 +254 142 122 710
+            </a>
+            <p class="text-[9px] opacity-50 mt-1">Gloom Cyber Assistance Node</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2026 CYBERVAULT SECURE ENGINE
+    </div>
+
+</div>
+
+<script>
+let current = "";
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+// MECHANICAL KEYBOARD CLICK GENERATOR (NATIVE SYNTHESIS)
+function playKeySound(type = 'press') {
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
+    
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    if (type === 'press') {
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(800 + Math.random() * 400, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.04);
+        gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.04);
+    } else if (type === 'space') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(150 + Math.random() * 50, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.08);
+        gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.08);
+    }
+}
+
+// Global button click listener
+document.addEventListener('click', (e) => {
+    if (e.target.tagName === 'BUTTON') {
+        playKeySound('space');
+    } else {
+        playKeySound('press');
+    }
+});
+
+/* ==========================================
+   2-SECOND SHIELD LOADER EXECUTION
+   ========================================== */
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const bootScreen = document.getElementById("boot");
+        bootScreen.style.opacity = "0";
+        setTimeout(() => {
+            bootScreen.style.visibility = "hidden";
+        }, 500);
+        playKeySound('space');
+    }, 2000);
+});
+
+/* ==========================================
+   HOW IT WORKS COLLAPSIBLE SYSTEM
+   ========================================== */
+function toggleProtocols() {
+    const box = document.getElementById("protocol-box");
+    box.classList.toggle("active");
+    playKeySound('space');
+}
+
+/* PASSWORD GENERATION ENGINE */
+function generate() {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-{}[]";
+    let pass = "";
+    
+    const array = new Uint32Array(18);
+    window.crypto.getRandomValues(array);
+    
+    for (let i = 0; i < 18; i++) {
+        pass += chars[array[i] % chars.length];
+    }
+    
+    current = pass;
+    document.getElementById("out").innerText = pass;
+}
+
+/* SECURE COPY FUNCTION */
+function copy() {
+    if (!current) return;
+    navigator.clipboard.writeText(current);
+    const outBox = document.getElementById("out");
+    const originalText = outBox.innerText;
+    outBox.innerText = "✓ COPIED SECURELY";
+    outBox.style.color = "#00ff99";
+    
+    setTimeout(() => {
+        outBox.innerText = originalText;
+        outBox.style.color = "#ffffff";
+    }, 1500);
+}
+
+/* INTERACTIVE SIMULATOR SYSTEM */
+let simulatorActive = false;
+function startSimulation() {
+    if (simulatorActive) return;
+    
+    const inputVal = document.getElementById('sim-input').value.trim();
+    const simBody = document.getElementById('sim-body');
+    
+    if (!inputVal) {
+        simBody.innerHTML = "<span style='color: #ff3b30;'>[!] ERROR: Input is completely blank. Enter data.</span>";
+        return;
+    }
+    
+    simulatorActive = true;
+    simBody.innerHTML = "";
+    
+    let cycles = 0;
+    const interval = setInterval(() => {
+        let matrixLine = "";
+        for (let i = 0; i < 28; i++) {
+            matrixLine += Math.floor(Math.random() * 2).toString();
+        }
         
+        simBody.innerHTML = `<div style="color: #00ffea; opacity: 0.6; font-size: 10px;">CYCLE_${cycles} // DATA_STR: ${matrixLine}</div>`;
+        playKeySound('press');
+        cycles++;
+        
+        if (cycles > 12) {
+            clearInterval(interval);
+            finishSimulation(inputVal);
+        }
+    }, 100);
+}
+
+function finishSimulation(pwd) {
+    const simBody = document.getElementById('sim-body');
+    
+    let poolSize = 0;
+    if (/[a-z]/.test(pwd)) poolSize += 26;
+    if (/[A-Z]/.test(pwd)) poolSize += 26;
+    if (/[0-9]/.test(pwd)) poolSize += 10;
+    if (/[^a-zA-Z0-9]/.test(pwd)) poolSize += 33;
+    
+    if (poolSize === 0) poolSize = 10;
+    
+    const bitsOfEntropy = Math.round(pwd.length * Math.log2(poolSize));
+    const totalCombinations = Math.pow(poolSize, pwd.length);
+    
+    const hashRate = 1e11; 
+    const secondsToCrack = totalCombinations / (2 * hashRate);
+    
+    let displayTime = "";
+    let riskLabel = "";
+    let riskColor = "";
+    
+    if (secondsToCrack < 1) {
+        displayTime = "0.0003 Milliseconds";
+        riskLabel = "CRITICAL VULNERABILITY";
+        riskColor = "#ff3b30";
+    } else if (secondsToCrack < 60) {
+        displayTime = `${Math.round(secondsToCrack)} Seconds`;
+        riskLabel = "HIGH RISK - DICTIONARY COMPLIANT";
+        riskColor = "#ff6b00";
+    } else if (secondsToCrack < 86400) {
+        displayTime = `${Math.round(secondsToCrack / 3600)} Hours`;
+        riskLabel = "MODERATE SECURITY LAYER";
+        riskColor = "#ffb300";
+    } else if (secondsToCrack < 31536000) {
+        displayTime = `${Math.round(secondsToCrack / 86400)} Days`;
+        riskLabel = "STRONG PERSONAL DEFENSE";
+        riskColor = "#00ffea";
+    } else {
+        const years = Math.round(secondsToCrack / 31536000);
+        displayTime = years > 1e9 ? "Infinite (Quintillions of Years)" : `${years.toLocaleString()} Years`;
+        riskLabel = "MILITARY-GRADE COLD STORAGE";
+        riskColor = "#00ff99";
+    }
+    
+    playKeySound('space');
+    
+    simBody.innerHTML = `
+        <div style="color: ${riskColor}; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">
+            [+] RESULT: ${riskLabel}
+        </div>
+        <div style="font-size: 11px; margin-top: 8px; line-height: 1.5;">
+            - Total Entropy: <span style="color:#fff;">${bitsOfEntropy} Bits</span><br>
+            - Brute Force Speed: <span style="color:#fff;">100 Billion keys/sec</span><br>
+            - Time To Decrypt: <span style="color:${riskColor}; font-weight:bold;">${displayTime}</span>
+        </div>
+    
