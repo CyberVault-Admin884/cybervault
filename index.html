@@ -36,7 +36,6 @@ body::before {
     z-index: 9999;
 }
 
-/* SIMPLE, FAST STATICAL GRID */
 .radar-grid {
     position: fixed;
     inset: 0;
@@ -48,14 +47,11 @@ body::before {
     z-index: 0;
 }
 
-/* GLOW TEXT */
 h1, h2, h3 {
     text-shadow: 0 0 10px rgba(0, 255, 234, 0.6);
 }
 
-/* ==========================================
-   SHIELD INTRO SCREEN
-   ========================================== */
+/* SHIELD INTRO SCREEN */
 #boot {
     position: fixed;
     inset: 0;
@@ -65,7 +61,6 @@ h1, h2, h3 {
     justify-content: center;
     align-items: center;
     z-index: 10000;
-    transition: opacity 0.3s ease, visibility 0.3s;
 }
 
 .shield-container {
@@ -133,7 +128,6 @@ h1, h2, h3 {
     text-transform: uppercase;
 }
 
-/* LAYOUT STRUCTURE */
 .container {
     max-width: 500px;
     width: 100%;
@@ -144,7 +138,6 @@ h1, h2, h3 {
     z-index: 10;
 }
 
-/* HEADER WITH GLOWING RED SHIELD BACKGROUND */
 .header-wrapper {
     position: relative;
     text-align: center;
@@ -209,7 +202,6 @@ button:active {
     transform: scale(0.98);
 }
 
-/* HOW IT WORKS SYSTEM */
 .protocol-btn {
     width: 100%;
     background: transparent;
@@ -224,18 +216,10 @@ button:active {
 }
 
 .protocol-dropdown {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
+    display: none;
     background: rgba(0, 2, 10, 0.95);
     border-radius: 6px;
-    border: 0 solid rgba(0, 255, 234, 0.2);
-    margin-top: 0;
-}
-
-.protocol-dropdown.active {
-    max-height: 250px;
-    border-width: 1px;
+    border: 1px solid rgba(0, 255, 234, 0.2);
     margin-top: 10px;
     padding: 15px;
 }
@@ -253,7 +237,6 @@ button:active {
     min-height: 24px;
 }
 
-/* SIMULATOR INPUT */
 .terminal-input {
     width: 100%;
     box-sizing: border-box;
@@ -268,7 +251,6 @@ button:active {
     font-size: 14px;
 }
 
-/* REVEAL TERMINAL */
 .reveal-terminal {
     background: #020b0d;
     border: 1px solid #00ffea;
@@ -312,21 +294,6 @@ button:active {
     letter-spacing: 2px;
 }
 </style>
-
-<script>
-/* FAILSAFE LOADER SCRIPT */
-window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        const bootScreen = document.getElementById("boot");
-        if (bootScreen) {
-            bootScreen.style.opacity = "0";
-            setTimeout(() => {
-                bootScreen.style.visibility = "hidden";
-            }, 300);
-        }
-    }, 1500);
-});
-</script>
 </head>
 
 <body>
@@ -364,9 +331,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
     <div class="card">
         <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 10px 0; text-transform: uppercase;">Core Generator</h3>
-        <button onclick="generate()">Generate High Entropy Key</button>
+        <button onclick="generatePasskey()">Generate High Entropy Key</button>
         <div class="output" id="out" style="color: #fff; font-weight: bold;">_ AWAITING COMMAND _</div>
-        <button onclick="copy()" style="background: transparent; color: #00ffea; border: 1px solid #00ffea;">Copy Passkey</button>
+        <button onclick="copyPasskey()" style="background: transparent; color: #00ffea; border: 1px solid #00ffea;">Copy Passkey</button>
     </div>
 
     <div class="card">
@@ -453,146 +420,189 @@ window.addEventListener('DOMContentLoaded', () => {
 </div>
 
 <script>
-let current = "";
-
-/* HOW IT WORKS COLLAPSIBLE SYSTEM */
-function toggleProtocols() {
-    const box = document.getElementById("protocol-box");
-    if (box) {
-        box.classList.toggle("active");
-    }
-}
-
-/* PASSWORD GENERATION ENGINE */
-function generate() {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-{}[]";
-    let pass = "";
-    const array = new Uint32Array(18);
-    window.crypto.getRandomValues(array);
-    for (let i = 0; i < 18; i++) {
-        pass += chars[array[i] % chars.length];
-    }
-    current = pass;
-    document.getElementById("out").innerText = pass;
-}
-
-/* SECURE COPY FUNCTION */
-function copy() {
-    if (!current) return;
-    navigator.clipboard.writeText(current);
-    const outBox = document.getElementById("out");
-    const originalText = outBox.innerText;
-    outBox.innerText = "✓ COPIED SECURELY";
-    outBox.style.color = "#00ff99";
-    setTimeout(() => {
-        outBox.innerText = originalText;
-        outBox.style.color = "#ffffff";
-    }, 1500);
-}
-
-/* INTERACTIVE CRACK-TIME SIMULATOR */
+// Global tracking
+let globalPassword = "";
 let simulatorActive = false;
+let sandboxRunning = false;
+let revealing = false;
+
+// Safe load for boot screen
+window.onload = function() {
+    setTimeout(function() {
+        var bootScreen = document.getElementById("boot");
+        if (bootScreen) {
+            bootScreen.style.opacity = "0";
+            setTimeout(function() {
+                bootScreen.style.display = "none";
+            }, 300);
+        }
+    }, 1500);
+};
+
+// Collapsible protocol section
+function toggleProtocols() {
+    var box = document.getElementById("protocol-box");
+    if (box) {
+        if (box.style.display === "block") {
+            box.style.display = "none";
+        } else {
+            box.style.display = "block";
+        }
+    }
+}
+
+// Failsafe Generator Engine
+function generatePasskey() {
+    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-{}[]";
+    var pass = "";
+    try {
+        var array = new Uint32Array(18);
+        window.crypto.getRandomValues(array);
+        for (var i = 0; i < 18; i++) {
+            pass += chars.charAt(array[i] % chars.length);
+        }
+    } catch(e) {
+        // Safe Math-based fallback if WebCrypto is blocked by sandbox
+        for (var j = 0; j < 18; j++) {
+            pass += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+    }
+    globalPassword = pass;
+    var outBox = document.getElementById("out");
+    if (outBox) {
+        outBox.innerText = pass;
+    }
+}
+
+// Copy Engine
+function copyPasskey() {
+    if (!globalPassword) return;
+    try {
+        navigator.clipboard.writeText(globalPassword);
+        var outBox = document.getElementById("out");
+        if (outBox) {
+            var original = outBox.innerText;
+            outBox.innerText = "✓ COPIED SECURELY";
+            outBox.style.color = "#00ff99";
+            setTimeout(function() {
+                outBox.innerText = original;
+                outBox.style.color = "#ffffff";
+            }, 1200);
+        }
+    } catch (err) {
+        alert("Clipboard blocked. Password: " + globalPassword);
+    }
+}
+
+// Decryption Simulator
 function startSimulation() {
     if (simulatorActive) return;
-    const inputVal = document.getElementById('sim-input').value.trim();
-    const simBody = document.getElementById('sim-body');
-    if (!inputVal) {
-        simBody.innerHTML = "<span style='color: #ff3b30;'>[!] ERROR: Input is completely blank. Enter data.</span>";
+    var inputField = document.getElementById('sim-input');
+    var simBody = document.getElementById('sim-body');
+    if (!inputField || !simBody) return;
+    
+    var val = inputField.value.trim();
+    if (!val) {
+        simBody.innerHTML = "<span style='color:#ff3b30;'>[!] ERROR: Input is completely blank.</span>";
         return;
     }
+    
     simulatorActive = true;
     simBody.innerHTML = "";
-    let cycles = 0;
-    const interval = setInterval(() => {
-        let matrixLine = "";
-        for (let i = 0; i < 28; i++) {
+    var cycles = 0;
+    
+    var interval = setInterval(function() {
+        var matrixLine = "";
+        for (var i = 0; i < 24; i++) {
             matrixLine += Math.floor(Math.random() * 2).toString();
         }
-        simBody.innerHTML = `<div style="color: #00ffea; opacity: 0.6; font-size: 10px;">CYCLE_${cycles} // DATA_STR: ${matrixLine}</div>`;
+        simBody.innerHTML = '<div style="color: #00ffea; opacity: 0.6; font-size: 10px;">CYCLE_' + cycles + ' // MATRIX: ' + matrixLine + '</div>';
         cycles++;
-        if (cycles > 12) {
+        
+        if (cycles > 10) {
             clearInterval(interval);
-            finishSimulation(inputVal);
+            finishSimulation(val, simBody);
         }
     }, 100);
 }
 
-function finishSimulation(pwd) {
-    const simBody = document.getElementById('sim-body');
-    let poolSize = 0;
+function finishSimulation(pwd, displayNode) {
+    var poolSize = 0;
     if (/[a-z]/.test(pwd)) poolSize += 26;
     if (/[A-Z]/.test(pwd)) poolSize += 26;
     if (/[0-9]/.test(pwd)) poolSize += 10;
     if (/[^a-zA-Z0-9]/.test(pwd)) poolSize += 33;
     if (poolSize === 0) poolSize = 10;
     
-    const bitsOfEntropy = Math.round(pwd.length * Math.log2(poolSize));
-    const totalCombinations = Math.pow(poolSize, pwd.length);
-    const hashRate = 1e11; 
-    const secondsToCrack = totalCombinations / (2 * hashRate);
+    var bits = Math.round(pwd.length * Math.log2(poolSize));
+    var combos = Math.pow(poolSize, pwd.length);
+    var seconds = combos / (2 * 1e11);
     
-    let displayTime = "";
-    let riskLabel = "";
-    let riskColor = "";
+    var displayTime = "";
+    var label = "";
+    var color = "";
     
-    if (secondsToCrack < 1) {
-        displayTime = "0.0003 Milliseconds";
-        riskLabel = "CRITICAL VULNERABILITY";
-        riskColor = "#ff3b30";
-    } else if (secondsToCrack < 60) {
-        displayTime = `${Math.round(secondsToCrack)} Seconds`;
-        riskLabel = "HIGH RISK - DICTIONARY COMPLIANT";
-        riskColor = "#ff6b00";
-    } else if (secondsToCrack < 86400) {
-        displayTime = `${Math.round(secondsToCrack / 3600)} Hours`;
-        riskLabel = "MODERATE SECURITY LAYER";
-        riskColor = "#ffb300";
-    } else if (secondsToCrack < 31536000) {
-        displayTime = `${Math.round(secondsToCrack / 86400)} Days`;
-        riskLabel = "STRONG PERSONAL DEFENSE";
-        riskColor = "#00ffea";
+    if (seconds < 1) {
+        displayTime = "Instantaneous";
+        label = "CRITICAL VULNERABILITY";
+        color = "#ff3b30";
+    } else if (seconds < 60) {
+        displayTime = Math.round(seconds) + " Seconds";
+        label = "HIGH RISK - DICTIONARY VULNERABLE";
+        color = "#ff6b00";
+    } else if (seconds < 86400) {
+        displayTime = Math.round(seconds / 3600) + " Hours";
+        label = "MODERATE PERSONAL DEFENSE";
+        color = "#ffb300";
     } else {
-        const years = Math.round(secondsToCrack / 31536000);
-        displayTime = years > 1e9 ? "Infinite (Quintillions of Years)" : `${years.toLocaleString()} Years`;
-        riskLabel = "MILITARY-GRADE COLD STORAGE";
-        riskColor = "#00ff99";
+        var years = Math.round(seconds / 31536000);
+        displayTime = years > 1e9 ? "Infinite (Quintillions of Years)" : years.toLocaleString() + " Years";
+        label = "MILITARY-GRADE SECURITY LAYER";
+        color = "#00ff99";
     }
     
-    simBody.innerHTML = `
-        <div style="color: ${riskColor}; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">
-            [+] RESULT: ${riskLabel}
-        </div>
-        <div style="font-size: 11px; margin-top: 8px; line-height: 1.5;">
-            - Total Entropy: <span style="color:#fff;">${bitsOfEntropy} Bits</span><br>
-            - Brute Force Speed: <span style="color:#fff;">100 Billion keys/sec</span><br>
-            - Time To Decrypt: <span style="color:${riskColor}; font-weight:bold;">${displayTime}</span>
-        </div>
-    `;
+    displayNode.innerHTML = 
+        '<div style="color: ' + color + '; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">[+] RESULT: ' + label + '</div>' +
+        '<div style="font-size: 11px; margin-top: 8px; line-height: 1.5;">' +
+        '- Total Entropy: <span style="color:#fff;">' + bits + ' Bits</span><br>' +
+        '- Decryption Attempt: <span style="color:' + color + '; font-weight:bold;">' + displayTime + '</span>' +
+        '</div>';
+    
     simulatorActive = false;
 }
 
-/* SAFE MALWARE SANDBOX DETONATION ANIMATION */
-let sandboxRunning = false;
+// Malware Sandbox
 function detonateMalwareSim() {
     if (sandboxRunning) return;
     sandboxRunning = true;
     
-    const body = document.getElementById('sandbox-body');
-    const status = document.getElementById('sandbox-status');
+    var body = document.getElementById('sandbox-body');
+    var status = document.getElementById('sandbox-status');
+    if (!body || !status) return;
     
     status.innerText = "ACTIVE";
     status.style.color = "#ff3b30";
     body.innerHTML = "";
     
-    const stages = [
-        { text: "[*] INITIALIZING SIMULATED ATTACK PAYLOAD...", delay: 400, color: "#ff9f0a" },
-        { text: "[+] EXPLOITING LOCAL PORT: VULN_SCAN_LOCAL (MOCK_IP)...", delay: 800, color: "#ff3b30" },
-        { text: "[+] PRIVILEGE ESCALATION ATTEMPT: BYPASSING KERNEL MEMORY...", delay: 1200, color: "#ff3b30" },
-        { text: "[+] PRIVILEGE ELEVATED -> ROOT_ACCESS GRANTED (SIMULATED)", delay: 1600, color: "#00ff99" },
-        { text: "-------------------------------------------------", delay: 1900, color: "#ff3b30" },
-        { text: "[*] SCANNING SYSTEM DIRECTORY: '/user/root/docs'...", delay: 2300, color: "#ff9f0a" },
-        { text: "  -> Found virtual_wallet.dat (2.4 MB)", delay: 2600, color: "#ffffff" },
-        { text: "  -> Found secure_passwords.txt (104 KB)", delay: 2800, color: "#ffffff" },
-        { text: "[*] BEGINNING AES-256 SYMMETRIC FILE ENCRYPTION...", delay: 3200, color: "#ff3b30" },
-        { text: "  [ENCRYPTING] virtual_wallet.dat.gloom", delay: 3500, color: "#ff9f0a" },
-        { text: "  [ENC
+    var stages = [
+        { text: "[*] INITIALIZING SIMULATED ATTACK PAYLOAD...", delay: 300, color: "#ff9f0a" },
+        { text: "[+] EXPLOITING SANDBOX INTEGRITY...", delay: 600, color: "#ff3b30" },
+        { text: "[+] PRIVILEGE ELEVATED -> ROOT_ACCESS", delay: 900, color: "#00ff99" },
+        { text: "-------------------------------------------------", delay: 1100, color: "#ff3b30" },
+        { text: "[*] ENCRYPTING DATA DIRECTORIES...", delay: 1400, color: "#ff9f0a" },
+        { text: "  [ENCRYPTING] secure_vault_database.dat", delay: 1700, color: "#ff3b30" },
+        { text: "-------------------------------------------------", delay: 2000, color: "#ff3b30" },
+        { text: "[!] SIMULATION COMPLETE: ATTACK CHAIN TERMINATED.", delay: 2300, color: "#ff3b30" },
+        { text: "[!] NOTICE: Virtual environment protected.", delay: 2500, color: "#00ff99" }
+    ];
+    
+    stages.forEach(function(stage, idx) {
+        setTimeout(function() {
+            body.innerHTML += '<div style="color: ' + stage.color + '; margin-bottom: 4px;">' + stage.text + '</div>';
+            var parent = body.parentElement;
+            if (parent) {
+                parent.scrollTop = parent.scrollHeight;
+            }
+            if (idx === stages.length - 1) {
+                sandboxRunning = false;
+                stat
