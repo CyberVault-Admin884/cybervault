@@ -421,13 +421,76 @@ button:active {
 </div>
 
 <script>
-// Global tracking
+// Global tracking variables
 let globalPassword = "";
 let simulatorActive = false;
 let sandboxRunning = false;
 let revealing = false;
 
-// 2-SECOND ABSOLUTE FAILSAFE BOOT TIMER (Ensures loader dies)
+// --- GLOOM CYBER AUDIO ENGINE ---
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+// Synthesizes a mechanical keyboard click
+function playTypeSound() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(400 + Math.random() * 300, audioCtx.currentTime);
+    
+    gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
+    
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.05);
+}
+
+// Synthesizes a futuristic robotic system beep
+function playBeepSound(pitch = 600, duration = 0.15) {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(pitch, audioCtx.currentTime);
+    
+    gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+    
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
+    
+    osc.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+}
+
+// System Speech engine (Robotic accent)
+function speakRobotic(text) {
+    if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        const voices = window.speechSynthesis.getVoices();
+        const robotVoice = voices.find(v => v.name.includes('Google UK English Male') || v.name.includes('Male')) || voices[0];
+        
+        if (robotVoice) utterance.voice = robotVoice;
+        utterance.pitch = 0.4; 
+        utterance.rate = 0.85; 
+        utterance.volume = 0.8;
+        
+        window.speechSynthesis.speak(utterance);
+    }
+}
+
+// 2-SECOND ABSOLUTE FAILSAFE BOOT TIMER
 function clearBootScreen() {
     var bootScreen = document.getElementById("boot");
     if (bootScreen) {
@@ -438,16 +501,15 @@ function clearBootScreen() {
     }
 }
 
-// Fire the timer immediately upon executing script block
+// Fire the bootloader clear timer
 setTimeout(clearBootScreen, 2000);
-
-// Also run it on standard load as a backup
 window.onload = function() {
     clearBootScreen();
 };
 
 // Collapsible protocol section
 function toggleProtocols() {
+    playBeepSound(800, 0.1);
     var box = document.getElementById("protocol-box");
     if (box) {
         if (box.style.display === "block") {
@@ -460,6 +522,9 @@ function toggleProtocols() {
 
 // Failsafe Generator Engine
 function generatePasskey() {
+    playBeepSound(900, 0.15);
+    speakRobotic("New security key compiled.");
+    
     var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-{}[]";
     var pass = "";
     try {
@@ -485,6 +550,7 @@ function copyPasskey() {
     if (!globalPassword) return;
     try {
         navigator.clipboard.writeText(globalPassword);
+        playBeepSound(1100, 0.1);
         var outBox = document.getElementById("out");
         if (outBox) {
             var original = outBox.innerText;
@@ -509,6 +575,7 @@ function startSimulation() {
     
     var val = inputField.value.trim();
     if (!val) {
+        playBeepSound(150, 0.3);
         simBody.innerHTML = "<span style='color:#ff3b30;'>[!] ERROR: Input is completely blank.</span>";
         return;
     }
@@ -517,12 +584,17 @@ function startSimulation() {
     simBody.innerHTML = "";
     var cycles = 0;
     
+    playBeepSound(400, 0.2);
+    speakRobotic("Decrypt simulation initialized.");
+
     var interval = setInterval(function() {
         var matrixLine = "";
         for (var i = 0; i < 24; i++) {
             matrixLine += Math.floor(Math.random() * 2).toString();
         }
         simBody.innerHTML = '<div style="color: #00ffea; opacity: 0.6; font-size: 10px;">CYCLE_' + cycles + ' // MATRIX: ' + matrixLine + '</div>';
+        
+        playTypeSound();
         cycles++;
         
         if (cycles > 10) {
@@ -552,19 +624,23 @@ function finishSimulation(pwd, displayNode) {
         displayTime = "Instantaneous";
         label = "CRITICAL VULNERABILITY";
         color = "#ff3b30";
+        speakRobotic("Analysis complete. Vulnerability high.");
     } else if (seconds < 60) {
         displayTime = Math.round(seconds) + " Seconds";
         label = "HIGH RISK - DICTIONARY VULNERABLE";
         color = "#ff6b00";
+                speakRobotic("Analysis complete. System risk detected.");
     } else if (seconds < 86400) {
         displayTime = Math.round(seconds / 3600) + " Hours";
         label = "MODERATE PERSONAL DEFENSE";
         color = "#ffb300";
+        speakRobotic("Analysis complete. Moderate defense level.");
     } else {
         var years = Math.round(seconds / 31536000);
         displayTime = years > 1e9 ? "Infinite (Quintillions of Years)" : years.toLocaleString() + " Years";
         label = "MILITARY-GRADE SECURITY LAYER";
         color = "#00ff99";
+        speakRobotic("Analysis complete. Secure core layer verified.");
     }
     
     displayNode.innerHTML = 
@@ -577,10 +653,13 @@ function finishSimulation(pwd, displayNode) {
     simulatorActive = false;
 }
 
-// Malware Sandbox
+// Malware Sandbox Simulator
 function detonateMalwareSim() {
     if (sandboxRunning) return;
     sandboxRunning = true;
+    
+    playBeepSound(120, 0.5);
+    speakRobotic("Warning. Simulated malware payload detonated.");
     
     var body = document.getElementById('sandbox-body');
     var status = document.getElementById('sandbox-status');
@@ -605,14 +684,16 @@ function detonateMalwareSim() {
     stages.forEach(function(stage, idx) {
         setTimeout(function() {
             body.innerHTML += '<div style="color: ' + stage.color + '; margin-bottom: 4px;">' + stage.text + '</div>';
+            playBeepSound(250 + (idx * 50), 0.08);
             var parent = body.parentElement;
-                        if (parent) {
+            if (parent) {
                 parent.scrollTop = parent.scrollHeight;
             }
             if (idx === stages.length - 1) {
                 sandboxRunning = false;
                 status.innerText = "STANDBY";
                 status.style.color = "#00ff99";
+                speakRobotic("Attack sandbox analysis cleared.");
             }
         }, stage.delay);
     });
@@ -622,6 +703,10 @@ function detonateMalwareSim() {
 function startDeveloperReveal() {
     if (revealing) return;
     revealing = true;
+    
+    playBeepSound(500, 0.3);
+    speakRobotic("Decrypting developer identity parameters.");
+    
     var terminal = document.getElementById("terminal-body");
     if (!terminal) return;
     terminal.innerHTML = "";
@@ -649,6 +734,8 @@ function startDeveloperReveal() {
             if (lineElement) {
                 lineElement.innerHTML = currentLine.substring(0, currentCharIndex + 1);
             }
+            
+            playTypeSound();
             currentCharIndex++;
             if (currentCharIndex < currentLine.length) {
                 setTimeout(typeChar, 30);
@@ -660,6 +747,7 @@ function startDeveloperReveal() {
         } else {
             terminal.innerHTML += '<span>_</span><span class="cursor"></span>';
             revealing = false;
+            speakRobotic("Signature check complete. Welcome Prevellah.");
         }
     }
     typeChar();
@@ -668,4 +756,3 @@ function startDeveloperReveal() {
 
 </body>
 </html>
-
