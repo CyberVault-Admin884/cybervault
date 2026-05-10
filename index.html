@@ -32,23 +32,17 @@ body::before {
         transparent 1.5px,
         transparent 4px
     );
-    animation: scan 10s linear infinite;
     pointer-events: none;
     z-index: 9999;
 }
 
-@keyframes scan {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(100%); }
-}
-
 /* ==========================================
-   OPTIMIZED RADAR SCAN & GRID BACKGROUND (GPU ACCELERATED)
+   SIMPLE, FAST STATICAL GRID (NO RADAR ROTATION)
    ========================================== */
 .radar-grid {
     position: fixed;
     inset: 0;
-    background-size: 40px 40px;
+    background-size: 30px 30px;
     background-image: 
         linear-gradient(to right, rgba(0, 255, 234, 0.03) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(0, 255, 234, 0.03) 1px, transparent 1px);
@@ -56,34 +50,13 @@ body::before {
     z-index: 0;
 }
 
-.radar-sweep {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    /* Hardware acceleration rules */
-    will-change: transform;
-    transform: translate3d(-50%, -50%, 0);
-    width: 150vmax;
-    height: 150vmax;
-    background: conic-gradient(from 0deg, rgba(0, 255, 234, 0.06) 0deg, transparent 70deg, transparent 360deg);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 0;
-    animation: radarSweep 6s linear infinite;
-}
-
-@keyframes radarSweep {
-    0% { transform: translate3d(-50%, -50%, 0) rotate(0deg); }
-    100% { transform: translate3d(-50%, -50%, 0) rotate(360deg); }
-}
-
 /* GLOW TEXT */
-h1, h2, h3, .glow-text {
+h1, h2, h3 {
     text-shadow: 0 0 10px rgba(0, 255, 234, 0.6);
 }
 
 /* ==========================================
-   SHIELD INTRO SCREEN (2-SECOND LOADER)
+   SHIELD INTRO SCREEN (FAST-REMOVING LOADER)
    ========================================== */
 #boot {
     position: fixed;
@@ -94,33 +67,33 @@ h1, h2, h3, .glow-text {
     justify-content: center;
     align-items: center;
     z-index: 10000;
-    transition: opacity 0.4s ease, visibility 0.4s;
+    transition: opacity 0.3s ease, visibility 0.3s;
 }
 
 .shield-container {
     position: relative;
-    width: 120px;
-    height: 130px;
+    width: 100px;
+    height: 110px;
     margin-bottom: 25px;
     animation: pulseGlow 1.5s infinite alternate ease-in-out;
 }
 
 .shield-outer {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     background: linear-gradient(135deg, #021a30 0%, #000a12 100%);
     border: 3px solid #00d4ff;
     border-radius: 50% 50% 50% 50% / 15% 15% 85% 85%;
     position: relative;
-    box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .shield-inner {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     background: transparent;
     border: 2px solid #00ffea;
     border-radius: 50% 50% 50% 50% / 15% 15% 85% 85%;
@@ -130,29 +103,29 @@ h1, h2, h3, .glow-text {
 }
 
 .lock {
-    width: 26px;
-    height: 22px;
+    width: 22px;
+    height: 18px;
     background: #00ffea;
     border-radius: 3px;
     position: relative;
-    margin-top: 12px;
-    box-shadow: 0 0 10px #00ffea;
+    margin-top: 10px;
+    box-shadow: 0 0 8px #00ffea;
 }
 .lock::before {
     content: "";
     position: absolute;
     border: 3px solid #00ffea;
     border-bottom: none;
-    width: 14px;
-    height: 16px;
-    left: 3px;
-    top: -13px;
-    border-radius: 8px 8px 0 0;
+    width: 12px;
+    height: 14px;
+    left: 2px;
+    top: -11px;
+    border-radius: 6px 6px 0 0;
 }
 
 @keyframes pulseGlow {
-    0% { transform: scale(0.95); filter: drop-shadow(0 0 5px rgba(0, 255, 234, 0.3)); }
-    100% { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(0, 255, 234, 0.8)); }
+    0% { transform: scale(0.95); }
+    100% { transform: scale(1.05); }
 }
 
 .boot-text {
@@ -160,12 +133,6 @@ h1, h2, h3, .glow-text {
     letter-spacing: 3px;
     color: #ffffff;
     text-transform: uppercase;
-    animation: blinkText 1.2s infinite;
-}
-
-@keyframes blinkText {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
 }
 
 /* LAYOUT STRUCTURE */
@@ -200,12 +167,6 @@ h1, h2, h3, .glow-text {
     opacity: 0.25;
     filter: blur(2px) drop-shadow(0 0 15px #ff3b30);
     z-index: 1;
-    animation: pulseRedShield 2s infinite alternate ease-in-out;
-}
-
-@keyframes pulseRedShield {
-    0% { transform: translate(-50%, -50%) scale(0.95); opacity: 0.15; }
-    100% { transform: translate(-50%, -50%) scale(1.05); opacity: 0.35; }
 }
 
 .header-content {
@@ -217,9 +178,8 @@ h1, h2, h3, .glow-text {
     border: 1px solid rgba(0, 255, 234, 0.3);
     padding: 20px;
     margin-top: 15px;
-    background: rgba(0, 10, 12, 0.88); /* Increased opacity slightly to block out moving lines behind text */
+    background: rgba(0, 10, 12, 0.9);
     border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0, 255, 234, 0.05);
     position: relative;
     overflow: hidden;
 }
@@ -249,8 +209,6 @@ button {
 
 button:active {
     transform: scale(0.98);
-    background: #ffffff;
-    box-shadow: 0 0 15px #ffffff;
 }
 
 /* HOW IT WORKS SYSTEM */
@@ -266,14 +224,11 @@ button:active {
     cursor: pointer;
     border-radius: 4px;
 }
-.protocol-btn:hover {
-    background: rgba(0, 255, 234, 0.1);
-}
 
 .protocol-dropdown {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.4s ease-out;
+    transition: max-height 0.3s ease-out;
     background: rgba(0, 2, 10, 0.95);
     border-radius: 6px;
     border: 0 solid rgba(0, 255, 234, 0.2);
@@ -313,9 +268,6 @@ button:active {
     margin-top: 10px;
     outline: none;
     font-size: 14px;
-}
-.terminal-input:focus {
-    box-shadow: 0 0 10px rgba(0, 255, 234, 0.5);
 }
 
 /* REVEAL TERMINAL */
@@ -362,12 +314,28 @@ button:active {
     letter-spacing: 2px;
 }
 </style>
+
+<script>
+/* ==========================================
+   FAILSAFE LOADER SCRIPT (RUNS IMMEDIATELY)
+   ========================================== */
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const bootScreen = document.getElementById("boot");
+        if (bootScreen) {
+            bootScreen.style.opacity = "0";
+            setTimeout(() => {
+                bootScreen.style.visibility = "hidden";
+            }, 300);
+        }
+    }, 1500); // Shorter, reliable boot time
+});
+</script>
 </head>
 
 <body>
 
 <div class="radar-grid"></div>
-<div class="radar-sweep"></div>
 
 <div id="boot">
     <div class="shield-container">
@@ -377,7 +345,7 @@ button:active {
             </div>
         </div>
     </div>
-    <div class="boot-text">INITIALIZING CYBERVAULT SECURE...</div>
+    <div class="boot-text">INITIALIZING CORE...</div>
 </div>
 
 <div class="container">
@@ -385,8 +353,8 @@ button:active {
     <div class="header-wrapper">
         <div class="red-shield-bg"></div>
         <div class="header-content">
-            <h1 class="text-xl font-extrabold tracking-wider mt-0">CYBER<span class="text-white">VAULT</span> CORE</h1>
-            <p class="text-[10px] opacity-60 uppercase tracking-widest mt-1">Gloom Cyber Systems</p>
+            <h1 style="font-size: 24px; font-weight: 800; letter-spacing: 2px; margin: 0;">CYBER<span style="color: #fff;">VAULT</span> CORE</h1>
+            <p style="font-size: 10px; opacity: 0.6; text-transform: uppercase; letter-spacing: 3px; margin-top: 5px;">Gloom Cyber Systems</p>
         </div>
     </div>
 
@@ -398,68 +366,68 @@ button:active {
         </div>
     </div>
 
-    <div class="card" style="margin-top: 15px;">
-        <h3 class="text-sm font-bold tracking-widest mb-2 uppercase">Core Generator</h3>
+    <div class="card">
+        <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 10px 0; text-transform: uppercase;">Core Generator</h3>
         <button onclick="generate()">Generate High Entropy Key</button>
         <div class="output font-bold text-white" id="out">_ AWAITING COMMAND _</div>
         <button onclick="copy()" style="background: transparent; color: #00ffea; border: 1px solid #00ffea;">Copy Passkey</button>
     </div>
 
     <div class="card">
-        <h3 class="text-sm font-bold tracking-widest mb-1 uppercase text-white">Crack-Time Simulator</h3>
-        <p class="text-[11px] opacity-70 mb-2">Input any password to run a real-time decryption simulation.</p>
+        <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 5px 0; text-transform: uppercase; color: #fff;">Crack-Time Simulator</h3>
+        <p style="font-size: 11px; opacity: 0.7; margin: 0 0 10px 0;">Input any password to run a real-time decryption simulation.</p>
         
         <input type="text" id="sim-input" class="terminal-input" placeholder="Type password to test..." maxlength="40">
         <button onclick="startSimulation()">Analyze Security Strength</button>
 
-        <div class="reveal-terminal mt-3" style="min-height: 140px;">
+        <div class="reveal-terminal" style="min-height: 140px;">
             <div class="terminal-header">
                 <span>SIM_MODULE://DECRYPT_ATTACK</span>
                 <span>ONLINE</span>
             </div>
-            <div id="sim-body" class="text-white leading-relaxed">
-                <span class="opacity-50">Enter target string and initialize analysis...</span>
+            <div id="sim-body" style="color: #fff; line-height: 1.6;">
+                <span style="opacity: 0.5;">Enter target string and initialize analysis...</span>
             </div>
         </div>
     </div>
 
     <div class="card">
-        <h3 class="text-sm font-bold tracking-widest mb-2 uppercase text-white">Why Password Security is Paramount</h3>
-        <p class="text-[11px] opacity-80 leading-relaxed mb-3">
-            With the rise of <span class="text-cyan-400 font-bold">AI brute-forcing tools</span>, legacy passwords (like name/birthdate combos) can be cracked in under three seconds. True defensive cybersecurity requires modern randomization principles.
+        <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 10px 0; text-transform: uppercase; color: #fff;">Why Password Security is Paramount</h3>
+        <p style="font-size: 11px; opacity: 0.8; line-height: 1.6; margin-bottom: 15px;">
+            With the rise of <span style="color: #00ffea; font-weight: bold;">AI brute-forcing tools</span>, legacy passwords (like name/birthdate combos) can be cracked in under three seconds. True defensive cybersecurity requires modern randomization principles.
         </p>
-        <ul class="text-[11px] space-y-2 opacity-80 list-none p-0 m-0 border-t border-cyan-950 pt-3">
-            <li>🔒 <span class="text-white font-bold">Countering AI Attacks:</span> Dynamic variables ensure that predictive dictionary models fail entirely.</li>
-            <li>🚫 <span class="text-white font-bold">Offline Sandbox:</span> Generated keys run purely inside your device's memory context—never on a server database.</li>
-            <li>🤖 <span class="text-white font-bold">Unhackable Entropy:</span> Over 70 unique variable indices to guarantee complex, long-term defensive patterns.</li>
+        <ul style="font-size: 11px; line-height: 1.8; opacity: 0.8; list-style: none; padding: 0; margin: 0; border-top: 1px solid rgba(0, 255, 234, 0.1); pt: 15px;">
+            <li>🔒 <span style="color: #fff; font-weight: bold;">Countering AI Attacks:</span> Dynamic variables ensure that predictive dictionary models fail entirely.</li>
+            <li>🚫 <span style="color: #fff; font-weight: bold;">Offline Sandbox:</span> Generated keys run purely inside your device's memory context—never on a server database.</li>
+            <li>🤖 <span style="color: #fff; font-weight: bold;">Unhackable Entropy:</span> Over 70 unique variable indices to guarantee complex, long-term defensive patterns.</li>
         </ul>
     </div>
 
     <div class="card">
-        <h3 class="text-sm font-bold tracking-widest mb-2 uppercase">Developer Identity</h3>
-        <button onclick="startDeveloperReveal()" class="!mt-0">Decrypt Creator Profile</button>
+        <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 10px 0; text-transform: uppercase;">Developer Identity</h3>
+        <button onclick="startDeveloperReveal()" style="margin-top: 0;">Decrypt Creator Profile</button>
         
-        <div class="reveal-terminal mt-3">
+        <div class="reveal-terminal">
             <div class="terminal-header">
                 <span>TERMINAL://GLOOM_SYS</span>
                 <span>SECURE</span>
             </div>
-            <div id="terminal-body" class="text-white leading-relaxed">
+            <div id="terminal-body" style="color: #fff; line-height: 1.6;">
                 <span>Gloom-Core ready. Tap Decrypt above to run...</span><span class="cursor"></span>
             </div>
         </div>
     </div>
 
     <div class="card">
-        <h3 class="text-sm font-bold tracking-widest mb-2 uppercase text-white">System Support</h3>
-        <p class="text-[11px] opacity-80 mb-3">
+        <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 10px 0; text-transform: uppercase; color: #fff;">System Support</h3>
+        <p style="font-size: 11px; opacity: 0.8; margin-bottom: 15px;">
             For custom security deployments, offline builds, or direct assistance:
         </p>
-        <div class="bg-black/80 border border-cyan-900 p-3 rounded text-center">
-            <a href="tel:+254142122710" class="text-white font-bold text-sm tracking-widest hover:text-cyan-400 decoration-none">
+        <div style="background: rgba(0,0,0,0.8); border: 1px solid rgba(0, 255, 234, 0.2); padding: 12px; border-radius: 4px; text-align: center;">
+            <a href="tel:+254142122710" style="color: #fff; font-weight: bold; font-size: 14px; letter-spacing: 2px; text-decoration: none;">
                 📞 +254 142 122 710
             </a>
-            <p class="text-[9px] opacity-50 mt-1">Gloom Cyber Assistance Node</p>
+            <p style="font-size: 9px; opacity: 0.5; margin: 5px 0 0 0;">Gloom Cyber Assistance Node</p>
         </div>
     </div>
 
@@ -471,69 +439,15 @@ button:active {
 
 <script>
 let current = "";
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-// MECHANICAL KEYBOARD CLICK GENERATOR (NATIVE SYNTHESIS)
-function playKeySound(type = 'press') {
-    if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-    }
-    
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    
-    osc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    
-    if (type === 'press') {
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(800 + Math.random() * 400, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.04);
-        gainNode.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.04);
-    } else if (type === 'space') {
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(150 + Math.random() * 50, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(20, audioCtx.currentTime + 0.08);
-        gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
-        osc.start();
-        osc.stop(audioCtx.currentTime + 0.08);
-    }
-}
-
-// Global button click listener
-document.addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON') {
-        playKeySound('space');
-    } else {
-        playKeySound('press');
-    }
-});
-
-/* ==========================================
-   2-SECOND SHIELD LOADER EXECUTION
-   ========================================== */
-window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        const bootScreen = document.getElementById("boot");
-        bootScreen.style.opacity = "0";
-        setTimeout(() => {
-            bootScreen.style.visibility = "hidden";
-        }, 400);
-        playKeySound('space');
-    }, 2000);
-});
 
 /* ==========================================
    HOW IT WORKS COLLAPSIBLE SYSTEM
    ========================================== */
 function toggleProtocols() {
     const box = document.getElementById("protocol-box");
-    box.classList.toggle("active");
-    playKeySound('space');
+    if (box) {
+        box.classList.toggle("active");
+    }
 }
 
 /* PASSWORD GENERATION ENGINE */
@@ -591,7 +505,6 @@ function startSimulation() {
         }
         
         simBody.innerHTML = `<div style="color: #00ffea; opacity: 0.6; font-size: 10px;">CYCLE_${cycles} // DATA_STR: ${matrixLine}</div>`;
-        playKeySound('press');
         cycles++;
         
         if (cycles > 12) {
@@ -645,8 +558,6 @@ function finishSimulation(pwd) {
         riskColor = "#00ff99";
     }
     
-    playKeySound('space');
-    
     simBody.innerHTML = `
         <div style="color: ${riskColor}; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">
             [+] RESULT: ${riskLabel}
@@ -654,4 +565,65 @@ function finishSimulation(pwd) {
         <div style="font-size: 11px; margin-top: 8px; line-height: 1.5;">
             - Total Entropy: <span style="color:#fff;">${bitsOfEntropy} Bits</span><br>
             - Brute Force Speed: <span style="color:#fff;">100 Billion keys/sec</span><br>
-            - Time To Decrypt: <span style="color:${riskColor}; font-weig
+            - Time To Decrypt: <span style="color:${riskColor}; font-weight:bold;">${displayTime}</span>
+        </div>
+    `;
+    
+    simulatorActive = false;
+}
+
+/* TERMINAL TYPEWRITER CREDITS REVEAL */
+let revealing = false;
+function startDeveloperReveal() {
+    if (revealing) return;
+    revealing = true;
+    
+    const terminal = document.getElementById("terminal-body");
+    terminal.innerHTML = "";
+    
+    const lines = [
+        "Connecting to Gloom DNS...",
+        "Querying signature database...",
+        "----------------------------------",
+        "CREATOR: Prevellah",
+        "ORIGIN : Eldoret, Kenya",
+        "GROUP  : Gloom Cyber Systems",
+        "STATUS : SECURE NODE ACTIVE"
+    ];
+    
+    let currentLineIndex = 0;
+    let currentCharIndex = 0;
+    
+    function typeNextChar() {
+        if (currentLineIndex < lines.length) {
+            const currentLine = lines[currentLineIndex];
+            
+            if (currentCharIndex === 0) {
+                terminal.innerHTML += `<div id="line-${currentLineIndex}"></div>`;
+            }
+            
+            const lineElement = document.getElementById(`line-${currentLineIndex}`);
+            lineElement.innerHTML = currentLine.substring(0, currentCharIndex + 1);
+            
+            currentCharIndex++;
+            
+            if (currentCharIndex < currentLine.length) {
+                setTimeout(typeNextChar, 30 + Math.random() * 40);
+            } else {
+                currentLineIndex++;
+                currentCharIndex = 0;
+                setTimeout(typeNextChar, 150);
+            }
+        } else {
+            terminal.innerHTML += `<span>_</span><span class="cursor"></span>`;
+            revealing = false;
+        }
+    }
+    
+    typeNextChar();
+}
+</script>
+
+</body>
+</html>
+
