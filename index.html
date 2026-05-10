@@ -606,5 +606,66 @@ function detonateMalwareSim() {
         setTimeout(function() {
             body.innerHTML += '<div style="color: ' + stage.color + '; margin-bottom: 4px;">' + stage.text + '</div>';
             var parent = body.parentElement;
-            if (parent) {
-                parent.scrollTop = parent.scrollHe
+                        if (parent) {
+                parent.scrollTop = parent.scrollHeight;
+            }
+            if (idx === stages.length - 1) {
+                sandboxRunning = false;
+                status.innerText = "STANDBY";
+                status.style.color = "#00ff99";
+            }
+        }, stage.delay);
+    });
+}
+
+// Identity Reveal
+function startDeveloperReveal() {
+    if (revealing) return;
+    revealing = true;
+    var terminal = document.getElementById("terminal-body");
+    if (!terminal) return;
+    terminal.innerHTML = "";
+    
+    var lines = [
+        "Connecting to Gloom Core...",
+        "Authorizing signature check...",
+        "----------------------------------",
+        "CREATOR: Prevellah",
+        "ORIGIN : Eldoret, Kenya",
+        "NODE   : Gloom Cyber Systems",
+        "STATUS : SECURE STACK ACTIVE"
+    ];
+    
+    var currentLineIndex = 0;
+    var currentCharIndex = 0;
+    
+    function typeChar() {
+        if (currentLineIndex < lines.length) {
+            var currentLine = lines[currentLineIndex];
+            if (currentCharIndex === 0) {
+                terminal.innerHTML += '<div id="line-' + currentLineIndex + '"></div>';
+            }
+            var lineElement = document.getElementById('line-' + currentLineIndex);
+            if (lineElement) {
+                lineElement.innerHTML = currentLine.substring(0, currentCharIndex + 1);
+            }
+            currentCharIndex++;
+            if (currentCharIndex < currentLine.length) {
+                setTimeout(typeChar, 30);
+            } else {
+                currentLineIndex++;
+                currentCharIndex = 0;
+                setTimeout(typeChar, 100);
+            }
+        } else {
+            terminal.innerHTML += '<span>_</span><span class="cursor"></span>';
+            revealing = false;
+        }
+    }
+    typeChar();
+}
+</script>
+
+</body>
+</html>
+
