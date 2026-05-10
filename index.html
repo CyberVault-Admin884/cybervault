@@ -36,9 +36,7 @@ body::before {
     z-index: 9999;
 }
 
-/* ==========================================
-   SIMPLE, FAST STATICAL GRID (NO RADAR ROTATION)
-   ========================================== */
+/* SIMPLE, FAST STATICAL GRID */
 .radar-grid {
     position: fixed;
     inset: 0;
@@ -56,7 +54,7 @@ h1, h2, h3 {
 }
 
 /* ==========================================
-   SHIELD INTRO SCREEN (FAST-REMOVING LOADER)
+   SHIELD INTRO SCREEN
    ========================================== */
 #boot {
     position: fixed;
@@ -316,9 +314,7 @@ button:active {
 </style>
 
 <script>
-/* ==========================================
-   FAILSAFE LOADER SCRIPT (RUNS IMMEDIATELY)
-   ========================================== */
+/* FAILSAFE LOADER SCRIPT */
 window.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const bootScreen = document.getElementById("boot");
@@ -328,7 +324,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 bootScreen.style.visibility = "hidden";
             }, 300);
         }
-    }, 1500); // Shorter, reliable boot time
+    }, 1500);
 });
 </script>
 </head>
@@ -391,6 +387,25 @@ window.addEventListener('DOMContentLoaded', () => {
         </div>
     </div>
 
+    <div class="card" style="border-color: rgba(255, 59, 48, 0.3);">
+        <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 5px 0; text-transform: uppercase; color: #ff3b30;">Malware Sandbox Simulator</h3>
+        <p style="font-size: 11px; opacity: 0.7; margin: 0 0 10px 0; color: #ff9f0a;">
+            [!] Threat Sandbox: Detonate a simulated ransomware payload to study security breach behaviors.
+        </p>
+        
+        <button onclick="detonateMalwareSim()" style="background: #ff3b30; color: #000; font-weight: bold;">Detonate Simulated Payload</button>
+        
+        <div class="reveal-terminal" style="border-color: #ff3b30; min-height: 180px; background: #080000;">
+            <div class="terminal-header" style="color: rgba(255, 59, 48, 0.7); border-bottom-color: rgba(255, 59, 48, 0.2);">
+                <span>PAYLOAD://MALWARE_SANDBOX</span>
+                <span id="sandbox-status" style="color: #00ff99;">STANDBY</span>
+            </div>
+            <div id="sandbox-body" style="color: #ff3b30; line-height: 1.6; font-size: 11px;">
+                <span style="opacity: 0.5; color: #ff9f0a;">Awaiting manual payload detonation instruction...</span>
+            </div>
+        </div>
+    </div>
+
     <div class="card">
         <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 10px 0; text-transform: uppercase; color: #fff;">Why Password Security is Paramount</h3>
         <p style="font-size: 11px; opacity: 0.8; line-height: 1.6; margin-bottom: 15px;">
@@ -440,9 +455,7 @@ window.addEventListener('DOMContentLoaded', () => {
 <script>
 let current = "";
 
-/* ==========================================
-   HOW IT WORKS COLLAPSIBLE SYSTEM
-   ========================================== */
+/* HOW IT WORKS COLLAPSIBLE SYSTEM */
 function toggleProtocols() {
     const box = document.getElementById("protocol-box");
     if (box) {
@@ -454,14 +467,11 @@ function toggleProtocols() {
 function generate() {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-{}[]";
     let pass = "";
-    
     const array = new Uint32Array(18);
     window.crypto.getRandomValues(array);
-    
     for (let i = 0; i < 18; i++) {
         pass += chars[array[i] % chars.length];
     }
-    
     current = pass;
     document.getElementById("out").innerText = pass;
 }
@@ -474,39 +484,32 @@ function copy() {
     const originalText = outBox.innerText;
     outBox.innerText = "✓ COPIED SECURELY";
     outBox.style.color = "#00ff99";
-    
     setTimeout(() => {
         outBox.innerText = originalText;
         outBox.style.color = "#ffffff";
     }, 1500);
 }
 
-/* INTERACTIVE SIMULATOR SYSTEM */
+/* INTERACTIVE CRACK-TIME SIMULATOR */
 let simulatorActive = false;
 function startSimulation() {
     if (simulatorActive) return;
-    
     const inputVal = document.getElementById('sim-input').value.trim();
     const simBody = document.getElementById('sim-body');
-    
     if (!inputVal) {
         simBody.innerHTML = "<span style='color: #ff3b30;'>[!] ERROR: Input is completely blank. Enter data.</span>";
         return;
     }
-    
     simulatorActive = true;
     simBody.innerHTML = "";
-    
     let cycles = 0;
     const interval = setInterval(() => {
         let matrixLine = "";
         for (let i = 0; i < 28; i++) {
             matrixLine += Math.floor(Math.random() * 2).toString();
         }
-        
         simBody.innerHTML = `<div style="color: #00ffea; opacity: 0.6; font-size: 10px;">CYCLE_${cycles} // DATA_STR: ${matrixLine}</div>`;
         cycles++;
-        
         if (cycles > 12) {
             clearInterval(interval);
             finishSimulation(inputVal);
@@ -516,18 +519,15 @@ function startSimulation() {
 
 function finishSimulation(pwd) {
     const simBody = document.getElementById('sim-body');
-    
     let poolSize = 0;
     if (/[a-z]/.test(pwd)) poolSize += 26;
     if (/[A-Z]/.test(pwd)) poolSize += 26;
     if (/[0-9]/.test(pwd)) poolSize += 10;
     if (/[^a-zA-Z0-9]/.test(pwd)) poolSize += 33;
-    
     if (poolSize === 0) poolSize = 10;
     
     const bitsOfEntropy = Math.round(pwd.length * Math.log2(poolSize));
     const totalCombinations = Math.pow(poolSize, pwd.length);
-    
     const hashRate = 1e11; 
     const secondsToCrack = totalCombinations / (2 * hashRate);
     
@@ -568,62 +568,33 @@ function finishSimulation(pwd) {
             - Time To Decrypt: <span style="color:${riskColor}; font-weight:bold;">${displayTime}</span>
         </div>
     `;
-    
     simulatorActive = false;
 }
 
-/* TERMINAL TYPEWRITER CREDITS REVEAL */
-let revealing = false;
-function startDeveloperReveal() {
-    if (revealing) return;
-    revealing = true;
+/* ==========================================
+   SAFE MALWARE SANDBOX DETONATION ANIMATION
+   ========================================== */
+let sandboxRunning = false;
+function detonateMalwareSim() {
+    if (sandboxRunning) return;
+    sandboxRunning = true;
     
-    const terminal = document.getElementById("terminal-body");
-    terminal.innerHTML = "";
+    const body = document.getElementById('sandbox-body');
+    const status = document.getElementById('sandbox-status');
     
-    const lines = [
-        "Connecting to Gloom DNS...",
-        "Querying signature database...",
-        "----------------------------------",
-        "CREATOR: Prevellah",
-        "ORIGIN : Eldoret, Kenya",
-        "GROUP  : Gloom Cyber Systems",
-        "STATUS : SECURE NODE ACTIVE"
-    ];
+    status.innerText = "ACTIVE";
+    status.style.color = "#ff3b30";
+    body.innerHTML = "";
     
-    let currentLineIndex = 0;
-    let currentCharIndex = 0;
-    
-    function typeNextChar() {
-        if (currentLineIndex < lines.length) {
-            const currentLine = lines[currentLineIndex];
-            
-            if (currentCharIndex === 0) {
-                terminal.innerHTML += `<div id="line-${currentLineIndex}"></div>`;
-            }
-            
-            const lineElement = document.getElementById(`line-${currentLineIndex}`);
-            lineElement.innerHTML = currentLine.substring(0, currentCharIndex + 1);
-            
-            currentCharIndex++;
-            
-            if (currentCharIndex < currentLine.length) {
-                setTimeout(typeNextChar, 30 + Math.random() * 40);
-            } else {
-                currentLineIndex++;
-                currentCharIndex = 0;
-                setTimeout(typeNextChar, 150);
-            }
-        } else {
-            terminal.innerHTML += `<span>_</span><span class="cursor"></span>`;
-            revealing = false;
-        }
-    }
-    
-    typeNextChar();
-}
-</script>
-
-</body>
-</html>
-
+    const stages = [
+        { text: "[*] INITIALIZING SIMULATED ATTACK PAYLOAD...", delay: 400, color: "#ff9f0a" },
+        { text: "[+] EXPLOITING LOCAL PORT: VULN_SCAN_LOCAL (MOCK_IP)...", delay: 800, color: "#ff3b30" },
+        { text: "[+] PRIVILEGE ESCALATION ATTEMPT: BYPASSING KERNEL MEMORY...", delay: 1200, color: "#ff3b30" },
+        { text: "[+] PRIVILEGE ELEVATED -> ROOT_ACCESS GRANTED (SIMULATED)", delay: 1600, color: "#00ff99" },
+        { text: "-------------------------------------------------", delay: 1900, color: "#ff3b30" },
+        { text: "[*] SCANNING SYSTEM DIRECTORY: '/user/root/docs'...", delay: 2300, color: "#ff9f0a" },
+        { text: "  -> Found virtual_wallet.dat (2.4 MB)", delay: 2600, color: "#ffffff" },
+        { text: "  -> Found secure_passwords.txt (104 KB)", delay: 2800, color: "#ffffff" },
+        { text: "[*] BEGINNING AES-256 SYMMETRIC FILE ENCRYPTION...", delay: 3200, color: "#ff3b30" },
+        { text: "  [ENCRYPTING] virtual_wallet.dat.gloom", delay: 3500, color: "#ff9f0a" },
+        { text: "  [ENCRYPTING] secure_passwords.txt.gloom", delay: 3800, color: "#
