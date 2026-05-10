@@ -43,15 +43,15 @@ body::before {
 }
 
 /* ==========================================
-   MILITARY SCALE RADAR SCAN & GRID BACKGROUND
+   OPTIMIZED RADAR SCAN & GRID BACKGROUND (GPU ACCELERATED)
    ========================================== */
 .radar-grid {
     position: fixed;
     inset: 0;
     background-size: 40px 40px;
     background-image: 
-        linear-gradient(to right, rgba(0, 255, 234, 0.04) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 255, 234, 0.04) 1px, transparent 1px);
+        linear-gradient(to right, rgba(0, 255, 234, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 255, 234, 0.03) 1px, transparent 1px);
     pointer-events: none;
     z-index: 0;
 }
@@ -60,19 +60,21 @@ body::before {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 200vw;
-    height: 200vw;
-    background: conic-gradient(from 0deg, rgba(0, 255, 234, 0.07) 0deg, transparent 90deg, transparent 360deg);
+    /* Hardware acceleration rules */
+    will-change: transform;
+    transform: translate3d(-50%, -50%, 0);
+    width: 150vmax;
+    height: 150vmax;
+    background: conic-gradient(from 0deg, rgba(0, 255, 234, 0.06) 0deg, transparent 70deg, transparent 360deg);
     border-radius: 50%;
     pointer-events: none;
     z-index: 0;
-    animation: radarSweep 8s linear infinite;
+    animation: radarSweep 6s linear infinite;
 }
 
 @keyframes radarSweep {
-    0% { transform: translate(-50%, -50%) rotate(0deg); }
-    100% { transform: translate(-50%, -50%) rotate(360deg); }
+    0% { transform: translate3d(-50%, -50%, 0) rotate(0deg); }
+    100% { transform: translate3d(-50%, -50%, 0) rotate(360deg); }
 }
 
 /* GLOW TEXT */
@@ -92,7 +94,7 @@ h1, h2, h3, .glow-text {
     justify-content: center;
     align-items: center;
     z-index: 10000;
-    transition: opacity 0.5s ease, visibility 0.5s;
+    transition: opacity 0.4s ease, visibility 0.4s;
 }
 
 .shield-container {
@@ -174,7 +176,7 @@ h1, h2, h3, .glow-text {
     padding: 20px;
     box-sizing: border-box;
     position: relative;
-    z-index: 10; /* Keeps all cards readable on top of radar background */
+    z-index: 10;
 }
 
 /* HEADER WITH GLOWING RED SHIELD BACKGROUND */
@@ -215,7 +217,7 @@ h1, h2, h3, .glow-text {
     border: 1px solid rgba(0, 255, 234, 0.3);
     padding: 20px;
     margin-top: 15px;
-    background: rgba(0, 10, 12, 0.85); /* Slightly darker for optimal text readability on grids */
+    background: rgba(0, 10, 12, 0.88); /* Increased opacity slightly to block out moving lines behind text */
     border-radius: 8px;
     box-shadow: 0 0 15px rgba(0, 255, 234, 0.05);
     position: relative;
@@ -520,7 +522,7 @@ window.addEventListener('DOMContentLoaded', () => {
         bootScreen.style.opacity = "0";
         setTimeout(() => {
             bootScreen.style.visibility = "hidden";
-        }, 500);
+        }, 400);
         playKeySound('space');
     }, 2000);
 });
@@ -652,6 +654,4 @@ function finishSimulation(pwd) {
         <div style="font-size: 11px; margin-top: 8px; line-height: 1.5;">
             - Total Entropy: <span style="color:#fff;">${bitsOfEntropy} Bits</span><br>
             - Brute Force Speed: <span style="color:#fff;">100 Billion keys/sec</span><br>
-            - Time To Decrypt: <span style="color:${riskColor}; font-weight:bold;">${displayTime}</span>
-        </div>
-    
+            - Time To Decrypt: <span style="color:${riskColor}; font-weig
