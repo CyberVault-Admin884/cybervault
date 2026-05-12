@@ -1,758 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>CYBERVAULT PASSWORD CORE</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Vault | Diagnostic Terminal</title>
+  <style>
+    /* Global Tactical Dark Theme */
+    body {
+      background-color: #050505;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap');
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: #0d0d0d;
+      border: 1px solid #00ff00;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+      margin-top: 40px;
+    }
 
-body {
-    margin: 0;
-    font-family: 'JetBrains Mono', monospace;
-    background: #000;
-    color: #00ffea;
-    overflow-x: hidden;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-}
+    h1 {
+      text-align: center;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
 
-/* CRT SCANLINE EFFECT */
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-        to bottom,
-        rgba(0, 255, 234, 0.03),
-        rgba(0, 255, 234, 0.03) 1px,
-        transparent 1.5px,
-        transparent 4px
-    );
-    pointer-events: none;
-    z-index: 9999;
-}
+    .profile-banner {
+      border-bottom: 1px dashed #00ff00;
+      padding-bottom: 10px;
+      margin-bottom: 25px;
+      font-size: 0.9rem;
+      color: #888;
+    }
 
-.radar-grid {
-    position: fixed;
-    inset: 0;
-    background-size: 30px 30px;
-    background-image: 
-        linear-gradient(to right, rgba(0, 255, 234, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 255, 234, 0.03) 1px, transparent 1px);
-    pointer-events: none;
-    z-index: 0;
-}
+    .profile-banner span {
+      color: #00ff00;
+      font-weight: bold;
+    }
 
-h1, h2, h3 {
-    text-shadow: 0 0 10px rgba(0, 255, 234, 0.6);
-}
+    .display-box {
+      background: #000;
+      border: 1px solid #00ff00;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 25px;
+      letter-spacing: 1px;
+      word-break: break-all;
+      min-height: 28px;
+    }
 
-/* SHIELD INTRO SCREEN */
-#boot {
-    position: fixed;
-    inset: 0;
-    background: #00020a;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 10000;
-    transition: opacity 0.5s ease-out;
-}
+    .slider-container {
+      margin-bottom: 25px;
+    }
 
-.shield-container {
-    position: relative;
-    width: 100px;
-    height: 110px;
-    margin-bottom: 25px;
-    animation: pulseGlow 1.5s infinite alternate ease-in-out;
-}
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1rem;
+    }
 
-.shield-outer {
-    width: 100px;
-    height: 100px;
-    background: linear-gradient(135deg, #021a30 0%, #000a12 100%);
-    border: 3px solid #00d4ff;
-    border-radius: 50% 50% 50% 50% / 15% 15% 85% 85%;
-    position: relative;
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    /* Custom Green Matrix Range Slider */
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      background: #111;
+      border: 1px solid #00ff00;
+      height: 8px;
+      outline: none;
+    }
 
-.shield-inner {
-    width: 70px;
-    height: 70px;
-    background: transparent;
-    border: 2px solid #00ffea;
-    border-radius: 50% 50% 50% 50% / 15% 15% 85% 85%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      background: #00ff00;
+      cursor: pointer;
+      box-shadow: 0 0 8px #00ff00;
+    }
 
-.lock {
-    width: 22px;
-    height: 18px;
-    background: #00ffea;
-    border-radius: 3px;
-    position: relative;
-    margin-top: 10px;
-    box-shadow: 0 0 8px #00ffea;
-}
-.lock::before {
-    content: "";
-    position: absolute;
-    border: 3px solid #00ffea;
-    border-bottom: none;
-    width: 12px;
-    height: 14px;
-    left: 2px;
-    top: -11px;
-    border-radius: 6px 6px 0 0;
-}
+    .strength-output {
+      margin-top: 20px;
+      border-top: 1px dashed #00ff00;
+      padding-top: 15px;
+      font-size: 1.1rem;
+    }
 
-@keyframes pulseGlow {
-    0% { transform: scale(0.95); }
-    100% { transform: scale(1.05); }
-}
+    .status-alert {
+      font-weight: bold;
+      color: #ff0000;
+      text-transform: uppercase;
+    }
 
-.boot-text {
-    font-size: 11px;
-    letter-spacing: 3px;
-    color: #ffffff;
-    text-transform: uppercase;
-}
-
-.container {
-    max-width: 500px;
-    width: 100%;
-    margin: auto;
-    padding: 20px;
-    box-sizing: border-box;
-    position: relative;
-    z-index: 10;
-}
-
-.header-wrapper {
-    position: relative;
-    text-align: center;
-    padding: 40px 0 20px 0;
-    margin-bottom: 10px;
-}
-
-.red-shield-bg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 110px;
-    height: 110px;
-    background: transparent;
-    border: 3px solid #ff3b30;
-    border-radius: 50% 50% 50% 50% / 15% 15% 85% 85%;
-    opacity: 0.25;
-    filter: blur(2px) drop-shadow(0 0 15px #ff3b30);
-    z-index: 1;
-}
-
-.header-content {
-    position: relative;
-    z-index: 2;
-}
-
-.card {
-    border: 1px solid rgba(0, 255, 234, 0.3);
-    padding: 20px;
-    margin-top: 15px;
-    background: rgba(0, 10, 12, 0.9);
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-}
-
-.card::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 2px;
-    background: linear-gradient(90deg, transparent, #00ffea, transparent);
-}
-
-button {
-    width: 100%;
-    padding: 14px;
-    margin-top: 10px;
-    background: #00ffea;
-    border: none;
-    color: #000;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 800;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-button:active {
-    transform: scale(0.98);
-}
-
-.protocol-btn {
-    width: 100%;
-    background: transparent;
-    border: 1px dashed rgba(0, 255, 234, 0.5);
-    color: #00ffea;
-    font-size: 11px;
-    padding: 10px;
-    margin-top: 15px;
-    font-family: 'JetBrains Mono', monospace;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.protocol-dropdown {
-    display: none;
-    background: rgba(0, 2, 10, 0.95);
-    border-radius: 6px;
-    border: 1px solid rgba(0, 255, 234, 0.2);
-    margin-top: 10px;
-    padding: 15px;
-}
-
-.output {
-    margin-top: 12px;
-    padding: 15px;
-    border: 1px dashed rgba(0, 255, 234, 0.4);
-    background: rgba(0, 0, 0, 0.8);
-    word-break: break-all;
-    text-align: center;
-    font-size: 16px;
-    letter-spacing: 2px;
-    border-radius: 4px;
-    min-height: 24px;
-}
-
-.terminal-input {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 12px;
-    background: #000;
-    border: 1px solid #00ffea;
-    color: #fff;
-    font-family: 'JetBrains Mono', monospace;
-    border-radius: 4px;
-    margin-top: 10px;
-    outline: none;
-    font-size: 14px;
-}
-
-.reveal-terminal {
-    background: #020b0d;
-    border: 1px solid #00ffea;
-    border-radius: 6px;
-    padding: 15px;
-    margin-top: 15px;
-    font-size: 12px;
-    min-height: 120px;
-}
-
-.terminal-header {
-    border-bottom: 1px solid rgba(0, 255, 234, 0.2);
-    padding-bottom: 6px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 10px;
-    color: rgba(0, 255, 234, 0.6);
-}
-
-.cursor {
-    display: inline-block;
-    width: 8px;
-    height: 15px;
-    background: #00ffea;
-    animation: blink 0.8s infinite;
-    vertical-align: middle;
-}
-
-@keyframes blink {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
-}
-
-.footer {
-    text-align: center;
-    font-size: 10px;
-    opacity: 0.5;
-    margin-top: auto;
-    padding: 25px 0;
-    letter-spacing: 2px;
-}
-</style>
+    .status-secure {
+      font-weight: bold;
+      color: #00ff00;
+      text-transform: uppercase;
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="radar-grid"></div>
-
-<div id="boot">
-    <div class="shield-container">
-        <div class="shield-outer">
-            <div class="shield-inner">
-                <div class="lock"></div>
-            </div>
-        </div>
-    </div>
-    <div class="boot-text">INITIALIZING CORE...</div>
-</div>
-
-<div class="container">
-
-    <div class="header-wrapper">
-        <div class="red-shield-bg"></div>
-        <div class="header-content">
-            <h1 style="font-size: 24px; font-weight: 800; letter-spacing: 2px; margin: 0;">CYBER<span style="color: #fff;">VAULT</span> CORE</h1>
-            <p style="font-size: 10px; opacity: 0.6; text-transform: uppercase; letter-spacing: 3px; margin-top: 5px;">Gloom Cyber Systems</p>
-        </div>
-    </div>
-
-    <button onclick="toggleProtocols()" class="protocol-btn">[ SYSTEM PROTOCOLS: HOW IT WORKS ]</button>
-    <div id="protocol-box" class="protocol-dropdown">
-        <div style="font-size: 11px; line-height: 1.6; color: #ffffff;">
-            <span style="color:#00ffea; font-weight:bold;">[1] Core Engine:</span> Generates high-entropy, military-grade unhackable passwords completely offline on your device's sandbox.<br><br>
-            <span style="color:#00ffea; font-weight:bold;">[2] Threat Sandbox:</span> Allows you to input and test your current everyday passwords inside the Quantum Crack-Time Simulator to verify if they are genuinely safe from automated brute-force attacks.
-        </div>
-    </div>
-
-    <div class="card">
-        <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 10px 0; text-transform: uppercase;">Core Generator</h3>
-        <button onclick="generatePasskey()">Generate High Entropy Key</button>
-        <div class="output" id="out" style="color: #fff; font-weight: bold;">_ AWAITING COMMAND _</div>
-        <button onclick="copyPasskey()" style="background: transparent; color: #00ffea; border: 1px solid #00ffea;">Copy Passkey</button>
-    </div>
-
-    <div class="card">
-        <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 5px 0; text-transform: uppercase; color: #fff;">Crack-Time Simulator</h3>
-        <p style="font-size: 11px; opacity: 0.7; margin: 0 0 10px 0;">Input any password to run a real-time decryption simulation.</p>
-        
-        <input type="text" id="sim-input" class="terminal-input" placeholder="Type password to test..." maxlength="40">
-        <button onclick="startSimulation()">Analyze Security Strength</button>
-
-        <div class="reveal-terminal" style="min-height: 140px;">
-            <div class="terminal-header">
-                <span>SIM_MODULE://DECRYPT_ATTACK</span>
-                <span>ONLINE</span>
-            </div>
-            <div id="sim-body" style="color: #fff; line-height: 1.6;">
-                <span style="opacity: 0.5;">Enter target string and initialize analysis...</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" style="border-color: rgba(255, 59, 48, 0.3);">
-        <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 5px 0; text-transform: uppercase; color: #ff3b30;">Malware Sandbox Simulator</h3>
-        <p style="font-size: 11px; opacity: 0.7; margin: 0 0 10px 0; color: #ff9f0a;">
-            [!] Threat Sandbox: Detonate a simulated ransomware payload to study security breach behaviors.
-        </p>
-        
-        <button onclick="detonateMalwareSim()" style="background: #ff3b30; color: #000; font-weight: bold;">Detonate Simulated Payload</button>
-        
-        <div class="reveal-terminal" style="border-color: #ff3b30; min-height: 180px; background: #080000; overflow-y: auto;">
-            <div class="terminal-header" style="color: rgba(255, 59, 48, 0.7); border-bottom-color: rgba(255, 59, 48, 0.2); padding-bottom: 6px; margin-bottom: 10px; display: flex; justify-content: space-between; font-size: 10px;">
-                <span>PAYLOAD://MALWARE_SANDBOX</span>
-                <span id="sandbox-status" style="color: #00ff99;">STANDBY</span>
-            </div>
-            <div id="sandbox-body" style="color: #ff3b30; line-height: 1.6; font-size: 11px;">
-                <span style="opacity: 0.5; color: #ff9f0a;">Awaiting manual payload detonation instruction...</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 10px 0; text-transform: uppercase; color: #fff;">Why Password Security is Paramount</h3>
-        <p style="font-size: 11px; opacity: 0.8; line-height: 1.6; margin-bottom: 15px;">
-            With the rise of <span style="color: #00ffea; font-weight: bold;">AI brute-forcing tools</span>, legacy passwords (like name/birthdate combos) can be cracked in under three seconds. True defensive cybersecurity requires modern randomization principles.
-        </p>
-        <ul style="font-size: 11px; line-height: 1.8; opacity: 0.8; list-style: none; padding: 0; margin: 0; border-top: 1px solid rgba(0, 255, 234, 0.1); padding-top: 15px;">
-            <li>🔒 <span style="color: #fff; font-weight: bold;">Countering AI Attacks:</span> Dynamic variables ensure that predictive dictionary models fail entirely.</li>
-            <li>🚫 <span style="color: #fff; font-weight: bold;">Offline Sandbox:</span> Generated keys run purely inside your device's memory context—never on a server database.</li>
-            <li>🤖 <span style="color: #fff; font-weight: bold;">Unhackable Entropy:</span> Over 70 unique variable indices to guarantee complex, long-term defensive patterns.</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 10px 0; text-transform: uppercase;">Developer Identity</h3>
-        <button onclick="startDeveloperReveal()" style="margin-top: 0;">Decrypt Creator Profile</button>
-        
-        <div class="reveal-terminal">
-            <div class="terminal-header">
-                <span>TERMINAL://GLOOM_SYS</span>
-                <span>SECURE</span>
-            </div>
-            <div id="terminal-body" style="color: #fff; line-height: 1.6;">
-                <span>Gloom-Core ready. Tap Decrypt above to run...</span><span class="cursor"></span>
-            </div>
-        </div>
-    </div>
-
-    <div class="card">
-        <h3 style="font-size: 12px; font-weight: bold; letter-spacing: 2px; margin: 0 0 10px 0; text-transform: uppercase; color: #fff;">System Support</h3>
-        <p style="font-size: 11px; opacity: 0.8; margin-bottom: 15px;">
-            For custom security deployments, offline builds, or direct assistance:
-        </p>
-        <div style="background: rgba(0,0,0,0.8); border: 1px solid rgba(0, 255, 234, 0.2); padding: 12px; border-radius: 4px; text-align: center;">
-            <a href="tel:+254142122710" style="color: #fff; font-weight: bold; font-size: 14px; letter-spacing: 2px; text-decoration: none;">
-                📞 +254 142 122 710
-            </a>
-            <p style="font-size: 9px; opacity: 0.5; margin: 5px 0 0 0;">Gloom Cyber Assistance Node</p>
-        </div>
-    </div>
-
-    <div class="footer">
-        © 2026 CYBERVAULT SECURE ENGINE
-    </div>
-
-</div>
-
-<script>
-// Global tracking variables
-let globalPassword = "";
-let simulatorActive = false;
-let sandboxRunning = false;
-let revealing = false;
-
-// --- GLOOM CYBER AUDIO ENGINE ---
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-// Synthesizes a mechanical keyboard click
-function playTypeSound() {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
+  <div class="container" id="vault-core">
+    <h1>Cyber Vault</h1>
     
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(400 + Math.random() * 300, audioCtx.currentTime);
-    
-    gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.05);
-    
-    osc.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.05);
-}
+    <div class="profile-banner">
+      Crypt Profile Identity: <span>VantaX // SECURED</span>
+    </div>
 
-// Synthesizes a futuristic robotic system beep
-function playBeepSound(pitch = 600, duration = 0.15) {
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    const osc = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    
-    osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(pitch, audioCtx.currentTime);
-    
-    gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-    
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(1000, audioCtx.currentTime);
-    
-    osc.connect(filter);
-    filter.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    
-    osc.start();
-    osc.stop(audioCtx.currentTime + duration);
-}
+    <div class="display-box" id="password-display">Select length to initialize...</div>
 
-// System Speech engine (Robotic accent)
-function speakRobotic(text) {
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        const voices = window.speechSynthesis.getVoices();
-        const robotVoice = voices.find(v => v.name.includes('Google UK English Male') || v.name.includes('Male')) || voices[0];
-        
-        if (robotVoice) utterance.voice = robotVoice;
-        utterance.pitch = 0.4; 
-        utterance.rate = 0.85; 
-        utterance.volume = 0.8;
-        
-        window.speechSynthesis.speak(utterance);
+    <div class="slider-container">
+      <label for="length-slider">Entropy Length Matrix: <span id="length-val">12</span></label>
+      <input type="range" id="length-slider" min="4" max="32" value="12">
+    </div>
+
+    <div class="strength-output">
+      Diagnostic Metric Status: <span id="strength-status" class="status-secure">Analyzing...</span>
+    </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // 1. PASSWORD GENERATOR & EXPONENT LOGIC
+    // ==========================================
+    const slider = document.getElementById("length-slider");
+    const lengthVal = document.getElementById("length-val");
+    const passwordDisplay = document.getElementById("password-display");
+    const strengthStatus = document.getElementById("strength-status");
+
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+
+    function generateNewPassword(length) {
+      let password = "";
+      // Loop execution matches our geometric length constraints
+      for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+      }
+      passwordDisplay.innerText = password;
+      analyzePasswordStrength(length);
     }
-}
 
-// 2-SECOND ABSOLUTE FAILSAFE BOOT TIMER
-function clearBootScreen() {
-    var bootScreen = document.getElementById("boot");
-    if (bootScreen) {
-        bootScreen.style.opacity = "0";
-        setTimeout(function() {
-            bootScreen.style.display = "none";
-        }, 500);
+    function analyzePasswordStrength(length) {
+      // Real mathematical complexity calculation based on length combinations
+      if (length < 8) {
+        strengthStatus.className = "status-alert";
+        strengthStatus.innerText = "CRITICAL FLAWS DETECTED (Crack Time: Milliseconds)";
+      } else if (length >= 8 && length < 14) {
+        strengthStatus.className = "status-secure";
+        strengthStatus.style.color = "#ffff00"; // Yellow warning indicator
+        strengthStatus.innerText = "STANDARD PROTECTION (Crack Time: Years)";
+      } else {
+        strengthStatus.className = "status-secure";
+        strengthStatus.style.color = "#00ff00"; // Green master secure indicator
+        strengthStatus.innerText = "MILITARY-GRADE SECURITY (Crack Time: INFINITE)";
+      }
     }
-}
 
-// Fire the bootloader clear timer
-setTimeout(clearBootScreen, 2000);
-window.onload = function() {
-    clearBootScreen();
-};
-
-// Collapsible protocol section
-function toggleProtocols() {
-    playBeepSound(800, 0.1);
-    var box = document.getElementById("protocol-box");
-    if (box) {
-        if (box.style.display === "block") {
-            box.style.display = "none";
-        } else {
-            box.style.display = "block";
-        }
-    }
-}
-
-// Failsafe Generator Engine
-function generatePasskey() {
-    playBeepSound(900, 0.15);
-    speakRobotic("New security key compiled.");
-    
-    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-{}[]";
-    var pass = "";
-    try {
-        var array = new Uint32Array(18);
-        window.crypto.getRandomValues(array);
-        for (var i = 0; i < 18; i++) {
-            pass += chars.charAt(array[i] % chars.length);
-        }
-    } catch(e) {
-        for (var j = 0; j < 18; j++) {
-            pass += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-    }
-    globalPassword = pass;
-    var outBox = document.getElementById("out");
-    if (outBox) {
-        outBox.innerText = pass;
-    }
-}
-
-// Copy Engine
-function copyPasskey() {
-    if (!globalPassword) return;
-    try {
-        navigator.clipboard.writeText(globalPassword);
-        playBeepSound(1100, 0.1);
-        var outBox = document.getElementById("out");
-        if (outBox) {
-            var original = outBox.innerText;
-            outBox.innerText = "✓ COPIED SECURELY";
-            outBox.style.color = "#00ff99";
-            setTimeout(function() {
-                outBox.innerText = original;
-                outBox.style.color = "#ffffff";
-            }, 1200);
-        }
-    } catch (err) {
-        alert("Clipboard blocked. Password: " + globalPassword);
-    }
-}
-
-// Decryption Simulator
-function startSimulation() {
-    if (simulatorActive) return;
-    var inputField = document.getElementById('sim-input');
-    var simBody = document.getElementById('sim-body');
-    if (!inputField || !simBody) return;
-    
-    var val = inputField.value.trim();
-    if (!val) {
-        playBeepSound(150, 0.3);
-        simBody.innerHTML = "<span style='color:#ff3b30;'>[!] ERROR: Input is completely blank.</span>";
-        return;
-    }
-    
-    simulatorActive = true;
-    simBody.innerHTML = "";
-    var cycles = 0;
-    
-    playBeepSound(400, 0.2);
-    speakRobotic("Decrypt simulation initialized.");
-
-    var interval = setInterval(function() {
-        var matrixLine = "";
-        for (var i = 0; i < 24; i++) {
-            matrixLine += Math.floor(Math.random() * 2).toString();
-        }
-        simBody.innerHTML = '<div style="color: #00ffea; opacity: 0.6; font-size: 10px;">CYCLE_' + cycles + ' // MATRIX: ' + matrixLine + '</div>';
-        
-        playTypeSound();
-        cycles++;
-        
-        if (cycles > 10) {
-            clearInterval(interval);
-            finishSimulation(val, simBody);
-        }
-    }, 100);
-}
-
-function finishSimulation(pwd, displayNode) {
-    var poolSize = 0;
-    if (/[a-z]/.test(pwd)) poolSize += 26;
-    if (/[A-Z]/.test(pwd)) poolSize += 26;
-    if (/[0-9]/.test(pwd)) poolSize += 10;
-    if (/[^a-zA-Z0-9]/.test(pwd)) poolSize += 33;
-    if (poolSize === 0) poolSize = 10;
-    
-    var bits = Math.round(pwd.length * Math.log2(poolSize));
-    var combos = Math.pow(poolSize, pwd.length);
-    var seconds = combos / (2 * 1e11);
-    
-    var displayTime = "";
-    var label = "";
-    var color = "";
-    
-    if (seconds < 1) {
-        displayTime = "Instantaneous";
-        label = "CRITICAL VULNERABILITY";
-        color = "#ff3b30";
-        speakRobotic("Analysis complete. Vulnerability high.");
-    } else if (seconds < 60) {
-        displayTime = Math.round(seconds) + " Seconds";
-        label = "HIGH RISK - DICTIONARY VULNERABLE";
-        color = "#ff6b00";
-                speakRobotic("Analysis complete. System risk detected.");
-    } else if (seconds < 86400) {
-        displayTime = Math.round(seconds / 3600) + " Hours";
-        label = "MODERATE PERSONAL DEFENSE";
-        color = "#ffb300";
-        speakRobotic("Analysis complete. Moderate defense level.");
-    } else {
-        var years = Math.round(seconds / 31536000);
-        displayTime = years > 1e9 ? "Infinite (Quintillions of Years)" : years.toLocaleString() + " Years";
-        label = "MILITARY-GRADE SECURITY LAYER";
-        color = "#00ff99";
-        speakRobotic("Analysis complete. Secure core layer verified.");
-    }
-    
-    displayNode.innerHTML = 
-        '<div style="color: ' + color + '; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 5px;">[+] RESULT: ' + label + '</div>' +
-        '<div style="font-size: 11px; margin-top: 8px; line-height: 1.5;">' +
-        '- Total Entropy: <span style="color:#fff;">' + bits + ' Bits</span><br>' +
-        '- Decryption Attempt: <span style="color:' + color + '; font-weight:bold;">' + displayTime + '</span>' +
-        '</div>';
-    
-    simulatorActive = false;
-}
-
-// Malware Sandbox Simulator
-function detonateMalwareSim() {
-    if (sandboxRunning) return;
-    sandboxRunning = true;
-    
-    playBeepSound(120, 0.5);
-    speakRobotic("Warning. Simulated malware payload detonated.");
-    
-    var body = document.getElementById('sandbox-body');
-    var status = document.getElementById('sandbox-status');
-    if (!body || !status) return;
-    
-    status.innerText = "ACTIVE";
-    status.style.color = "#ff3b30";
-    body.innerHTML = "";
-    
-    var stages = [
-        { text: "[*] INITIALIZING SIMULATED ATTACK PAYLOAD...", delay: 300, color: "#ff9f0a" },
-        { text: "[+] EXPLOITING SANDBOX INTEGRITY...", delay: 600, color: "#ff3b30" },
-        { text: "[+] PRIVILEGE ELEVATED -> ROOT_ACCESS", delay: 900, color: "#00ff99" },
-        { text: "-------------------------------------------------", delay: 1100, color: "#ff3b30" },
-        { text: "[*] ENCRYPTING DATA DIRECTORIES...", delay: 1400, color: "#ff9f0a" },
-        { text: "  [ENCRYPTING] secure_vault_database.dat", delay: 1700, color: "#ff3b30" },
-        { text: "-------------------------------------------------", delay: 2000, color: "#ff3b30" },
-        { text: "[!] SIMULATION COMPLETE: ATTACK CHAIN TERMINATED.", delay: 2300, color: "#ff3b30" },
-        { text: "[!] NOTICE: Virtual environment protected.", delay: 2500, color: "#00ff99" }
-    ];
-    
-    stages.forEach(function(stage, idx) {
-        setTimeout(function() {
-            body.innerHTML += '<div style="color: ' + stage.color + '; margin-bottom: 4px;">' + stage.text + '</div>';
-            playBeepSound(250 + (idx * 50), 0.08);
-            var parent = body.parentElement;
-            if (parent) {
-                parent.scrollTop = parent.scrollHeight;
-            }
-            if (idx === stages.length - 1) {
-                sandboxRunning = false;
-                status.innerText = "STANDBY";
-                status.style.color = "#00ff99";
-                speakRobotic("Attack sandbox analysis cleared.");
-            }
-        }, stage.delay);
+    // Bind slider events to dynamically alter calculations via parseInt()
+    slider.addEventListener("input", (e) => {
+      const currentLength = parseInt(e.target.value);
+      lengthVal.innerText = currentLength;
+      generateNewPassword(currentLength);
     });
-}
 
-// Identity Reveal
-function startDeveloperReveal() {
-    if (revealing) return;
-    revealing = true;
-    
-    playBeepSound(500, 0.3);
-    speakRobotic("Decrypting developer identity parameters.");
-    
-    var terminal = document.getElementById("terminal-body");
-    if (!terminal) return;
-    terminal.innerHTML = "";
-    
-    var lines = [
-        "Connecting to Gloom Core...",
-        "Authorizing signature check...",
-        "----------------------------------",
-        "CREATOR: Prevellah",
-        "ORIGIN : Eldoret, Kenya",
-        "NODE   : Gloom Cyber Systems",
-        "STATUS : SECURE STACK ACTIVE"
-    ];
-    
-    var currentLineIndex = 0;
-    var currentCharIndex = 0;
-    
-    function typeChar() {
-        if (currentLineIndex < lines.length) {
-            var currentLine = lines[currentLineIndex];
-            if (currentCharIndex === 0) {
-                terminal.innerHTML += '<div id="line-' + currentLineIndex + '"></div>';
-            }
-            var lineElement = document.getElementById('line-' + currentLineIndex);
-            if (lineElement) {
-                lineElement.innerHTML = currentLine.substring(0, currentCharIndex + 1);
-            }
-            
-            playTypeSound();
-            currentCharIndex++;
-            if (currentCharIndex < currentLine.length) {
-                setTimeout(typeChar, 30);
-            } else {
-                currentLineIndex++;
-                currentCharIndex = 0;
-                setTimeout(typeChar, 100);
-            }
-        } else {
-            terminal.innerHTML += '<span>_</span><span class="cursor"></span>';
-            revealing = false;
-            speakRobotic("Signature check complete. Welcome Prevellah.");
+    // Initialize terminal session status on window load
+    window.onload = () => {
+      generateNewPassword(parseInt(slider.value));
+    };
+
+
+    // ==========================================
+    // 2. DEFENSIVE TRAP: DEVTOOLS INTERCEPTION
+    // ==========================================
+    const detectIntruder = () => {
+      const threshold = 160;
+      
+      // Target desktop viewports to bypass false mobile flags
+      if (window.innerWidth > 768) {
+        if (window.outerWidth - window.innerWidth > threshold || 
+            window.outerHeight - window.innerHeight > threshold) {
+          
+          // Execute UI lock-out sequence immediately
+          document.body.innerHTML = `
+            <div style="background:#050505; color:#00ff00; font-family:monospace; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; box-sizing:border-box;">
+              <h2 style="color:#ff0000; letter-spacing: 2px;">[!] CRITICAL WARNING: INTRUSION DETECTED</h2>
+              <p style="font-size: 1.1rem; margin-top: 10px;">Unauthorized inspection of Cyber Vault source code detected.</p>
+              <p style="color:#888;">Crypt Profile Identity: SECURED.</p>
+              <button onclick="location.reload()" style="background:transparent; border:1px solid #00ff00; color:#00ff00; padding:10px 20px; margin-top:20px; cursor:pointer; font-family:monospace;">RE-AUTHENTICATE</button>
+            </div>
+          `;
+          console.warn("Nice try! Cyber Vault is fully locked down.");
+          clearInterval(intruderCheck);
         }
-    }
-    typeChar();
-}
-</script>
+      }
+    };
+    const intruderCheck = setInterval(detectIntruder, 1000);
 
+
+    // ==========================================
+    // 3. DEFENSIVE TRAP: HONEY-TOKEN DECEPTION
+    // ==========================================
+    // Plant bait parameter keys in client storage cache memory
+    localStorage.setItem('admin_session_key', 'VAULT_MASTER_SECRET_DO_NOT_ALTER');
+
+    // Watch for manipulation or value modification strings
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'admin_session_key') {
+        alert("ALERT: Honey-token tampering detected! Vault entry denied.");
+        localStorage.clear();
+        window.location.reload();
+      }
+    });
+  </script>
 </body>
 </html>
