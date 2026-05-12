@@ -266,7 +266,9 @@
       border-radius: 4px;
       padding: 12px;
       box-sizing: border-box;
-      min-height: 125px;
+      min-height: 140px;
+      max-height: 240px;
+      overflow-y: auto;
       font-size: 0.8rem;
     }
 
@@ -395,7 +397,7 @@
     <div class="card-title">Active Deception Monitor</div>
     <div class="card-subtext">Deploys automated decoy honey-tokens to identify tampering vectors.</div>
     
-    <div class="terminal-log" style="min-height: 120px; margin-bottom: 20px;">
+    <div class="terminal-log" style="margin-bottom: 20px;">
       <div class="terminal-header">
         <span>INSPECTOR_TRAP://DECOY_MONITOR</span>
         <span style="color:#00f2fe;">ARMED</span>
@@ -423,7 +425,7 @@
     <div class="card-title" style="margin-top: 25px;">Developer Identity</div>
     <button class="cyber-btn" id="decrypt-profile-btn">Decrypt Creator Profile</button>
 
-    <div class="terminal-log" style="min-height: 110px;">
+    <div class="terminal-log" style="min-height: 110px; margin-bottom: 10px;">
       <div class="terminal-header">
         <span>IDENTITY://VERIFICATION</span>
         <span id="profile-status" style="color:#006066;">LOCKED</span>
@@ -543,7 +545,6 @@
       const password = testInput.value;
       if (!password) return;
 
-      // CRITICAL SECURITY MOD: Safely clear old loop runs to stop rendering hang ups completely
       clearInterval(simulationTimer);
       clearInterval(audioTimer);
 
@@ -626,16 +627,12 @@
     });
 
     // ==========================================
-// 7. Simulated Inspector Trap Detection Code
-// ==========================================
-// Detects when the browser window is resized or code manipulation tools are active
-window.addEventListener('resize', () => {
-  const sLogs = document.getElementById('sandbox-logs');
-  if (sLogs) {
-    playTerminalBeep(220, 'sawtooth', 0.2);
-    sLogs.innerHTML += `<div class="sandbox-line sb-alert">[!] WARNING: Environment change detected. Code structure evaluated.</div>`;
-  }
-});
-</script>
-</body>
-</html>
+    // 7. Debounced Active Deception Trap Code
+    // ==========================================
+    let trapDebounceTimeout = null;
+    window.addEventListener('resize', () => {
+      // Clear the timeout while the user is actively scrolling / typing (triggering toolbar changes)
+      clearTimeout(trapDebounceTimeout);
+      
+      // Only execute once the window layout has completely settled for 400ms
+      trapDebounceTimeout =
