@@ -94,7 +94,7 @@
     /* Main Branding Header Zone */
     .header-zone {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
       width: 100%;
       max-width: 500px;
     }
@@ -114,20 +114,6 @@
       color: #00828a;
       margin-top: 5px;
       text-transform: uppercase;
-    }
-
-    .profile-identity {
-      width: 100%;
-      max-width: 500px;
-      font-size: 0.75rem;
-      color: #006066;
-      text-align: left;
-      margin-bottom: 15px;
-      letter-spacing: 1px;
-    }
-
-    .profile-identity span {
-      color: #00f2fe;
     }
 
     /* Clean Card Layout Infrastructure */
@@ -160,7 +146,7 @@
       margin-bottom: 15px;
     }
 
-    /* Buttons & Inputs Interaction Config */
+    /* Interactive Interface Elements */
     .cyber-btn {
       width: 100%;
       background: #00f2fe;
@@ -211,13 +197,14 @@
       box-sizing: border-box;
       margin-bottom: 15px;
       outline: none;
+      text-align: center;
     }
 
     .cyber-input:focus {
       border-color: #00f2fe;
     }
 
-    /* Password Length Matrix Config Input Slider */
+    /* Password Length Matrix Input Slider */
     .slider-box {
       margin-top: 15px;
       margin-bottom: 5px;
@@ -256,7 +243,7 @@
       box-shadow: 0 0 8px #00f2fe;
     }
 
-    /* Terminal Matrix Running Output Box */
+    /* Terminal Monitor Boxes */
     .terminal-log {
       width: 100%;
       background: #000000;
@@ -309,6 +296,67 @@
       color: #00f2fe;
       font-weight: bold;
     }
+
+    /* System Documentation Styling */
+    .doc-content {
+      font-size: 0.75rem;
+      color: #00828a;
+      line-height: 1.6;
+      max-height: 200px;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    .doc-content h4 {
+      color: #00f2fe;
+      margin: 12px 0 4px 0;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+
+    .doc-content p {
+      margin: 0 0 10px 0;
+    }
+
+    /* Fixed Scrollbar Aesthetic for Docs */
+    .doc-content::-webkit-scrollbar {
+      width: 4px;
+    }
+    .doc-content::-webkit-scrollbar-track {
+      background: #000000;
+    }
+    .doc-content::-webkit-scrollbar-thumb {
+      background: #004d52;
+      border-radius: 2px;
+    }
+
+    /* Clickable Interactive Footer Layout Block */
+    .system-footer {
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #004d52;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-top: 1px dashed #002c30;
+      padding-top: 15px;
+      cursor: pointer;
+      user-select: none;
+      transition: color 0.1s ease;
+    }
+
+    .system-footer:active {
+      color: #00f2fe;
+    }
+
+    .system-footer span {
+      color: #00f2fe;
+      text-shadow: 0 0 4px rgba(0, 242, 254, 0.2);
+    }
   </style>
 </head>
 <body>
@@ -325,10 +373,6 @@
   <div class="header-zone">
     <div class="main-title">Cybervault Core</div>
     <div class="sub-title">Gloom Cyber Systems</div>
-  </div>
-
-  <div class="profile-identity">
-    Crypt Profile Identity: <span>VantaX // DEV: prevellah // SECURED</span>
   </div>
 
   <div class="module-card">
@@ -375,6 +419,31 @@
     </div>
   </div>
 
+  <div class="module-card">
+    <div class="card-title">System Documentation</div>
+    <div class="card-subtext">Core cryptographic infrastructure & strategy deployment overview.</div>
+    <div class="doc-content">
+      <h4>Why Security is Paramount</h4>
+      <p>In a hyper-connected network ecosystem, data exposure vectors scale exponentially. Passive defensive firewalls are no longer sufficient to secure systemic assets against modern vector attacks. Absolute validation and runtime entropy integrity are vital prerequisites to maintain data sovereignty.</p>
+      
+      <h4>Multi-Layered Architecture</h4>
+      <p>Cybervault Core handles structural defence protocols symmetrically using overlapping framework matrices. Security is optimized through tiered operational isolation layers:</p>
+      
+      <h4>1. Cryptographic Entropy Layer</h4>
+      <p>Enforces dynamic matrix configurations via variable pseudo-random pools. Generating true high-entropy structures mitigates rainbow-table cross-referencing and mathematical factorization attempts completely.</p>
+      
+      <h4>2. Real-Time Cryptanalysis Matrix</h4>
+      <p>Simulates computational parsing limits against target structures, projecting predictive mathematical timelines required for brute-force decipherment arrays.</p>
+      
+      <h4>3. Active Cyber Deception (Honeypots)</h4>
+      <p>Deploys isolated virtual traps (Inspector Traps & Storage Tokens) within user session layers. If an unauthorized actor attempts code modification or runtime analysis tracking, the environment instantly flags the telemetry and neutralizes verification permissions.</p>
+    </div>
+  </div>
+
+  <div class="system-footer" id="footer-profile-btn">
+    Crypt Profile Identity: <span>VantaX // DEV: prevellah // SECURED</span>
+  </div>
+
   <script>
     // ==========================================
     // 1. Preloader Execution Boot Framework
@@ -387,7 +456,7 @@
           preloader.style.display = "none";
           playTerminalBeep(520, 'sine', 0.12);
         }, 500);
-      }, 2000); // 2-second strict layout display delay
+      }, 2000); 
     });
 
     // ==========================================
@@ -407,11 +476,11 @@
         gain.connect(audioCtx.destination);
         osc.start();
         osc.stop(audioCtx.currentTime + duration);
-      } catch(e) { /* Guard system context block */ }
+      } catch(e) { }
     }
 
     // ==========================================
-    // 3. Integrated Password Matrix Generation Rules
+    // 3. Integrated Password Matrix Generation
     // ==========================================
     const slider = document.getElementById("length-slider");
     const lengthVal = document.getElementById("length-val");
@@ -423,6 +492,7 @@
     const analyzeBtn = document.getElementById("analyze-btn");
     const terminalOutput = document.getElementById("terminal-output");
     const moduleStatus = document.getElementById("module-status");
+    const footerProfileBtn = document.getElementById("footer-profile-btn");
 
     const pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=";
 
@@ -452,7 +522,31 @@
     });
 
     // ==========================================
-    // 4. Working Matrix Crack Simulator Code Loop
+    // 4. Working Profile Identity Link Synchronizer
+    // ==========================================
+    footerProfileBtn.addEventListener("click", () => {
+      // High-pitched sync melodic chime sounds
+      playTerminalBeep(880, 'sine', 0.08);
+      setTimeout(() => playTerminalBeep(1320, 'sine', 0.15), 80);
+
+      // Scroll smoothly up to the terminal output display panel
+      testInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      // Direct metadata print sequence right to terminal window
+      terminalOutput.innerHTML = `
+        <span style="color:#00f2fe;">SYNC_PROTOCOL://IDENTITY_VERIFIED</span><br>
+        --------------------------------<br>
+        Operator: <span style="color:#ffffff;">VantaX</span><br>
+        Lead Dev: <span style="color:#ffffff;">prevellah</span><br>
+        Faction:  <span style="color:#ffffff;">Gloom Cyber Systems</span><br>
+        Location: <span style="color:#ffffff;">Eldoret, Kenya</span><br>
+        --------------------------------<br>
+        Status:   <span style="color:#00f2fe; font-weight:bold;">CORE SYSTEM MATRIX SECURED</span>
+      `;
+    });
+
+    // ==========================================
+    // 5. Working Matrix Crack Simulator Code Loop
     // ==========================================
     analyzeBtn.addEventListener("click", () => {
       const targetPassword = testInput.value;
@@ -461,13 +555,12 @@
         return;
       }
 
-      // Lock buttons while running calculations matrix
       analyzeBtn.disabled = true;
       moduleStatus.innerText = "BUSY";
       moduleStatus.style.color = "#ffcc00";
 
       let currentFrame = 0;
-      const totalFrames = 25; // Loop lifecycle steps
+      const totalFrames = 25; 
       
       const soundLoop = setInterval(() => {
         playTerminalBeep(Math.random() * 300 + 300, 'sawtooth', 0.03);
@@ -479,15 +572,12 @@
           loopScramble += pool[Math.floor(Math.random() * pool.length)];
         }
         
-        // Matrix Running Code display simulation
         terminalOutput.innerHTML = `RUNNING BRUTEFORCE_ATTACK...<br>Testing Sequence Matrix: <span style="color:#ffcc00;">${loopScramble}</span>`;
         currentFrame++;
 
         if (currentFrame >= totalFrames) {
           clearInterval(runningCodeMatrix);
           clearInterval(soundLoop);
-          
-          // Execute evaluation logic on target string inputs
           evaluateStrengthMetrics(targetPassword);
         }
       }, 60);
@@ -500,13 +590,13 @@
       
       let len = str.length;
       if (len < 8) {
-        playTerminalBeep(140, 'sawtooth', 0.4); // Warning alert sound
+        playTerminalBeep(140, 'sawtooth', 0.4); 
         terminalOutput.innerHTML = `ANALYSIS COMPLETE. <br>Result Status: <span style="color:#ff3333; font-weight:bold;">CRITICAL WEAKNESS (CRACK TIME: SECONDS)</span>`;
       } else if (len >= 8 && len < 14) {
         playTerminalBeep(480, 'sine', 0.2);
         terminalOutput.innerHTML = `ANALYSIS COMPLETE. <br>Result Status: <span style="color:#ffcc00; font-weight:bold;">STANDARD ENCRYPTION (CRACK TIME: YEARS)</span>`;
       } else {
-        playTerminalBeep(900, 'sine', 0.3); // High pass secure sound
+        playTerminalBeep(900, 'sine', 0.3); 
         terminalOutput.innerHTML = `ANALYSIS COMPLETE. <br>Result Status: <span style="color:#00f2fe; font-weight:bold;">MILITARY-GRADE CODES (CRACK TIME: INFINITE)</span>`;
       }
     }
