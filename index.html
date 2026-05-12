@@ -626,7 +626,7 @@
       }, 25);
     });
 
-    // ==========================================
+        // ==========================================
     // 7. Debounced Active Deception Trap Code
     // ==========================================
     let trapDebounceTimeout = null;
@@ -635,4 +635,18 @@
       clearTimeout(trapDebounceTimeout);
       
       // Only execute once the window layout has completely settled for 400ms
-      trapDebounceTimeout =
+      trapDebounceTimeout = setTimeout(() => {
+        const sLogs = document.getElementById('sandbox-logs');
+        if (sLogs) {
+          playTerminalBeep(220, 'sawtooth', 0.2);
+          
+          // Append entry and auto-scroll container to show the newest threat log instantly
+          const parentLog = sLogs.closest('.terminal-log');
+          sLogs.innerHTML += `<div class="sandbox-line sb-alert">[!] WARNING: Environment viewport shift detected. Integrity verification required.</div>`;
+          if (parentLog) parentLog.scrollTop = parentLog.scrollHeight;
+        }
+      }, 400);
+    });
+  </script>
+</body>
+</html>
