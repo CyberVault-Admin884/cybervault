@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CYBERVAULT CORE</title>
   <style>
-    /* Exact Grid & Scanline Aesthetic from the Video */
+    /* Exact Grid & Scanline Aesthetic from your Original Design */
     body {
       background-color: #01080a;
       background-image: linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
@@ -20,8 +20,79 @@
       align-items: center;
       min-height: 100vh;
       box-sizing: border-box;
+      overflow-x: hidden;
     }
 
+    /* High-Tech Preloader Screen */
+    #preloader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #01080a;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.5s ease-out;
+    }
+
+    .shield-icon {
+      font-size: 4.5rem;
+      color: #00f2fe;
+      text-shadow: 0 0 20px rgba(0, 242, 254, 0.8);
+      animation: pulseShield 1s infinite alternate;
+      margin-bottom: 15px;
+    }
+
+    .load-title {
+      font-size: 1.6rem;
+      font-weight: bold;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+      margin-bottom: 5px;
+    }
+
+    .load-copyright {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: #006066;
+      margin-bottom: 25px;
+      text-transform: uppercase;
+    }
+
+    .progress-bar-container {
+      width: 220px;
+      height: 4px;
+      background: #001f21;
+      border: 1px solid #004d52;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: #00f2fe;
+      box-shadow: 0 0 10px #00f2fe;
+      animation: loadFill 2s linear forwards;
+    }
+
+    @keyframes pulseShield {
+      0% { transform: scale(0.95); opacity: 0.6; text-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
+      100% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 25px rgba(0, 242, 254, 0.9); }
+    }
+
+    @keyframes loadFill {
+      0% { width: 0%; }
+      50% { width: 60%; }
+      100% { width: 100%; }
+    }
+
+    /* Main Content Display (Hidden initially by preloader wrapper) */
     .header-zone {
       text-align: center;
       margin-bottom: 20px;
@@ -73,7 +144,7 @@
       color: #00f2fe;
     }
 
-    /* Core Panel Framework matching the Video */
+    /* Core Panel Framework */
     .module-card {
       width: 100%;
       max-width: 500px;
@@ -103,7 +174,7 @@
       margin-bottom: 15px;
     }
 
-    /* Input & Button Styles from original layout */
+    /* Interactive Inputs & Button Layouts */
     .cyber-btn {
       width: 100%;
       background: #00f2fe;
@@ -119,7 +190,7 @@
       cursor: pointer;
       margin-bottom: 12px;
       box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
-      transition: all 0.2s;
+      transition: all 0.1s ease-in-out;
     }
 
     .cyber-btn:active {
@@ -154,13 +225,14 @@
       font-size: 0.95rem;
       box-sizing: border-box;
       margin-bottom: 15px;
+      outline: none;
     }
 
-    .cyber-input::placeholder {
-      color: #004d52;
+    .cyber-input:focus {
+      border-color: #00f2fe;
     }
 
-    /* Slider Setup */
+    /* Slider Systems */
     .slider-box {
       margin-top: 15px;
       margin-bottom: 5px;
@@ -199,7 +271,7 @@
       box-shadow: 0 0 8px #00f2fe;
     }
 
-    /* Terminal Monitor Box */
+    /* Terminal Monitor Framework Box */
     .terminal-log {
       width: 100%;
       background: #000000;
@@ -207,7 +279,7 @@
       border-radius: 4px;
       padding: 12px;
       box-sizing: border-box;
-      min-height: 80px;
+      min-height: 95px;
       font-size: 0.75rem;
     }
 
@@ -223,14 +295,14 @@
 
     .terminal-body {
       color: #00828a;
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .terminal-body span {
       color: #00f2fe;
     }
 
-    /* Defensive Status Grid Indicators */
+    /* Passive System Indicator Modules */
     .defense-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -255,6 +327,15 @@
   </style>
 </head>
 <body>
+
+  <div id="preloader">
+    <div class="shield-icon">🛡</div>
+    <div class="load-title">Cybervault Core</div>
+    <div class="load-copyright">VantaX // Operator: prevellah</div>
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill"></div>
+    </div>
+  </div>
 
   <div class="header-zone">
     <div class="main-title">Cybervault Core</div>
@@ -289,7 +370,7 @@
     <div class="terminal-log">
       <div class="terminal-header">
         <span>SIM_MODULE://DECRYPT_ATTACK</span>
-        <span>ONLINE</span>
+        <span id="module-status">ONLINE</span>
       </div>
       <div class="terminal-body" id="terminal-output">
         Enter target string and initialize analysis...
@@ -303,17 +384,52 @@
     
     <div class="defense-grid">
       <div class="status-node">
-        Inspector Trap: <span style="color: #00f2fe;">ARMED</span>
+        Inspector Trap: <span style="color: #00f2fe; text-shadow: 0 0 5px rgba(0,242,254,0.5);">ARMED</span>
       </div>
       <div class="status-node">
-        Honey-Token: <span style="color: #00f2fe;">ACTIVE</span>
+        Honey-Token: <span style="color: #00f2fe; text-shadow: 0 0 5px rgba(0,242,254,0.5);">ACTIVE</span>
       </div>
     </div>
   </div>
 
   <script>
     // ==========================================
-    // Core Logic Systems
+    // 1. Boot Preloader Controller Sequence
+    // ==========================================
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        const preloader = document.getElementById("preloader");
+        preloader.style.opacity = "0";
+        setTimeout(() => {
+          preloader.style.display = "none";
+          // Trigger system initialized beep
+          playTerminalBeep(520, 'sine', 0.15);
+        }, 500);
+      }, 2000); // Strict 2-second hold sequence
+    });
+
+    // ==========================================
+    // 2. Hardware Tone Audio Emulator Engine
+    // ==========================================
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playTerminalBeep(freq, type, duration) {
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch(e) { /* Audio context block protection */ }
+    }
+
+    // ==========================================
+    // 3. Structural Web Interface Components
     // ==========================================
     const slider = document.getElementById("length-slider");
     const lengthVal = document.getElementById("length-val");
@@ -325,16 +441,17 @@
     const testInput = document.getElementById("test-input");
     const analyzeBtn = document.getElementById("analyze-btn");
     const terminalOutput = document.getElementById("terminal-output");
+    const moduleStatus = document.getElementById("module-status");
 
     const pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=";
 
-    // Handle range updates
     slider.addEventListener("input", (e) => {
       lengthVal.innerText = e.target.value;
+      playTerminalBeep(550, 'square', 0.03);
     });
 
-    // High Entropy Generator Engine
     generateBtn.addEventListener("click", () => {
+      playTerminalBeep(840, 'sine', 0.1);
       let len = parseInt(slider.value);
       let pass = "";
       for (let i = 0; i < len; i++) {
@@ -343,41 +460,79 @@
       keyOutput.innerText = pass;
     });
 
-    // Copy To Clipboard Command
     copyBtn.addEventListener("click", () => {
       const text = keyOutput.innerText;
       if (text && text !== "_ AWAITING COMMAND _") {
         navigator.clipboard.writeText(text).then(() => {
+          playTerminalBeep(1100, 'sine', 0.15);
           alert("Passkey successfully secure-copied to clipboard!");
         });
       }
     });
 
-    // Protocol How It Works Alert
     protocolBtn.addEventListener("click", () => {
+      playTerminalBeep(440, 'sine', 0.08);
       alert("CYBERVAULT SYSTEMS PROTOCOL:\n\n1. Initialize generator matrix length via slider.\n2. Click 'Generate' to fetch pseudorandom high entropy blocks.\n3. Run target calculations inside the Crack-Time analysis module.");
     });
 
-    // Crack-Time Simulator Matrix Calculation
+    // ==========================================
+    // 4. Matrix Crack-Time Simulator Task Logic
+    // ==========================================
     analyzeBtn.addEventListener("click", () => {
-      const str = testInput.value;
-      if (!str) {
+      const passwordToTest = testInput.value;
+      if (!passwordToTest) {
         terminalOutput.innerHTML = "Enter target string and initialize analysis...";
         return;
       }
 
-      let len = str.length;
-      if (len < 8) {
-        terminalOutput.innerHTML = `Analyzing complexity... <br>Result Status: <span style="color:#ff3333; font-weight:bold;">CRITICAL FLAWS DETECTED (Crack Time: Milliseconds)</span>`;
-      } else if (len >= 8 && len < 14) {
-        terminalOutput.innerHTML = `Analyzing complexity... <br>Result Status: <span style="color:#ffcc00; font-weight:bold;">STANDARD PROTECTION (Crack Time: Years)</span>`;
-      } else {
-        terminalOutput.innerHTML = `Analyzing complexity... <br>Result Status: <span style="color:#00f2fe; font-weight:bold;">MILITARY-GRADE SECURITY (CRACK TIME: INFINITE)</span>`;
-      }
+      analyzeBtn.disabled = true;
+      moduleStatus.innerText = "BUSY";
+      moduleStatus.style.color = "#ffcc00";
+
+      let currentFrame = 0;
+      const executionFrames = 25; // Length of rotation text loops
+      
+      const soundInterval = setInterval(() => {
+        playTerminalBeep(Math.random() * 350 + 300, 'sawtooth', 0.04);
+      }, 60);
+
+      const calculationMatrixLoop = setInterval(() => {
+        let scrambledText = "";
+        for (let i = 0; i < passwordToTest.length; i++) {
+          scrambledText += pool[Math.floor(Math.random() * pool.length)];
+        }
+        
+        terminalOutput.innerHTML = `RUNNING BRUTEFORCE_ATTACK...<br>Testing Sequence Matrix: <span style="color:#ffcc00;">${scrambledText}</span>`;
+        currentFrame++;
+
+        if (currentFrame >= executionFrames) {
+          clearInterval(calculationMatrixLoop);
+          clearInterval(soundInterval);
+          evaluateStrengthMetrics(passwordToTest);
+        }
+      }, 60);
     });
 
+    function evaluateStrengthMetrics(str) {
+      analyzeBtn.disabled = false;
+      moduleStatus.innerText = "ONLINE";
+      moduleStatus.style.color = "#00f2fe";
+      
+      let len = str.length;
+      if (len < 8) {
+        playTerminalBeep(140, 'sawtooth', 0.4);
+        terminalOutput.innerHTML = `ANALYSIS COMPLETE. <br>Result Complexity Status: <span style="color:#ff3333; font-weight:bold;">CRITICAL FLAWS DETECTED (Crack Time: Milliseconds)</span>`;
+      } else if (len >= 8 && len < 14) {
+        playTerminalBeep(480, 'sine', 0.2);
+        terminalOutput.innerHTML = `ANALYSIS COMPLETE. <br>Result Complexity Status: <span style="color:#ffcc00; font-weight:bold;">STANDARD PROTECTION (Crack Time: Years)</span>`;
+      } else {
+        playTerminalBeep(900, 'sine', 0.3);
+        terminalOutput.innerHTML = `ANALYSIS COMPLETE. <br>Result Complexity Status: <span style="color:#00f2fe; font-weight:bold;">MILITARY-GRADE SECURITY (CRACK TIME: INFINITE)</span>`;
+      }
+    }
+
     // ==========================================
-    // Defensive Tripwire Operations (Background)
+    // 5. Active Threat Response Security Deception
     // ==========================================
     const detectIntrusion = () => {
       const gap = 160;
@@ -399,7 +554,6 @@
     };
     const trapLoop = setInterval(detectIntrusion, 1000);
 
-    // Honey-Token System Setup
     localStorage.setItem('admin_session_key', 'VAULT_MASTER_SECRET_DO_NOT_ALTER');
     window.addEventListener('storage', (event) => {
       if (event.key === 'admin_session_key') {
@@ -410,5 +564,4 @@
     });
   </script>
 </body>
-      </html>
-      
+</html>
