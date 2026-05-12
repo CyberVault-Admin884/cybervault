@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CYBERVAULT CORE</title>
   <style>
-    /* Exact Grid & Scanline Aesthetic from your Original Design */
+    /* Exact Grid & Scanline Aesthetic from your Video */
     body {
       background-color: #01080a;
       background-image: linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
@@ -92,7 +92,7 @@
       100% { width: 100%; }
     }
 
-    /* Main Content Display */
+    /* Main Content Layout Panels */
     .header-zone {
       text-align: center;
       margin-bottom: 20px;
@@ -144,7 +144,6 @@
       color: #00f2fe;
     }
 
-    /* Core Panel Framework */
     .module-card {
       width: 100%;
       max-width: 500px;
@@ -174,7 +173,7 @@
       margin-bottom: 15px;
     }
 
-    /* Interactive Inputs & Button Layouts */
+    /* Core Video Aesthetic Interactive Buttons & Inputs */
     .cyber-btn {
       width: 100%;
       background: #00f2fe;
@@ -226,13 +225,15 @@
       box-sizing: border-box;
       margin-bottom: 15px;
       outline: none;
+      text-align: center;
     }
 
     .cyber-input:focus {
       border-color: #00f2fe;
+      box-shadow: 0 0 8px rgba(0, 242, 254, 0.3);
     }
 
-    /* Slider Systems */
+    /* Range Matrix Configuration Slider */
     .slider-box {
       margin-top: 15px;
       margin-bottom: 5px;
@@ -271,7 +272,7 @@
       box-shadow: 0 0 8px #00f2fe;
     }
 
-    /* Terminal Monitor Framework Box */
+    /* Decryption Terminal Framework Box */
     .terminal-log {
       width: 100%;
       background: #000000;
@@ -302,7 +303,7 @@
       color: #00f2fe;
     }
 
-    /* Passive System Indicator Modules */
+    /* Passive Intrusion Monitoring System */
     .defense-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -404,11 +405,11 @@
           preloader.style.display = "none";
           playTerminalBeep(520, 'sine', 0.15);
         }, 500);
-      }, 2000); // Strict 2-second hold sequence
+      }, 2000); 
     });
 
     // ==========================================
-    // 2. Hardware Tone Audio Emulator Engine
+    // 2. Synth Audio Core Emulator Engine
     // ==========================================
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     
@@ -424,11 +425,11 @@
         gain.connect(audioCtx.destination);
         osc.start();
         osc.stop(audioCtx.currentTime + duration);
-      } catch(e) { /* Audio context block protection */ }
+      } catch(e) { }
     }
 
     // ==========================================
-    // 3. Structural Web Interface Components
+    // 3. Interface DOM Bindings
     // ==========================================
     const slider = document.getElementById("length-slider");
     const lengthVal = document.getElementById("length-val");
@@ -475,7 +476,7 @@
     });
 
     // ==========================================
-    // 4. Matrix Crack-Time Simulator Task Logic
+    // 4. Decryption Script Interactivity Loop
     // ==========================================
     analyzeBtn.addEventListener("click", () => {
       const passwordToTest = testInput.value;
@@ -531,7 +532,7 @@
     }
 
     // ==========================================
-    // 5. Active Threat Response Security Deception
+    // 5. Anti-Tampering Deception Guardrails
     // ==========================================
     const detectIntrusion = () => {
       const gap = 160;
