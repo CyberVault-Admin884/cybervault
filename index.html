@@ -6,7 +6,7 @@
   <title>CYBERVAULT CORE</title>
   <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
-    /* Premium Unified Grid & Aesthetic Configuration */
+    /* Premium Unified Grid Aesthetic Layout */
     body {
       background-color: #01080a;
       background-image: linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
@@ -84,7 +84,7 @@
       100% { width: 100%; }
     }
 
-    /* Main Header System Info */
+    /* Main Branding Header Area */
     .header-zone {
       text-align: center;
       margin-top: 10px;
@@ -110,7 +110,7 @@
       text-transform: uppercase;
     }
 
-    /* Anti-Scroll Matrix Navigation Tabs System */
+    /* Professional Top Nav Tab Array */
     .matrix-nav {
       display: flex;
       width: 100%;
@@ -121,12 +121,12 @@
 
     .nav-tab {
       flex: 1;
-      background: rgba(0, 31, 33, 0.6);
+      background: rgba(0, 31, 33, 0.4);
       border: 1px solid #004d52;
       color: #00828a;
-      padding: 10px 5px;
+      padding: 12px 5px;
       font-family: 'Share Tech Mono', monospace;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
@@ -136,15 +136,15 @@
     }
 
     .nav-tab.active-tab {
-      background: rgba(0, 242, 254, 0.15);
+      background: rgba(0, 242, 254, 0.12);
       border-color: #00f2fe;
       color: #00f2fe;
-      box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.2);
     }
 
-    /* Modular Container Layouts */
+    /* Modular Container Card Structural Engine */
     .module-card {
-      display: none; /* Controlled dynamically via JS Tabs */
+      display: none; 
       width: 100%;
       max-width: 480px;
       border: 1px solid #004d52;
@@ -153,6 +153,7 @@
       padding: 20px;
       box-sizing: border-box;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+      margin-bottom: 20px;
     }
 
     .module-card.visible-card {
@@ -175,7 +176,7 @@
       margin-bottom: 15px;
     }
 
-    /* Custom Input & Action Interfaces */
+    /* Action Form Layout Items */
     .cyber-btn {
       width: 100%;
       background: #00f2fe;
@@ -227,7 +228,7 @@
       text-align: center;
     }
 
-    /* Slider styling adjustments */
+    /* Slider Matrix Interface Layout */
     .slider-box {
       margin-top: 15px;
     }
@@ -257,7 +258,7 @@
       box-shadow: 0 0 6px #00f2fe;
     }
 
-    /* Real Terminal Views */
+    /* Terminal Console Interfaces */
     .terminal-log {
       width: 100%;
       background: #000000;
@@ -283,7 +284,7 @@
       line-height: 1.5;
     }
 
-    /* Sandbox Sandbox Log Array CSS */
+    /* Telemetry Diagnostics Output Styles */
     .sandbox-line {
       margin-bottom: 6px;
     }
@@ -291,12 +292,42 @@
     .sb-alert { color: #ff3333; }
     .sb-warn { color: #ffcc00; }
 
-    /* Support Phone Area */
+    /* Clean Documentation Layout Inside Tab */
+    .doc-paragraph {
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: #006066;
+      margin-bottom: 14px;
+    }
+
+    .doc-item {
+      display: flex;
+      margin-bottom: 10px;
+      font-size: 0.8rem;
+      line-height: 1.4;
+    }
+
+    .doc-icon {
+      margin-right: 8px;
+    }
+
+    .doc-text {
+      color: #006066;
+    }
+
+    .doc-text strong {
+      color: #00f2fe;
+      font-weight: normal;
+    }
+
+    /* Support Node Contact Info */
     .support-box {
       margin-top: 20px;
       text-align: center;
       font-size: 0.8rem;
       color: #006066;
+      border-top: 1px dashed #002c30;
+      padding-top: 15px;
     }
     .support-box a {
       color: #ffffff;
@@ -361,22 +392,35 @@
   </div>
 
   <div class="module-card" id="sand-card">
-    <div class="card-title">System Sandbox Monitor</div>
-    <div class="card-subtext">Local isolation telemetry framework logs.</div>
+    <div class="card-title">Active Deception Monitor</div>
+    <div class="card-subtext">Deploys automated decoy honey-tokens to identify tampering vectors.</div>
     
-    <div class="terminal-log" style="min-height: 110px; margin-bottom: 20px;">
+    <div class="terminal-log" style="min-height: 120px; margin-bottom: 20px;">
       <div class="terminal-header">
-        <span>SANDBOX://SECURE_ENV</span>
-        <span>ACTIVE</span>
+        <span>INSPECTOR_TRAP://DECOY_MONITOR</span>
+        <span style="color:#00f2fe;">ARMED</span>
       </div>
       <div class="terminal-body" id="sandbox-logs">
-        <div class="sandbox-line sb-success">[✔] Isolated virtual memory allocation verified.</div>
-        <div class="sandbox-line sb-warn">[!] Local storage token integrity: ARMED.</div>
-        <div class="sandbox-line sb-success">[✔] Zero Server-side telemetry pipelines linked.</div>
+        <div class="sandbox-line sb-success">[✔] Sandbox containment barrier fully synchronized.</div>
+        <div class="sandbox-line sb-success">[✔] Honey-Token asset loop deployed in local space.</div>
+        <div class="sandbox-line sb-warn">[!] Trap Alert status: Listening for runtime code modifications...</div>
       </div>
     </div>
 
-    <div class="card-title">Developer Identity</div>
+    <div class="card-title" style="margin-top: 25px;">Why Password Security is Paramount</div>
+    <div class="doc-paragraph">
+      With the rise of automated brute-forcing arrays, basic dictionary credentials can be intercepted in seconds. True modern cybersecurity demands programmatic high-entropy complexity.
+    </div>
+    <div class="doc-item">
+      <div class="doc-icon">🔒</div>
+      <div class="doc-text"><strong>Countering AI Attacks:</strong> High entropy variables make dictionary pattern guessing impossible.</div>
+    </div>
+    <div class="doc-item">
+      <div class="doc-icon">🚫</div>
+      <div class="doc-text"><strong>Isolated Boundaries:</strong> Encryption loops process locally in memory space—never on an external network host.</div>
+    </div>
+
+    <div class="card-title" style="margin-top: 25px;">Developer Identity</div>
     <button class="cyber-btn" id="decrypt-profile-btn">Decrypt Creator Profile</button>
 
     <div class="terminal-log" style="min-height: 110px;">
@@ -397,21 +441,18 @@
 
   <script>
     // ==========================================
-    // 1. Fixed Execution Tab Switcher Logic
+    // 1. Tab Navigation Matrix Controls
     // ==========================================
     function switchCard(cardId, tabElement) {
       playTerminalBeep(440, 'sine', 0.05);
       
-      // Hide all open workspace module cards
       document.querySelectorAll('.module-card').forEach(card => {
         card.classList.remove('visible-card');
       });
-      // Deactivate all running nav nodes
       document.querySelectorAll('.nav-tab').forEach(tab => {
         tab.classList.remove('active-tab');
       });
 
-      // Activate targeted profiles
       document.getElementById(cardId).classList.add('visible-card');
       tabElement.classList.add('active-tab');
     }
@@ -431,7 +472,7 @@
     });
 
     // ==========================================
-    // 3. Native Audio Synthesis Engine
+    // 3. Audio Synthesis Oscillator Engine
     // ==========================================
     let audioCtx = null;
     function playTerminalBeep(freq, type, duration) {
@@ -502,7 +543,7 @@
       const password = testInput.value;
       if (!password) return;
 
-      // CRITICAL FIX: Kill any hanging matrix intervals instantly before opening a new execution chain
+      // CRITICAL SECURITY MOD: Safely clear old loop runs to stop rendering hang ups completely
       clearInterval(simulationTimer);
       clearInterval(audioTimer);
 
@@ -546,11 +587,11 @@
             terminalOutput.innerHTML = `[+] RESULT: <span style="color:#00f2fe; font-weight:bold;">MAXIMUM SECURITY PROFILE</span><br><br>- Total Entropy: ${bits} Bits<br>- Decryption Attempt: <span style="color:#00f2fe;">Unbreakable (Infinite)</span>`;
           }
         }
-      }, 60);
+      }, 70);
     });
 
     // ==========================================
-    // 6. Interactive Character Reveal Profile Link
+    // 6. Sequential Character Reveal Profile 
     // ==========================================
     const decryptProfileBtn = document.getElementById("decrypt-profile-btn");
     const profileOutput = document.getElementById("profile-output");
@@ -568,7 +609,6 @@
       profileOutput.innerHTML = "";
       let charIndex = 0;
 
-      // Beautiful character-by-character typewriter reveal effect
       typingTimer = setInterval(() => {
         if (rawMetadata[charIndex] === "\n") {
           profileOutput.innerHTML += "<br>";
@@ -576,15 +616,26 @@
           profileOutput.innerHTML += rawMetadata[charIndex];
         }
         
-        // Soft audio tick per letter reveal
         if (charIndex % 2 === 0) playTerminalBeep(900, 'sine', 0.005);
         
         charIndex++;
         if (charIndex >= rawMetadata.length) {
           clearInterval(typingTimer);
         }
-      }, 25); // Speed multiplier for character scanning mechanics
+      }, 25);
     });
-  </script>
+
+    // ==========================================
+// 7. Simulated Inspector Trap Detection Code
+// ==========================================
+// Detects when the browser window is resized or code manipulation tools are active
+window.addEventListener('resize', () => {
+  const sLogs = document.getElementById('sandbox-logs');
+  if (sLogs) {
+    playTerminalBeep(220, 'sawtooth', 0.2);
+    sLogs.innerHTML += `<div class="sandbox-line sb-alert">[!] WARNING: Environment change detected. Code structure evaluated.</div>`;
+  }
+});
+</script>
 </body>
 </html>
