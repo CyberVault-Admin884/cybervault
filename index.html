@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CYBERVAULT CORE</title>
   <style>
-    /* Exact Grid & Scanline Aesthetic from your Video */
+    /* Premium Cyan Grid & Scanline Aesthetic */
     body {
       background-color: #01080a;
       background-image: linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
@@ -23,7 +23,7 @@
       overflow-x: hidden;
     }
 
-    /* High-Tech Preloader Screen */
+    /* 2-Second Shield Loader Screen */
     #preloader {
       position: fixed;
       top: 0;
@@ -82,17 +82,16 @@
     }
 
     @keyframes pulseShield {
-      0% { transform: scale(0.95); opacity: 0.6; text-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
-      100% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 25px rgba(0, 242, 254, 0.9); }
+      0% { transform: scale(0.95); opacity: 0.6; }
+      100% { transform: scale(1.05); opacity: 1; }
     }
 
     @keyframes loadFill {
       0% { width: 0%; }
-      50% { width: 60%; }
       100% { width: 100%; }
     }
 
-    /* Main Content Layout Panels */
+    /* Main Branding Header Zone */
     .header-zone {
       text-align: center;
       margin-bottom: 20px;
@@ -117,19 +116,6 @@
       text-transform: uppercase;
     }
 
-    .system-protocol-btn {
-      background: transparent;
-      border: 1px dashed #00f2fe;
-      color: #00f2fe;
-      padding: 6px 15px;
-      font-size: 0.75rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin: 20px auto 10px auto;
-      display: block;
-      cursor: pointer;
-    }
-
     .profile-identity {
       width: 100%;
       max-width: 500px;
@@ -144,6 +130,7 @@
       color: #00f2fe;
     }
 
+    /* Clean Card Layout Infrastructure */
     .module-card {
       width: 100%;
       max-width: 500px;
@@ -173,7 +160,7 @@
       margin-bottom: 15px;
     }
 
-    /* Core Video Aesthetic Interactive Buttons & Inputs */
+    /* Buttons & Inputs Interaction Config */
     .cyber-btn {
       width: 100%;
       background: #00f2fe;
@@ -194,7 +181,6 @@
 
     .cyber-btn:active {
       background: #00828a;
-      box-shadow: 0 0 2px rgba(0, 242, 254, 0.3);
     }
 
     .display-output {
@@ -225,15 +211,13 @@
       box-sizing: border-box;
       margin-bottom: 15px;
       outline: none;
-      text-align: center;
     }
 
     .cyber-input:focus {
       border-color: #00f2fe;
-      box-shadow: 0 0 8px rgba(0, 242, 254, 0.3);
     }
 
-    /* Range Matrix Configuration Slider */
+    /* Password Length Matrix Config Input Slider */
     .slider-box {
       margin-top: 15px;
       margin-bottom: 5px;
@@ -272,7 +256,7 @@
       box-shadow: 0 0 8px #00f2fe;
     }
 
-    /* Decryption Terminal Framework Box */
+    /* Terminal Matrix Running Output Box */
     .terminal-log {
       width: 100%;
       background: #000000;
@@ -303,7 +287,7 @@
       color: #00f2fe;
     }
 
-    /* Passive Intrusion Monitoring System */
+    /* Telemetry Info Nodes Layout */
     .defense-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -341,7 +325,6 @@
   <div class="header-zone">
     <div class="main-title">Cybervault Core</div>
     <div class="sub-title">Gloom Cyber Systems</div>
-    <button class="system-protocol-btn" id="protocol-btn">[ System Protocols: How It Works ]</button>
   </div>
 
   <div class="profile-identity">
@@ -350,10 +333,11 @@
 
   <div class="module-card">
     <div class="card-title">Core Generator</div>
+    <div class="card-subtext">Adjust entropy slider length to instantly generate secure keys.</div>
     
     <button class="cyber-btn" id="generate-btn">Generate High Entropy Key</button>
-    <div class="display-output" id="key-output">_ AWAITING COMMAND _</div>
-    <button class="cyber-btn" style="background:transparent; border:1px solid #004d52; color:#00f2fe; margin-bottom:15px;" id="copy-btn">Copy Passkey</button>
+    <div class="display-output" id="key-output">_ AWAITING GENERATION _</div>
+    <button class="cyber-btn" style="background:transparent; border:1px solid #004d52; color:#00f2fe;" id="copy-btn">Copy Passkey</button>
 
     <div class="slider-box">
       <label class="slider-label" for="length-slider">Entropy Length Matrix: <span id="length-val">16</span></label>
@@ -363,9 +347,9 @@
 
   <div class="module-card">
     <div class="card-title">Crack-Time Simulator</div>
-    <div class="card-subtext">Input any password to run a real-time decryption simulation.</div>
+    <div class="card-subtext">Type a password and run analysis to track brute-force resistance.</div>
     
-    <input type="text" class="cyber-input" id="test-input" placeholder="Type password to test...">
+    <input type="text" class="cyber-input" id="test-input" placeholder="Enter target password...">
     <button class="cyber-btn" id="analyze-btn">Analyze Security Strength</button>
 
     <div class="terminal-log">
@@ -381,21 +365,19 @@
 
   <div class="module-card">
     <div class="card-title">Deception System Monitors</div>
-    <div class="card-subtext">Active telemetry logging for web session intrusion counters.</div>
-    
     <div class="defense-grid">
       <div class="status-node">
-        Inspector Trap: <span style="color: #00f2fe; text-shadow: 0 0 5px rgba(0,242,254,0.5);">ARMED</span>
+        Inspector Trap: <span>ARMED</span>
       </div>
       <div class="status-node">
-        Honey-Token: <span style="color: #00f2fe; text-shadow: 0 0 5px rgba(0,242,254,0.5);">ACTIVE</span>
+        Honey-Token: <span>ACTIVE</span>
       </div>
     </div>
   </div>
 
   <script>
     // ==========================================
-    // 1. Boot Preloader Controller Sequence
+    // 1. Preloader Execution Boot Framework
     // ==========================================
     window.addEventListener("load", () => {
       setTimeout(() => {
@@ -403,13 +385,13 @@
         preloader.style.opacity = "0";
         setTimeout(() => {
           preloader.style.display = "none";
-          playTerminalBeep(520, 'sine', 0.15);
+          playTerminalBeep(520, 'sine', 0.12);
         }, 500);
-      }, 2000); 
+      }, 2000); // 2-second strict layout display delay
     });
 
     // ==========================================
-    // 2. Synth Audio Core Emulator Engine
+    // 2. Local Synth Oscillator Tone Engine
     // ==========================================
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     
@@ -419,24 +401,23 @@
         const gain = audioCtx.createGain();
         osc.type = type;
         osc.frequency.value = freq;
-        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + duration);
         osc.connect(gain);
         gain.connect(audioCtx.destination);
         osc.start();
         osc.stop(audioCtx.currentTime + duration);
-      } catch(e) { }
+      } catch(e) { /* Guard system context block */ }
     }
 
     // ==========================================
-    // 3. Interface DOM Bindings
+    // 3. Integrated Password Matrix Generation Rules
     // ==========================================
     const slider = document.getElementById("length-slider");
     const lengthVal = document.getElementById("length-val");
     const keyOutput = document.getElementById("key-output");
     const generateBtn = document.getElementById("generate-btn");
     const copyBtn = document.getElementById("copy-btn");
-    const protocolBtn = document.getElementById("protocol-btn");
     
     const testInput = document.getElementById("test-input");
     const analyzeBtn = document.getElementById("analyze-btn");
@@ -447,7 +428,7 @@
 
     slider.addEventListener("input", (e) => {
       lengthVal.innerText = e.target.value;
-      playTerminalBeep(550, 'square', 0.03);
+      playTerminalBeep(550, 'square', 0.02);
     });
 
     generateBtn.addEventListener("click", () => {
@@ -462,53 +443,52 @@
 
     copyBtn.addEventListener("click", () => {
       const text = keyOutput.innerText;
-      if (text && text !== "_ AWAITING COMMAND _") {
+      if (text && text !== "_ AWAITING GENERATION _") {
         navigator.clipboard.writeText(text).then(() => {
           playTerminalBeep(1100, 'sine', 0.15);
-          alert("Passkey successfully secure-copied to clipboard!");
+          alert("Key copied to clipboard!");
         });
       }
     });
 
-    protocolBtn.addEventListener("click", () => {
-      playTerminalBeep(440, 'sine', 0.08);
-      alert("CYBERVAULT SYSTEMS PROTOCOL:\n\n1. Initialize generator matrix length via slider.\n2. Click 'Generate' to fetch pseudorandom high entropy blocks.\n3. Run target calculations inside the Crack-Time analysis module.");
-    });
-
     // ==========================================
-    // 4. Decryption Script Interactivity Loop
+    // 4. Working Matrix Crack Simulator Code Loop
     // ==========================================
     analyzeBtn.addEventListener("click", () => {
-      const passwordToTest = testInput.value;
-      if (!passwordToTest) {
+      const targetPassword = testInput.value;
+      if (!targetPassword) {
         terminalOutput.innerHTML = "Enter target string and initialize analysis...";
         return;
       }
 
+      // Lock buttons while running calculations matrix
       analyzeBtn.disabled = true;
       moduleStatus.innerText = "BUSY";
       moduleStatus.style.color = "#ffcc00";
 
       let currentFrame = 0;
-      const executionFrames = 25; 
+      const totalFrames = 25; // Loop lifecycle steps
       
-      const soundInterval = setInterval(() => {
-        playTerminalBeep(Math.random() * 350 + 300, 'sawtooth', 0.04);
+      const soundLoop = setInterval(() => {
+        playTerminalBeep(Math.random() * 300 + 300, 'sawtooth', 0.03);
       }, 60);
 
-      const calculationMatrixLoop = setInterval(() => {
-        let scrambledText = "";
-        for (let i = 0; i < passwordToTest.length; i++) {
-          scrambledText += pool[Math.floor(Math.random() * pool.length)];
+      const runningCodeMatrix = setInterval(() => {
+        let loopScramble = "";
+        for (let i = 0; i < targetPassword.length; i++) {
+          loopScramble += pool[Math.floor(Math.random() * pool.length)];
         }
         
-        terminalOutput.innerHTML = `RUNNING BRUTEFORCE_ATTACK...<br>Testing Sequence Matrix: <span style="color:#ffcc00;">${scrambledText}</span>`;
+        // Matrix Running Code display simulation
+        terminalOutput.innerHTML = `RUNNING BRUTEFORCE_ATTACK...<br>Testing Sequence Matrix: <span style="color:#ffcc00;">${loopScramble}</span>`;
         currentFrame++;
 
-        if (currentFrame >= executionFrames) {
-          clearInterval(calculationMatrixLoop);
-          clearInterval(soundInterval);
-          evaluateStrengthMetrics(passwordToTest);
+        if (currentFrame >= totalFrames) {
+          clearInterval(runningCodeMatrix);
+          clearInterval(soundLoop);
+          
+          // Execute evaluation logic on target string inputs
+          evaluateStrengthMetrics(targetPassword);
         }
       }, 60);
     });
@@ -520,48 +500,16 @@
       
       let len = str.length;
       if (len < 8) {
-        playTerminalBeep(140, 'sawtooth', 0.4);
-        terminalOutput.innerHTML = `ANALYSIS COMPLETE. <br>Result Complexity Status: <span style="color:#ff3333; font-weight:bold;">CRITICAL FLAWS DETECTED (Crack Time: Milliseconds)</span>`;
+        playTerminalBeep(140, 'sawtooth', 0.4); // Warning alert sound
+        terminalOutput.innerHTML = `ANALYSIS COMPLETE. <br>Result Status: <span style="color:#ff3333; font-weight:bold;">CRITICAL WEAKNESS (CRACK TIME: SECONDS)</span>`;
       } else if (len >= 8 && len < 14) {
         playTerminalBeep(480, 'sine', 0.2);
-        terminalOutput.innerHTML = `ANALYSIS COMPLETE. <br>Result Complexity Status: <span style="color:#ffcc00; font-weight:bold;">STANDARD PROTECTION (Crack Time: Years)</span>`;
+        terminalOutput.innerHTML = `ANALYSIS COMPLETE. <br>Result Status: <span style="color:#ffcc00; font-weight:bold;">STANDARD ENCRYPTION (CRACK TIME: YEARS)</span>`;
       } else {
-        playTerminalBeep(900, 'sine', 0.3);
-        terminalOutput.innerHTML = `ANALYSIS COMPLETE. <br>Result Complexity Status: <span style="color:#00f2fe; font-weight:bold;">MILITARY-GRADE SECURITY (CRACK TIME: INFINITE)</span>`;
+        playTerminalBeep(900, 'sine', 0.3); // High pass secure sound
+        terminalOutput.innerHTML = `ANALYSIS COMPLETE. <br>Result Status: <span style="color:#00f2fe; font-weight:bold;">MILITARY-GRADE CODES (CRACK TIME: INFINITE)</span>`;
       }
     }
-
-    // ==========================================
-    // 5. Anti-Tampering Deception Guardrails
-    // ==========================================
-    const detectIntrusion = () => {
-      const gap = 160;
-      if (window.innerWidth > 768) {
-        if (window.outerWidth - window.innerWidth > gap || 
-            window.outerHeight - window.innerHeight > gap) {
-          
-          document.body.innerHTML = `
-            <div style="background:#01080a; color:#ff3333; font-family:monospace; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; box-sizing:border-box;">
-              <h2 style="letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,51,51,0.4);">[!] CRITICAL WARNING: INTRUSION DETECTED</h2>
-              <p style="font-size: 1rem; margin-top: 10px; color:#00828a;">Unauthorized code inspection mechanism identified.</p>
-              <p style="color:#004d52; font-size:0.8rem;">Crypt Profile Identity: SECURED // DEV: prevellah</p>
-              <button onclick="location.reload()" style="background:transparent; border:1px solid #ff3333; color:#ff3333; padding:10px 20px; margin-top:20px; cursor:pointer; font-family:monospace; text-transform:uppercase; letter-spacing:1px;">Re-Authenticate</button>
-            </div>
-          `;
-          clearInterval(trapLoop);
-        }
-      }
-    };
-    const trapLoop = setInterval(detectIntrusion, 1000);
-
-    localStorage.setItem('admin_session_key', 'VAULT_MASTER_SECRET_DO_NOT_ALTER');
-    window.addEventListener('storage', (event) => {
-      if (event.key === 'admin_session_key') {
-        alert("ALERT: Honey-token tampering detected! Vault entry denied.");
-        localStorage.clear();
-        window.location.reload();
-      }
-    });
   </script>
 </body>
 </html>
