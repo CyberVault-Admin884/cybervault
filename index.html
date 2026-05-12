@@ -4,17 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CYBERVAULT CORE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <style>
-    /* Exact Grid & Scanline Aesthetic from your Original Design */
+    /* Premium Unified Grid & Aesthetic Configuration */
     body {
       background-color: #01080a;
       background-image: linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
                         linear-gradient(90deg, rgba(0, 242, 254, 0.03) 1px, transparent 1px);
       background-size: 20px 20px;
       color: #00f2fe;
-      font-family: 'Courier New', monospace;
+      font-family: 'Share Tech Mono', monospace;
       margin: 0;
-      padding: 20px;
+      padding: 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -23,7 +24,7 @@
       overflow-x: hidden;
     }
 
-    /* High-Tech Preloader Screen */
+    /* 2-Second Shield Loader Screen */
     #preloader {
       position: fixed;
       top: 0;
@@ -36,39 +37,31 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      transition: opacity 0.5s ease-out;
+      transition: opacity 0.4s ease-out;
     }
 
     .shield-icon {
-      font-size: 4.5rem;
+      font-size: 4rem;
       color: #00f2fe;
       text-shadow: 0 0 20px rgba(0, 242, 254, 0.8);
       animation: pulseShield 1s infinite alternate;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     .load-title {
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-weight: bold;
-      letter-spacing: 6px;
+      letter-spacing: 5px;
       text-transform: uppercase;
       text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
-      margin-bottom: 5px;
-    }
-
-    .load-copyright {
-      font-size: 0.75rem;
-      letter-spacing: 2px;
-      color: #006066;
-      margin-bottom: 25px;
-      text-transform: uppercase;
     }
 
     .progress-bar-container {
-      width: 220px;
+      width: 200px;
       height: 4px;
       background: #001f21;
       border: 1px solid #004d52;
+      margin-top: 20px;
       border-radius: 2px;
       overflow: hidden;
     }
@@ -91,95 +84,113 @@
       100% { width: 100%; }
     }
 
-    /* Main Header Layout Elements */
+    /* Main Header System Info */
     .header-zone {
       text-align: center;
-      margin-bottom: 20px;
+      margin-top: 10px;
+      margin-bottom: 15px;
       width: 100%;
-      max-width: 500px;
+      max-width: 480px;
     }
 
     .main-title {
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: bold;
-      letter-spacing: 5px;
+      letter-spacing: 4px;
       margin: 0;
       text-transform: uppercase;
-      text-shadow: 0 0 15px rgba(0, 242, 254, 0.7);
+      text-shadow: 0 0 12px rgba(0, 242, 254, 0.6);
     }
 
     .sub-title {
-      font-size: 0.75rem;
-      letter-spacing: 4px;
+      font-size: 0.85rem;
+      letter-spacing: 3px;
       color: #00828a;
-      margin-top: 6px;
+      margin-top: 4px;
       text-transform: uppercase;
     }
 
-    .protocol-link {
+    /* Anti-Scroll Matrix Navigation Tabs System */
+    .matrix-nav {
+      display: flex;
       width: 100%;
-      max-width: 500px;
-      text-align: center;
-      font-size: 0.8rem;
-      letter-spacing: 2px;
-      color: #00f2fe;
-      margin-bottom: 25px;
+      max-width: 480px;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .nav-tab {
+      flex: 1;
+      background: rgba(0, 31, 33, 0.6);
+      border: 1px solid #004d52;
+      color: #00828a;
+      padding: 10px 5px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       cursor: pointer;
-      font-weight: bold;
-      transition: text-shadow 0.2s ease;
+      text-align: center;
+      border-radius: 4px;
+      transition: all 0.2s ease;
     }
 
-    .protocol-link:hover {
-      text-shadow: 0 0 8px #00f2fe;
+    .nav-tab.active-tab {
+      background: rgba(0, 242, 254, 0.15);
+      border-color: #00f2fe;
+      color: #00f2fe;
+      box-shadow: 0 0 8px rgba(0, 242, 254, 0.2);
     }
 
-    /* Modular Container Panels */
+    /* Modular Container Layouts */
     .module-card {
+      display: none; /* Controlled dynamically via JS Tabs */
       width: 100%;
-      max-width: 500px;
-      border: 1px solid #002c30;
-      border-radius: 8px;
-      background: rgba(1, 12, 15, 0.85);
-      padding: 22px;
-      margin-bottom: 25px;
+      max-width: 480px;
+      border: 1px solid #004d52;
+      border-radius: 6px;
+      background: rgba(1, 12, 15, 0.9);
+      padding: 20px;
       box-sizing: border-box;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    }
+
+    .module-card.visible-card {
+      display: block;
     }
 
     .card-title {
-      font-size: 0.85rem;
+      font-size: 1rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: #00f2fe;
       margin-top: 0;
-      margin-bottom: 6px;
-      font-weight: bold;
+      margin-bottom: 4px;
     }
 
     .card-subtext {
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       color: #006066;
       margin-top: 0;
-      margin-bottom: 18px;
+      margin-bottom: 15px;
     }
 
-    /* Core Tactical Action Buttons */
+    /* Custom Input & Action Interfaces */
     .cyber-btn {
       width: 100%;
       background: #00f2fe;
       border: none;
       border-radius: 4px;
       color: #000000;
-      padding: 14px;
-      font-family: 'Courier New', monospace;
+      padding: 12px;
+      font-family: 'Share Tech Mono', monospace;
       font-weight: bold;
-      font-size: 0.9rem;
-      letter-spacing: 2px;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
-      margin-bottom: 14px;
-      box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
-      transition: background 0.1s ease;
+      margin-bottom: 12px;
+      box-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
     }
 
     .cyber-btn:active {
@@ -189,80 +200,64 @@
     .display-output {
       width: 100%;
       background: #000000;
-      border: 1px solid #002c30;
+      border: 1px dashed #004d52;
       border-radius: 4px;
-      padding: 14px;
+      padding: 12px;
       text-align: center;
-      font-size: 1.1rem;
-      letter-spacing: 2px;
+      font-size: 1.2rem;
       color: #00f2fe;
       box-sizing: border-box;
-      margin-bottom: 14px;
-      min-height: 49px;
+      margin-bottom: 12px;
+      min-height: 48px;
       word-break: break-all;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .cyber-input {
       width: 100%;
       background: #000000;
-      border: 1px solid #002c30;
+      border: 1px solid #004d52;
       border-radius: 4px;
-      padding: 14px;
-      font-family: 'Courier New', monospace;
+      padding: 12px;
+      font-family: 'Share Tech Mono', monospace;
       color: #00f2fe;
-      font-size: 0.95rem;
+      font-size: 1rem;
       box-sizing: border-box;
       margin-bottom: 15px;
       outline: none;
+      text-align: center;
     }
 
-    .cyber-input:focus {
-      border-color: #00f2fe;
-    }
-
-    /* Entropy Range Slider Integration */
+    /* Slider styling adjustments */
     .slider-box {
-      margin-top: 18px;
-      margin-bottom: 5px;
+      margin-top: 15px;
     }
 
     .slider-label {
-      font-size: 0.8rem;
-      letter-spacing: 1px;
+      font-size: 0.85rem;
       color: #006066;
       display: block;
-      margin-bottom: 8px;
-    }
-    
-    .slider-label span {
-      color: #00f2fe;
+      margin-bottom: 6px;
     }
 
     input[type=range] {
       -webkit-appearance: none;
       width: 100%;
       background: #000000;
-      border: 1px solid #002c30;
+      border: 1px solid #004d52;
       height: 6px;
-      border-radius: 3px;
       outline: none;
     }
 
     input[type=range]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 2px;
+      width: 16px;
+      height: 16px;
       background: #00f2fe;
       cursor: pointer;
-      box-shadow: 0 0 8px #00f2fe;
+      box-shadow: 0 0 6px #00f2fe;
     }
 
-    /* Terminal Outputs */
+    /* Real Terminal Views */
     .terminal-log {
       width: 100%;
       background: #000000;
@@ -270,8 +265,8 @@
       border-radius: 4px;
       padding: 12px;
       box-sizing: border-box;
-      min-height: 110px;
-      font-size: 0.75rem;
+      min-height: 125px;
+      font-size: 0.8rem;
     }
 
     .terminal-header {
@@ -281,74 +276,34 @@
       border-bottom: 1px solid #001f21;
       padding-bottom: 4px;
       margin-bottom: 8px;
-      letter-spacing: 1px;
     }
 
     .terminal-body {
-      color: #006066;
-      line-height: 1.6;
-    }
-
-    .terminal-body span {
-      color: #00f2fe;
-    }
-
-    /* Paramount Documentation Layout Text */
-    .doc-paragraph {
-      font-size: 0.78rem;
-      line-height: 1.6;
-      color: #006066;
-      margin-bottom: 16px;
-    }
-
-    .doc-item {
-      display: flex;
-      margin-bottom: 12px;
-      font-size: 0.78rem;
+      color: #00828a;
       line-height: 1.5;
     }
 
-    .doc-icon {
-      margin-right: 10px;
-      font-size: 0.9rem;
+    /* Sandbox Sandbox Log Array CSS */
+    .sandbox-line {
+      margin-bottom: 6px;
     }
+    .sb-success { color: #00f2fe; }
+    .sb-alert { color: #ff3333; }
+    .sb-warn { color: #ffcc00; }
 
-    .doc-text {
+    /* Support Phone Area */
+    .support-box {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.8rem;
       color: #006066;
     }
-
-    .doc-text strong {
-      color: #00f2fe;
-      font-weight: normal;
-    }
-
-    /* Bottom Support Contact Block */
-    .support-text {
-      font-size: 0.75rem;
-      color: #006066;
-      margin-bottom: 12px;
-    }
-
-    .phone-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .support-box a {
       color: #ffffff;
       text-decoration: none;
       font-size: 1.1rem;
-      letter-spacing: 1px;
-      margin-bottom: 4px;
-    }
-
-    .phone-icon {
-      margin-right: 10px;
-      color: #006066;
-    }
-
-    .node-label {
-      font-size: 0.65rem;
-      color: #004d52;
-      letter-spacing: 1px;
+      display: block;
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -357,7 +312,6 @@
   <div id="preloader">
     <div class="shield-icon">🛡</div>
     <div class="load-title">Cybervault Core</div>
-    <div class="load-copyright">VantaX // DEV: prevellah</div>
     <div class="progress-bar-container">
       <div class="progress-bar-fill"></div>
     </div>
@@ -368,91 +322,102 @@
     <div class="sub-title">Gloom Cyber Systems</div>
   </div>
 
-  <div class="protocol-link" id="protocol-trigger">
-    [ SYSTEM PROTOCOLS: HOW IT WORKS ]
+  <div class="matrix-nav">
+    <div class="nav-tab active-tab" onclick="switchCard('gen-card', this)">[ Generator ]</div>
+    <div class="nav-tab" onclick="switchCard('sim-card', this)">[ Simulator ]</div>
+    <div class="nav-tab" onclick="switchCard('sand-card', this)">[ Sandbox ]</div>
   </div>
 
-  <div class="module-card">
+  <div class="module-card visible-card" id="gen-card">
     <div class="card-title">Core Generator</div>
+    <div class="card-subtext">Isolate and compile randomized algorithmic high-entropy structures.</div>
     
     <button class="cyber-btn" id="generate-btn">Generate High Entropy Key</button>
-    <div class="display-output" id="key-output">.. AWAITING COMMAND ..</div>
-    <button class="cyber-btn" style="background:transparent; border:1px solid #002c30; color:#00f2fe; box-shadow:none; margin-bottom:0;" id="copy-btn">Copy Passkey</button>
+    <div class="display-output" id="key-output">.. AWAITING SEED COMMAND ..</div>
+    <button class="cyber-btn" style="background:transparent; border:1px solid #004d52; color:#00f2fe;" id="copy-btn">Copy Passkey</button>
 
     <div class="slider-box">
-      <label class="slider-label" for="length-slider">Entropy Length Matrix: <span id="length-val">16</span></label>
+      <label class="slider-label">Entropy Matrix Length: <span id="length-val" style="color:#00f2fe;">16</span></label>
       <input type="range" id="length-slider" min="4" max="32" value="16">
     </div>
   </div>
 
-  <div class="module-card">
+  <div class="module-card" id="sim-card">
     <div class="card-title">Crack-Time Simulator</div>
-    <div class="card-subtext">Input any password to run a real-time decryption simulation.</div>
+    <div class="card-subtext">Evaluate target string resistance profiles against automated cracking.</div>
     
-    <input type="text" class="cyber-input" id="test-input" placeholder="Type password to test...">
+    <input type="text" class="cyber-input" id="test-input" placeholder="Enter test string...">
     <button class="cyber-btn" id="analyze-btn">Analyze Security Strength</button>
 
     <div class="terminal-log">
       <div class="terminal-header">
         <span>SIM_MODULE://DECRYPT_ATTACK</span>
-        <span id="module-status" style="color: #00f2fe;">ONLINE</span>
+        <span id="module-status" style="color:#00f2fe;">ONLINE</span>
       </div>
       <div class="terminal-body" id="terminal-output">
-        Enter target string and initialize analysis...
+        System standby. Ready to process decryption array metrics...
       </div>
     </div>
   </div>
 
-  <div class="module-card">
-    <div class="card-title">Why Password Security is Paramount</div>
-    <div class="doc-paragraph">
-      With the rise of AI brute-forcing tools, legacy passwords (like name/birthdate combos) can be cracked in under three seconds. True defensive cybersecurity requires modern randomization principles.
-    </div>
-
-    <div class="doc-item">
-      <div class="doc-icon">🔒</div>
-      <div class="doc-text"><strong>Countering AI Attacks:</strong> Dynamic variables ensure that predictive dictionary models fail entirely.</div>
-    </div>
-
-    <div class="doc-item">
-      <div class="doc-icon">🚫</div>
-      <div class="doc-text"><strong>Offline Sandbox:</strong> Generated keys run purely inside your device's memory context—never on a server database.</div>
-    </div>
-
-    <div class="doc-item">
-      <div class="doc-icon">🤖</div>
-      <div class="doc-text"><strong>Unhackable Entropy:</strong> Over 70 unique variable indices to guarantee complex, long-term defensive patterns.</div>
-    </div>
-  </div>
-
-  <div class="module-card" style="text-align: center;">
-    <div class="card-title" style="text-align: left;">Developer Identity</div>
-    <button class="cyber-btn" id="decrypt-profile-btn" style="margin-bottom: 18px;">Decrypt Creator Profile</button>
-
-    <div class="terminal-log" style="text-align: left;">
+  <div class="module-card" id="sand-card">
+    <div class="card-title">System Sandbox Monitor</div>
+    <div class="card-subtext">Local isolation telemetry framework logs.</div>
+    
+    <div class="terminal-log" style="min-height: 110px; margin-bottom: 20px;">
       <div class="terminal-header">
-        <span>TERMINAL://GLOOM_SYS</span>
-        <span style="color: #00f2fe;">SECURE</span>
+        <span>SANDBOX://SECURE_ENV</span>
+        <span>ACTIVE</span>
+      </div>
+      <div class="terminal-body" id="sandbox-logs">
+        <div class="sandbox-line sb-success">[✔] Isolated virtual memory allocation verified.</div>
+        <div class="sandbox-line sb-warn">[!] Local storage token integrity: ARMED.</div>
+        <div class="sandbox-line sb-success">[✔] Zero Server-side telemetry pipelines linked.</div>
+      </div>
+    </div>
+
+    <div class="card-title">Developer Identity</div>
+    <button class="cyber-btn" id="decrypt-profile-btn">Decrypt Creator Profile</button>
+
+    <div class="terminal-log" style="min-height: 110px;">
+      <div class="terminal-header">
+        <span>IDENTITY://VERIFICATION</span>
+        <span id="profile-status" style="color:#006066;">LOCKED</span>
       </div>
       <div class="terminal-body" id="profile-output">
-        System idling. Awaiting credential authentication check...
+        Awaiting identity signature verification...
       </div>
     </div>
-  </div>
 
-  <div class="module-card" style="text-align: center; margin-bottom: 40px;">
-    <div class="card-title" style="text-align: left;">System Support</div>
-    <div class="support-text" style="text-align: left;">For custom security deployments, offline builds, or direct assistance:</div>
-    
-    <a href="tel:+254142122710" class="phone-link">
-      <span class="phone-icon">📞</span> +254 142 122 710
-    </a>
-    <div class="node-label">Gloom Cyber Assistance Node</div>
+    <div class="support-box">
+      Gloom Cyber Assistance Node
+      <a href="tel:+254142122710">📞 +254 142 122 710</a>
+    </div>
   </div>
 
   <script>
     // ==========================================
-    // 1. Preloader Execution Framework
+    // 1. Fixed Execution Tab Switcher Logic
+    // ==========================================
+    function switchCard(cardId, tabElement) {
+      playTerminalBeep(440, 'sine', 0.05);
+      
+      // Hide all open workspace module cards
+      document.querySelectorAll('.module-card').forEach(card => {
+        card.classList.remove('visible-card');
+      });
+      // Deactivate all running nav nodes
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.classList.remove('active-tab');
+      });
+
+      // Activate targeted profiles
+      document.getElementById(cardId).classList.add('visible-card');
+      tabElement.classList.add('active-tab');
+    }
+
+    // ==========================================
+    // 2. Preloader Disappear Execution
     // ==========================================
     window.addEventListener("load", () => {
       setTimeout(() => {
@@ -460,18 +425,20 @@
         preloader.style.opacity = "0";
         setTimeout(() => {
           preloader.style.display = "none";
-          playTerminalBeep(520, 'sine', 0.12);
-        }, 500);
+          playTerminalBeep(520, 'sine', 0.1);
+        }, 400);
       }, 2000); 
     });
 
     // ==========================================
-    // 2. Audio Synth Oscillator Feedback Engine
+    // 3. Native Audio Synthesis Engine
     // ==========================================
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    
+    let audioCtx = null;
     function playTerminalBeep(freq, type, duration) {
       try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = type;
@@ -482,36 +449,26 @@
         gain.connect(audioCtx.destination);
         osc.start();
         osc.stop(audioCtx.currentTime + duration);
-      } catch(e) { }
+      } catch(e) {}
     }
 
     // ==========================================
-    // 3. Password Generation Logic Engine
+    // 4. Core Passkey Generator Mechanics
     // ==========================================
     const slider = document.getElementById("length-slider");
     const lengthVal = document.getElementById("length-val");
     const keyOutput = document.getElementById("key-output");
     const generateBtn = document.getElementById("generate-btn");
     const copyBtn = document.getElementById("copy-btn");
-    
-    const testInput = document.getElementById("test-input");
-    const analyzeBtn = document.getElementById("analyze-btn");
-    const terminalOutput = document.getElementById("terminal-output");
-    const moduleStatus = document.getElementById("module-status");
-    
-    const decryptProfileBtn = document.getElementById("decrypt-profile-btn");
-    const profileOutput = document.getElementById("profile-output");
-    const protocolTrigger = document.getElementById("protocol-trigger");
-
     const pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=";
 
     slider.addEventListener("input", (e) => {
       lengthVal.innerText = e.target.value;
-      playTerminalBeep(600, 'square', 0.015);
+      playTerminalBeep(650, 'square', 0.01);
     });
 
     generateBtn.addEventListener("click", () => {
-      playTerminalBeep(880, 'sine', 0.08);
+      playTerminalBeep(880, 'sine', 0.07);
       let len = parseInt(slider.value);
       let pass = "";
       for (let i = 0; i < len; i++) {
@@ -522,90 +479,112 @@
 
     copyBtn.addEventListener("click", () => {
       const text = keyOutput.innerText;
-      if (text && text !== ".. AWAITING COMMAND .." && text !== "_ PASSKEY COPIED _") {
+      if (text && text.indexOf("..") === -1 && text.indexOf("_") === -1) {
         navigator.clipboard.writeText(text).then(() => {
-          playTerminalBeep(1200, 'sine', 0.12);
-          keyOutput.innerText = "_ PASSKEY COPIED _";
-          setTimeout(() => { keyOutput.innerText = text; }, 1500);
+          playTerminalBeep(1100, 'sine', 0.12);
+          keyOutput.innerText = "_ KEY COPIED TO CLIPBOARD _";
+          setTimeout(() => { keyOutput.innerText = text; }, 1200);
         });
       }
     });
 
     // ==========================================
-    // 4. Interactive Profile Authentication Link
+    // 5. Fixed Hang-Free Attack Simulator Loop
     // ==========================================
-    decryptProfileBtn.addEventListener("click", () => {
-      playTerminalBeep(700, 'sine', 0.05);
-      setTimeout(() => playTerminalBeep(1000, 'sine', 0.1), 60);
-      
-      profileOutput.innerHTML = "Connecting to Gloom Core...<br>Authorizing signature check...<br>--------------------------------<br>CREATOR: Prevellah<br>ORIGIN : Eldoret, Kenya<br>NODE   : Gloom Cyber Systems";
-    });
+    const testInput = document.getElementById("test-input");
+    const analyzeBtn = document.getElementById("analyze-btn");
+    const terminalOutput = document.getElementById("terminal-output");
+    const moduleStatus = document.getElementById("module-status");
+    let simulationTimer = null;
+    let audioTimer = null;
 
-    // Top Protocol Banner Click Handler
-    protocolTrigger.addEventListener("click", () => {
-      playTerminalBeep(440, 'sine', 0.1);
-      alert("Cybervault Core Protocols Active // Guarding Device Sandbox Environment");
-    });
-
-    // ==========================================
-    // 5. Working Crack-Time Simulation Loops
-    // ==========================================
     analyzeBtn.addEventListener("click", () => {
-      const targetPassword = testInput.value;
-      if (!targetPassword) {
-        terminalOutput.innerHTML = "Enter target string and initialize analysis...";
-        return;
-      }
+      const password = testInput.value;
+      if (!password) return;
+
+      // CRITICAL FIX: Kill any hanging matrix intervals instantly before opening a new execution chain
+      clearInterval(simulationTimer);
+      clearInterval(audioTimer);
 
       analyzeBtn.disabled = true;
       moduleStatus.innerText = "BUSY";
       moduleStatus.style.color = "#ffcc00";
 
-      let currentFrame = 0;
-      const totalFrames = 20; 
-      
-      const soundLoop = setInterval(() => {
-        playTerminalBeep(Math.random() * 250 + 350, 'sawtooth', 0.02);
-      }, 70);
+      let frame = 0;
+      const maxFrames = 20;
 
-      const runningCodeMatrix = setInterval(() => {
-        let loopScramble = "";
-        for (let i = 0; i < Math.min(targetPassword.length, 16); i++) {
-          loopScramble += pool[Math.floor(Math.random() * pool.length)];
+      audioTimer = setInterval(() => {
+        playTerminalBeep(Math.random() * 200 + 400, 'sawtooth', 0.02);
+      }, 60);
+
+      simulationTimer = setInterval(() => {
+        let scramble = "";
+        for (let i = 0; i < Math.min(password.length, 14); i++) {
+          scramble += pool[Math.floor(Math.random() * pool.length)];
         }
         
-        terminalOutput.innerHTML = `RUNNING DECRYPT_ATTACK...<br>Probing Matrix Index: <span style="color:#ffcc00;">${loopScramble}</span>`;
-        currentFrame++;
+        terminalOutput.innerHTML = `PROBING ENCRYPTION PHASES...<br>Testing Cluster Key: <span style="color:#ffcc00;">${scramble}</span>`;
+        frame++;
 
-        if (currentFrame >= totalFrames) {
-          clearInterval(runningCodeMatrix);
-          clearInterval(soundLoop);
+        if (frame >= maxFrames) {
+          clearInterval(simulationTimer);
+          clearInterval(audioTimer);
           
           analyzeBtn.disabled = false;
           moduleStatus.innerText = "ONLINE";
           moduleStatus.style.color = "#00f2fe";
           
-          evaluateStrengthMetrics(targetPassword);
+          let bits = Math.floor(password.length * 5.6);
+          if (password.length < 6) {
+            playTerminalBeep(140, 'sawtooth', 0.3);
+            terminalOutput.innerHTML = `[+] RESULT: <span style="color:#ff3333; font-weight:bold;">CRITICAL VULNERABILITY</span><br><br>- Total Entropy: ${bits} Bits<br>- Decryption Attempt: <span style="color:#ff3333;">Instantaneous</span>`;
+          } else if (password.length >= 6 && password.length < 12) {
+            playTerminalBeep(460, 'sine', 0.15);
+            terminalOutput.innerHTML = `[+] RESULT: <span style="color:#ffcc00; font-weight:bold;">MODERATE RISK POTENTIAL</span><br><br>- Total Entropy: ${bits} Bits<br>- Decryption Attempt: <span style="color:#ffcc00;">~ Hours / Days</span>`;
+          } else {
+            playTerminalBeep(920, 'sine', 0.2);
+            terminalOutput.innerHTML = `[+] RESULT: <span style="color:#00f2fe; font-weight:bold;">MAXIMUM SECURITY PROFILE</span><br><br>- Total Entropy: ${bits} Bits<br>- Decryption Attempt: <span style="color:#00f2fe;">Unbreakable (Infinite)</span>`;
+          }
         }
-      }, 70);
+      }, 60);
     });
 
-    function evaluateStrengthMetrics(str) {
-      let len = str.length;
-      // Calculate real-world entropy bits simulation approximation
-      let entropyBits = Math.floor(len * 5.7); 
-      
-      if (len < 6) {
-        playTerminalBeep(150, 'sawtooth', 0.35); 
-        terminalOutput.innerHTML = `[+] RESULT: <span style="color:#ff3333; font-weight:bold;">CRITICAL VULNERABILITY</span><br><br>- Total Entropy: ${entropyBits} Bits<br>- Decryption Attempt: <span style="color:#ff3333;">Instantaneous</span>`;
-      } else if (len >= 6 && len < 12) {
-        playTerminalBeep(450, 'sine', 0.18);
-        terminalOutput.innerHTML = `[+] RESULT: <span style="color:#ffcc00; font-weight:bold;">MODERATE RISK POTENTIAL</span><br><br>- Total Entropy: ${entropyBits} Bits<br>- Decryption Attempt: <span style="color:#ffcc00;">~ Hours / Days</span>`;
-      } else {
-        playTerminalBeep(950, 'sine', 0.25); 
-        terminalOutput.innerHTML = `[+] RESULT: <span style="color:#00f2fe; font-weight:bold;">MAXIMUM SECURITY PROFILE</span><br><br>- Total Entropy: ${entropyBits} Bits<br>- Decryption Attempt: <span style="color:#00f2fe;">Unbreakable (Infinite)</span>`;
-      }
-    }
+    // ==========================================
+    // 6. Interactive Character Reveal Profile Link
+    // ==========================================
+    const decryptProfileBtn = document.getElementById("decrypt-profile-btn");
+    const profileOutput = document.getElementById("profile-output");
+    const profileStatus = document.getElementById("profile-status");
+    let typingTimer = null;
+
+    decryptProfileBtn.addEventListener("click", () => {
+      clearInterval(typingTimer);
+      playTerminalBeep(700, 'sine', 0.05);
+
+      profileStatus.innerText = "OPEN";
+      profileStatus.style.color = "#00f2fe";
+
+      const rawMetadata = `Connecting to Gloom Core...\nAuthorizing signature check...\n--------------------------------\nCREATOR: Prevellah\nORIGIN : Eldoret, Kenya\nNODE   : Gloom Cyber Systems`;
+      profileOutput.innerHTML = "";
+      let charIndex = 0;
+
+      // Beautiful character-by-character typewriter reveal effect
+      typingTimer = setInterval(() => {
+        if (rawMetadata[charIndex] === "\n") {
+          profileOutput.innerHTML += "<br>";
+        } else {
+          profileOutput.innerHTML += rawMetadata[charIndex];
+        }
+        
+        // Soft audio tick per letter reveal
+        if (charIndex % 2 === 0) playTerminalBeep(900, 'sine', 0.005);
+        
+        charIndex++;
+        if (charIndex >= rawMetadata.length) {
+          clearInterval(typingTimer);
+        }
+      }, 25); // Speed multiplier for character scanning mechanics
+    });
   </script>
 </body>
 </html>
