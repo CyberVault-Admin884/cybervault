@@ -92,7 +92,7 @@
       100% { width: 100%; }
     }
 
-    /* Main Content Display (Hidden initially by preloader wrapper) */
+    /* Main Content Display */
     .header-zone {
       text-align: center;
       margin-bottom: 20px;
@@ -331,7 +331,7 @@
   <div id="preloader">
     <div class="shield-icon">🛡</div>
     <div class="load-title">Cybervault Core</div>
-    <div class="load-copyright">VantaX // Operator: prevellah</div>
+    <div class="load-copyright">VantaX // DEV: prevellah</div>
     <div class="progress-bar-container">
       <div class="progress-bar-fill"></div>
     </div>
@@ -402,7 +402,6 @@
         preloader.style.opacity = "0";
         setTimeout(() => {
           preloader.style.display = "none";
-          // Trigger system initialized beep
           playTerminalBeep(520, 'sine', 0.15);
         }, 500);
       }, 2000); // Strict 2-second hold sequence
@@ -490,7 +489,7 @@
       moduleStatus.style.color = "#ffcc00";
 
       let currentFrame = 0;
-      const executionFrames = 25; // Length of rotation text loops
+      const executionFrames = 25; 
       
       const soundInterval = setInterval(() => {
         playTerminalBeep(Math.random() * 350 + 300, 'sawtooth', 0.04);
@@ -544,7 +543,7 @@
             <div style="background:#01080a; color:#ff3333; font-family:monospace; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:20px; box-sizing:border-box;">
               <h2 style="letter-spacing: 2px; text-shadow: 0 0 10px rgba(255,51,51,0.4);">[!] CRITICAL WARNING: INTRUSION DETECTED</h2>
               <p style="font-size: 1rem; margin-top: 10px; color:#00828a;">Unauthorized code inspection mechanism identified.</p>
-              <p style="color:#004d52; font-size:0.8rem;">Crypt Profile Identity: SECURED // OPERATOR: prevellah</p>
+              <p style="color:#004d52; font-size:0.8rem;">Crypt Profile Identity: SECURED // DEV: prevellah</p>
               <button onclick="location.reload()" style="background:transparent; border:1px solid #ff3333; color:#ff3333; padding:10px 20px; margin-top:20px; cursor:pointer; font-family:monospace; text-transform:uppercase; letter-spacing:1px;">Re-Authenticate</button>
             </div>
           `;
