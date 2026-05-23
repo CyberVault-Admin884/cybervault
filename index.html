@@ -577,4 +577,52 @@
       if(!pw)return;
       const to=document.getElementById('terminal-output');
       const ms=document.getElementById('module-status');
-      con
+      const ab=document.getElementById('analyze-btn');
+      const sf=document.getElementById('strength-fill');
+      ab.disabled=true;ms.innerText='BUSY';ms.style.color='#ffcc00';
+      let frame=0;
+      const at=setInterval(()=>beep(Math.random()*200+400,'sawtooth',0.02),60);
+      const st=setInterval(()=>{
+        let s='';
+        for(let i=0;i<Math.min(pw.length,14);i++)
+          s+=pool[Math.floor(Math.random()*pool.length)];
+        to.innerHTML='PROBING ENCRYPTION PHASES...<br>Testing: <span style="color:#ffcc00;">'+s+'</span>';
+        if(++frame>=20){
+          clearInterval(st);clearInterval(at);
+          ab.disabled=false;ms.innerText='ONLINE';ms.style.color='#00f2fe';
+          const bits=Math.floor(pw.length*5.6);
+          if(pw.length<6){
+            beep(140,'sawtooth',0.3);
+            to.innerHTML='[+] RESULT: <span style="color:#ff3333;font-weight:bold;">CRITICAL VULNERABILITY</span><br><br>- Entropy: '+bits+' Bits<br>- Crack Time: <span style="color:#ff3333;">Instantaneous</span>';
+            sf.style.width='20%';sf.style.background='#ff3333';
+          } else if(pw.length<12){
+            beep(460,'sine',0.15);
+            to.innerHTML='[+] RESULT: <span style="color:#ffcc00;font-weight:bold;">MODERATE RISK</span><br><br>- Entropy: '+bits+' Bits<br>- Crack Time: <span style="color:#ffcc00;">Hours / Days</span>';
+            sf.style.width='55%';sf.style.background='#ffcc00';
+          } else {
+            beep(920,'sine',0.2);
+            to.innerHTML='[+] RESULT: <span style="color:#00f2fe;font-weight:bold;">MAXIMUM SECURITY</span><br><br>- Entropy: '+bits+' Bits<br>- Crack Time: <span style="color:#00f2fe;">Unbreakable</span>';
+            sf.style.width='100%';sf.style.background='linear-gradient(90deg,#00828a,#00f2fe)';
+          }
+        }
+      },70);
+    });
+
+    // PROFILE
+    document.getElementById('decrypt-profile-btn').addEventListener('click',()=>{
+      beep(700,'sine',0.05);
+      const po=document.getElementById('profile-output');
+      const ps=document.getElementById('profile-status');
+      ps.innerText='OPEN';ps.style.color='#00f2fe';
+      const txt='Connecting to Gloom Core...\nAuthorizing signature check...\n--------------------------------\nCREATOR: [CLASSIFIED]\nORIGIN : [ENCRYPTED]\nNODE   : Gloom Cyber Systems\nSTATUS : OPERATIONAL';
+      po.innerHTML='';let i=0;
+      const tt=setInterval(()=>{
+        if(txt[i]==='\n')po.innerHTML+='<br>';
+        else po.innerHTML+=txt[i];
+        if(i%2===0)beep(900,'sine',0.005);
+        if(++i>=txt.length)clearInterval(tt);
+      },25);
+    });
+  </script>
+</body>
+</html>
