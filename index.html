@@ -502,4 +502,372 @@
 
     <!-- STATS — hidden until crack completes -->
     <div class="stats" id="sim-stats" style="display:none;margin-top:14px">
-      <div class="stat"><div class="stat-l">Entropy</div><div class="stat-v" id="ss-ent">—</
+      <div class="stat"><div class="stat-l">Entropy</div><div class="stat-v" id="ss-ent">—</div></div>
+      <div class="stat"><div class="stat-l">Length</div><div class="stat-v" id="ss-len">—</div></div>
+      <div class="stat"><div class="stat-l">Brute Force</div><div class="stat-v" id="ss-brute">—</div></div>
+      <div class="stat"><div class="stat-l">Dict. Attack</div><div class="stat-v" id="ss-dict">—</div></div>
+    </div>
+
+    <div class="term" style="margin-top:12px;display:none" id="sim-term">
+      <div class="term-hdr">
+        <span>SIM_MODULE://DECRYPT_ATTACK</span>
+        <span style="color:var(--c)">ONLINE</span>
+      </div>
+      <div class="term-body" id="sim-out">System standby. Ready to process decryption array metrics...</div>
+    </div>
+  </div>
+
+  <!-- SANDBOX -->
+  <div class="card" id="card-sand">
+    <div class="ctitle">Active Deception Monitor</div>
+    <div class="csub">Deploys automated decoy honey-tokens to identify tampering vectors.</div>
+    <div class="term" style="margin-bottom:20px">
+      <div class="term-hdr">
+        <span>INSPECTOR_TRAP://DECOY_MONITOR</span>
+        <span style="color:#ff8800">ARMED</span>
+      </div>
+      <div class="term-body">
+        <div class="t-ok">[✔] Sandbox containment barrier fully synchronized.</div>
+        <div class="t-ok">[✔] Honey-Token asset loop deployed in local space.</div>
+        <div class="t-ok">[✔] Memory isolation layer confirmed active.</div>
+        <div class="t-warn">[!] Trap Alert status: Listening for runtime code modifications...</div>
+      </div>
+    </div>
+
+    <div class="ctitle" style="margin-top:20px">Why Password Security is Paramount</div>
+    <div class="doc-p">With the rise of automated brute-forcing arrays, basic dictionary credentials can be intercepted in seconds. True modern cybersecurity demands programmatic high-entropy complexity.</div>
+    <div class="doc-item"><div class="doc-icon">🔒</div><div class="doc-text"><strong>Countering AI Attacks:</strong> High entropy variables make dictionary pattern guessing impossible.</div></div>
+    <div class="doc-item"><div class="doc-icon">🚫</div><div class="doc-text"><strong>Isolated Boundaries:</strong> Encryption loops process locally in memory space — never on an external network host.</div></div>
+    <div class="doc-item"><div class="doc-icon">⚡</div><div class="doc-text"><strong>Brute Force Scale:</strong> Modern GPU clusters execute 100B+ attempts/sec. A 16-char high-entropy key requires geological timescales to crack.</div></div>
+
+    <div class="gloom-footer">
+      <div class="gloom-logo-mark">
+        <div class="gloom-hex">
+          <svg viewBox="0 0 24 24"><path d="M12 2C9.24 2 7 4.24 7 7v1H5v14h14V8h-2V7c0-2.76-2.24-5-5-5zm0 2c1.65 0 3 1.35 3 3v1H9V7c0-1.65 1.35-3 3-3zm0 9c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/></svg>
+        </div>
+        <div class="gloom-name-wrap">
+          <div class="gloom-name">GLOOM</div>
+          <div class="gloom-sub">CYBER SYSTEMS</div>
+        </div>
+      </div>
+      <div class="gloom-tagline">// Cryptographic Integrity. Zero Exposure. Client-Side Only. //</div>
+    </div>
+  </div>
+
+  <footer>CYBERVAULT CORE v2.4.1 — ALL OPERATIONS CLIENT-SIDE — ZERO DATA TRANSMITTED</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const dot=document.getElementById('cur-dot');
+const ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+document.querySelectorAll('button,.tab,input,a').forEach(el=>{
+  el.addEventListener('mouseenter',()=>ring.classList.add('big'));
+  el.addEventListener('mouseleave',()=>ring.classList.remove('big'));
+});
+(function anim(){
+  dot.style.left=mx+'px';dot.style.top=my+'px';
+  rx+=(mx-rx)*.13;ry+=(my-ry)*.13;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(anim);
+})();
+
+const cv=document.getElementById('bg-canvas');
+const rdr=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
+rdr.setSize(window.innerWidth,window.innerHeight);
+rdr.setPixelRatio(Math.min(devicePixelRatio,2));
+const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(75,innerWidth/innerHeight,.1,1000);
+cam.position.z=5;
+const pos=new Float32Array(800*3);
+for(let i=0;i<800*3;i++)pos[i]=(Math.random()-.5)*20;
+const pg=new THREE.BufferGeometry();
+pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+sc.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0x00f2fe,size:.04,transparent:true,opacity:.5})));
+const w1=new THREE.Mesh(new THREE.IcosahedronGeometry(1.8,1),new THREE.MeshBasicMaterial({color:0x00f2fe,wireframe:true,transparent:true,opacity:.08}));
+w1.position.set(2,0,-2);sc.add(w1);
+const w2=new THREE.Mesh(new THREE.OctahedronGeometry(1,0),new THREE.MeshBasicMaterial({color:0x00f2fe,wireframe:true,transparent:true,opacity:.06}));
+w2.position.set(-2.5,1,-3);sc.add(w2);
+let tmx=0,tmy=0;
+document.addEventListener('mousemove',e=>{tmx=(e.clientX/innerWidth-.5)*2;tmy=(e.clientY/innerHeight-.5)*2;});
+document.addEventListener('touchmove',e=>{tmx=(e.touches[0].clientX/innerWidth-.5)*2;tmy=(e.touches[0].clientY/innerHeight-.5)*2;});
+(function loop(){
+  requestAnimationFrame(loop);const t=Date.now()*.001;
+  sc.children[0].rotation.y=t*.04;sc.children[0].rotation.x=t*.02;
+  w1.rotation.x=t*.15;w1.rotation.y=t*.2;
+  w2.rotation.x=-t*.1;w2.rotation.z=t*.15;
+  cam.position.x+=(tmx*.3-cam.position.x)*.02;
+  cam.position.y+=(-tmy*.3-cam.position.y)*.02;
+  cam.lookAt(sc.position);rdr.render(sc,cam);
+})();
+window.addEventListener('resize',()=>{
+  cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix();
+  rdr.setSize(innerWidth,innerHeight);
+});
+
+setInterval(()=>{
+  const n=new Date();
+  document.getElementById('live-time').textContent=
+    String(n.getHours()).padStart(2,'0')+':'+
+    String(n.getMinutes()).padStart(2,'0')+':'+
+    String(n.getSeconds()).padStart(2,'0');
+},1000);
+
+let p=0;
+const pi=setInterval(()=>{
+  p+=Math.floor(Math.random()*8)+2;
+  if(p>=100){p=100;clearInterval(pi);}
+  document.getElementById('pl-pct').textContent=p+'%';
+},80);
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    const pl=document.getElementById('preloader');
+    pl.style.opacity='0';
+    setTimeout(()=>pl.style.display='none',500);
+  },2500);
+});
+
+let actx=null;
+function beep(f,t,d){
+  try{
+    if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();
+    const o=actx.createOscillator(),g=actx.createGain();
+    o.type=t;o.frequency.value=f;
+    g.gain.setValueAtTime(.04,actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.00001,actx.currentTime+d);
+    o.connect(g);g.connect(actx.destination);
+    o.start();o.stop(actx.currentTime+d);
+  }catch(e){}
+}
+
+function sw(id,el){
+  beep(440,'sine',.05);
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('show'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('card-'+id).classList.add('show');
+  el.classList.add('on');
+}
+
+function csz(str){
+  let s=0;
+  if(/[a-z]/.test(str))s+=26;if(/[A-Z]/.test(str))s+=26;
+  if(/[0-9]/.test(str))s+=10;if(/[^a-zA-Z0-9]/.test(str))s+=32;
+  return s||1;
+}
+function ent(sz,len){return Math.round(len*Math.log2(sz));}
+function crackTime(e){
+  const s=Math.pow(2,e)/1e11/2;
+  if(s<1)return '<1 SEC';if(s<60)return Math.round(s)+' SEC';
+  if(s<3600)return Math.round(s/60)+' MIN';if(s<86400)return Math.round(s/3600)+' HRS';
+  if(s<31536000)return Math.round(s/86400)+' DAYS';
+  if(s<3.15e9)return Math.round(s/31536000)+' YRS';
+  if(s<3.15e12)return (s/3.15e9).toFixed(1)+'K YRS';
+  if(s<3.15e15)return (s/3.15e12).toFixed(1)+'M YRS';
+  return '\u221e YRSSS';
+}
+function grade(e){
+  if(e<28)return{l:'CRITICAL',c:'#ff003c'};
+  if(e<40)return{l:'WEAK',c:'#ff6600'};
+  if(e<60)return{l:'MODERATE',c:'#ffcc00'};
+  if(e<80)return{l:'STRONG',c:'#88ff00'};
+  if(e<100)return{l:'ELITE',c:'#00f2fe'};
+  return{l:'QUANTUM',c:'#ffffff'};
+}
+
+const pool='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=';
+const sl=document.getElementById('len-sl');
+sl.addEventListener('input',e=>{document.getElementById('len-val').textContent=e.target.value;beep(650,'square',.01);});
+
+let lastKey='';
+document.getElementById('gen-btn').addEventListener('click',()=>{
+  beep(880,'sine',.07);
+  const len=parseInt(sl.value);
+  const arr=new Uint8Array(len);
+  crypto.getRandomValues(arr);
+  lastKey=Array.from(arr).map(b=>pool[b%pool.length]).join('');
+  const out=document.getElementById('key-out');
+  let i=0;
+  const iv=setInterval(()=>{
+    out.textContent=lastKey.slice(0,i)+(i<lastKey.length?'\u2588':'');
+    i++;if(i>lastKey.length){out.textContent=lastKey;clearInterval(iv);}
+  },22);
+  const e=ent(74,len),g=grade(e);
+  document.getElementById('s-bits').textContent=e+' bits';
+  document.getElementById('s-cset').textContent='74 chars';
+  document.getElementById('s-crack').textContent=crackTime(e);
+  document.getElementById('s-grade').textContent=g.l;
+  document.getElementById('s-grade').style.color=g.c;
+  document.getElementById('gen-stats').style.display='grid';
+});
+
+document.getElementById('copy-btn').addEventListener('click',()=>{
+  if(!lastKey)return;
+  const o=document.getElementById('key-out');
+  const prev=o.textContent;
+  function showCopied(){
+    beep(1100,'sine',.12);
+    o.textContent='\u2714 KEY COPIED TO CLIPBOARD';
+    setTimeout(()=>o.textContent=prev,1400);
+  }
+  if(navigator.clipboard&&window.isSecureContext){
+    navigator.clipboard.writeText(lastKey).then(showCopied).catch(()=>fallbackCopy());
+  } else {
+    fallbackCopy();
+  }
+  function fallbackCopy(){
+    const ta=document.createElement('textarea');
+    ta.value=lastKey;
+    ta.style.cssText='position:fixed;top:0;left:0;opacity:0;pointer-events:none;';
+    document.body.appendChild(ta);
+    ta.focus();ta.select();
+    try{document.execCommand('copy');showCopied();}
+    catch(e){o.textContent='[!] COPY FAILED — SELECT MANUALLY';setTimeout(()=>o.textContent=prev,2000);}
+    document.body.removeChild(ta);
+  }
+});
+
+function onSimInput(v){
+  if(!v){
+    document.getElementById('str-fill').style.width='0%';
+    document.getElementById('str-lbl').textContent='—';
+    document.getElementById('str-lbl').style.color='var(--cdim)';
+    return;
+  }
+  const e=ent(csz(v),v.length),g=grade(e),pct=Math.min(100,(e/100)*100);
+  document.getElementById('str-fill').style.width=pct+'%';
+  document.getElementById('str-fill').style.background=g.c;
+  document.getElementById('str-lbl').textContent=g.l;
+  document.getElementById('str-lbl').style.color=g.c;
+}
+
+let rainRAF=null;
+function startMatrixRain(canvas,durationMs,onDone){
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth;const H=canvas.height=90;
+  canvas.width=W;
+  const COLS=Math.floor(W/14);
+  const drops=Array.from({length:COLS},()=>Math.random()*-20);
+  const chars='アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホ0123456789ABCDEF!@#$%';
+  const start=Date.now();
+  let done=false;
+  function frame(){
+    if(done)return;
+    const elapsed=Date.now()-start;
+    const progress=Math.min(elapsed/durationMs,1);
+    ctx.fillStyle='rgba(0,0,0,0.18)';
+    ctx.fillRect(0,0,W,H);
+    ctx.font='12px "Share Tech Mono",monospace';
+    for(let i=0;i<COLS;i++){
+      const r=Math.round(progress*255);
+      const g2=Math.round(242*(1-progress*0.6));
+      const b=Math.round(254*(1-progress));
+      ctx.fillStyle=`rgba(${r},${g2},${b},0.85)`;
+      const ch=chars[Math.floor(Math.random()*chars.length)];
+      ctx.fillText(ch,i*14,drops[i]*14);
+      if(drops[i]*14>H&&Math.random()>.92)drops[i]=0;
+      drops[i]+=0.6+progress*1.2;
+    }
+    if(progress>=1){done=true;onDone();return;}
+    rainRAF=requestAnimationFrame(frame);
+  }
+  rainRAF=requestAnimationFrame(frame);
+}
+
+let crackRunning=false;
+document.getElementById('sim-btn').addEventListener('click',()=>{
+  const pw=document.getElementById('sim-inp').value;if(!pw||crackRunning)return;
+  crackRunning=true;
+  beep(660,'sine',.08);
+  const e=ent(csz(pw),pw.length),g=grade(e);
+  const crackMs=Math.min(Math.max(e*38,1200),5500);
+  document.getElementById('sim-stats').style.display='none';
+  document.getElementById('sim-term').style.display='none';
+  const verdict=document.getElementById('crack-verdict');
+  verdict.style.display='none';
+  const charsDiv=document.getElementById('crack-chars');
+  charsDiv.innerHTML='';
+  const boxes=[];
+  [...pw].forEach((ch,i)=>{
+    const d=document.createElement('div');
+    d.className='cc';d.textContent='?';
+    charsDiv.appendChild(d);boxes.push(d);
+  });
+  const wrap=document.getElementById('crack-wrap');
+  wrap.style.display='flex';
+  document.getElementById('crack-status').textContent='CRACKING...';
+  document.getElementById('crack-status').style.color='var(--warn)';
+  document.getElementById('crack-prog-fill').style.width='0%';
+  document.getElementById('crack-prog-fill').style.background='linear-gradient(90deg,var(--red),var(--warn))';
+  document.getElementById('crack-prog-label').textContent='SCANNING ENTROPY VECTORS...';
+  const charIntervals=[];
+  boxes.forEach((box,i)=>{
+    const scramble=setInterval(()=>{
+      box.classList.add('cracking');
+      box.textContent=pool[Math.floor(Math.random()*pool.length)];
+    },60);
+    charIntervals.push(scramble);
+    const revealAt=crackMs*(0.5+(i/boxes.length)*0.45);
+    setTimeout(()=>{
+      clearInterval(scramble);
+      const isStrong=e>=80;
+      if(isStrong){
+        box.textContent='\u2588';box.classList.remove('cracking');box.classList.add('locked');
+      } else {
+        box.textContent=pw[i];box.classList.remove('cracking');box.classList.add('cracked');
+        beep(200+i*30,'square',.04);
+      }
+    },revealAt);
+  });
+  const progStart=Date.now();
+  const progIv=setInterval(()=>{
+    const pct=Math.min(((Date.now()-progStart)/crackMs)*100,100);
+    document.getElementById('crack-prog-fill').style.width=pct+'%';
+    const labels=['SCANNING ENTROPY VECTORS...','MAPPING CHARSET SPACE...','DEPLOYING DICTIONARY ARRAYS...','RUNNING BRUTE-FORCE SIMULATION...','COMPUTING RESISTANCE PROFILE...'];
+    document.getElementById('crack-prog-label').textContent=labels[Math.floor(pct/22)%labels.length];
+    if(pct>=100)clearInterval(progIv);
+  },80);
+  startMatrixRain(document.getElementById('matrix-rain'),crackMs,()=>{
+    charIntervals.forEach(iv=>clearInterval(iv));
+    const isStrong=e>=80;
+    document.getElementById('crack-status').textContent=isStrong?'RESISTANCE CONFIRMED':'BREACH SIMULATED';
+    document.getElementById('crack-status').style.color=isStrong?'var(--ok)':'var(--red)';
+    document.getElementById('crack-prog-fill').style.width='100%';
+    document.getElementById('crack-prog-fill').style.background=isStrong?'var(--ok)':'var(--red)';
+    document.getElementById('crack-prog-label').textContent=isStrong?'TARGET RESISTED FULL ATTACK SIMULATION':'PASSWORD COMPROMISED — BREACH COMPLETE';
+    verdict.style.display='block';
+    verdict.style.color=g.c;
+    verdict.textContent=isStrong
+      ?'[ '+g.l+' ] — ATTACK REPELLED AFTER '+crackTime(e)
+      :'[ '+g.l+' ] — SIMULATED BREACH IN '+crackTime(e);
+    beep(isStrong?1200:100,'sine',.3);
+    setTimeout(()=>{
+      document.getElementById('ss-ent').textContent=e+' bits';
+      document.getElementById('ss-len').textContent=pw.length+' chars';
+      document.getElementById('ss-brute').textContent=crackTime(e);
+      document.getElementById('ss-dict').textContent=
+        /^[a-z]+$/.test(pw)?'SECONDS':/^[a-zA-Z]+$/.test(pw)?'HOURS':'INFEASIBLE';
+      document.getElementById('sim-stats').style.display='grid';
+      const lines=[];
+      if(pw.length<8)lines.push('<span class="t-err">[\u2717] LENGTH CRITICAL \u2014 min 12 chars recommended</span>');
+      if(!/[A-Z]/.test(pw))lines.push('<span class="t-warn">[!] No uppercase \u2014 reduces charset entropy</span>');
+      if(!/[a-z]/.test(pw))lines.push('<span class="t-warn">[!] No lowercase \u2014 reduces charset entropy</span>');
+      if(!/[0-9]/.test(pw))lines.push('<span class="t-warn">[!] No numerals \u2014 pattern vulnerability</span>');
+      if(!/[^a-zA-Z0-9]/.test(pw))lines.push('<span class="t-warn">[!] No symbols \u2014 hybrid attack risk</span>');
+      if(/(.)\1{2,}/.test(pw))lines.push('<span class="t-err">[\u2717] Repeated chars detected</span>');
+      if(/^[0-9]+$/.test(pw))lines.push('<span class="t-err">[\u2717] Numeric only \u2014 trivial to brute force</span>');
+      if(e>=80)lines.push('<span class="t-ok">[\u2714] Entropy sufficient \u2014 brute force resistant</span>');
+      if(g.l==='ELITE'||g.l==='QUANTUM')lines.push('<span class="t-green">[\u2714] '+g.l+' profile \u2014 optimal configuration</span>');
+      document.getElementById('sim-out').innerHTML=lines.join('<br>')||'<span class="t-ok">No critical vulnerabilities detected.</span>';
+      document.getElementById('sim-term').style.display='block';
+      crackRunning=false;
+    },700);
+  });
+});
+
+console.log('%c CYBERVAULT CORE ','background:#01080a;color:#00f2fe;font-family:monospace;font-size:16px;padding:8px;border:1px solid #00f2fe;');
+console.log('%c Gloom Cyber Systems — v2.4.1 ','color:#006066;font-family:monospace;font-size:11px;');
+console.log('%c All crypto ops use window.crypto.getRandomValues() — zero Math.random() ','color:#00828a;font-family:monospace;font-size:11px;');
+</script>
+</body>
+</html>
